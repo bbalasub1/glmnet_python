@@ -1,0 +1,10 @@
+Git installation
+-----------------
+
+Install newer git version for centos (2.8.1 has been tested to work on Centos 6.7). 
+
+Then, init and remote commit using instructions here:
+
+https://www.howtoforge.com/tutorial/install-git-and-github-on-ubuntu-14.04/
+
+
