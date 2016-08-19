@@ -22,22 +22,23 @@ Post:
 """
 
 def glmnetSet(opts = None):
-
+    import numpy as np
+    
     # default options
     options = {
-        "weights"             : [],
-        "offset"              : [],
+        "weights"             : np.empty([0]),
+        "offset"              : np.empty([0]),
         "alpha"               : 1.0,
         "nlambda"             : 100,
-        "lambda_min"          : [],
-        "lambdau"             : [],
+        "lambda_min"          : np.empty([0]),
+        "lambdau"             : np.empty([0]),
         "standardize"         : True,
         "intr"                : True,
         "thresh"              : 1e-7,
-        "dfmax"               : [],
-        "pmax"                : [],
-        "exclude"             : [],
-        "penalty_factor"      : [],
+        "dfmax"               : np.empty([0]),
+        "pmax"                : np.empty([0]),
+        "exclude"             : np.empty([0]),
+        "penalty_factor"      : np.empty([0]),
         "cl"                  : [float("-inf"), float("inf")], 
         "maxit"               : 1e5,
         "gtype"               : [],
