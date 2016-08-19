@@ -3,3 +3,5 @@ git add .
 git status
 now=`date`
 git commit -m "version as of $now"
+git push origin master
+
