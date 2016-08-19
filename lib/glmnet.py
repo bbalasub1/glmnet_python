@@ -2,13 +2,13 @@
 """
 glmnet:
 
-PRE:
+Pre:
     x <numpy array of nobs x nvars, required>       : regression x variable 
     y <numpy array of nobs x 1 or more, required>   : regression y variable 
     family <string, optional>                       : family to fit (gaussian, binomail, poisson, multinomial, cox, mgaussian)
     options <dict, optional>                        : fit parameters
     
-POST: 
+Post: 
     
 
 @author: bbalasub
@@ -94,6 +94,85 @@ def glmnet(x, y, family = 'gaussian', options = None):
     
     # inparms
     inparms = glmnetControl()
+    
+    # cl
+    cl = options['cl']
+    if any(cl[0,:] > 0):
+        raise ValueError('Error: The lower bound on cl must be non-positive')
+
+    if any(cl[1,:] < 0):
+        raise ValueError('Error: The lower bound on cl must be non-negative')
+        
+    cl[0, cl[0, :] == np.double('-inf')] = -1.0*inparms['big']    
+    cl[1, cl[1, :] == np.double('inf')]  =  1.0*inparms['big']    
+    
+    if cl.shape[1] < nvars:
+        if cl.shape[1] == 1:
+            cl = cl*np.ones([1, nvars])
+        else:
+            raise ValueError('ERROR: Require length 1 or nvars lower and upper limits')
+    else:
+        cl = cl[:, 0:nvars-1]
+        
+        
+    exit_rec = 0
+    if any(cl.reshape([1,cl.size]) == 0):
+        fdev = inparms['fdev']
+        if fdev != 0:
+            optset = dict()
+            optset['fdev'] = 0
+            glmnetControl(optset)
+            exit_rec = 1
+            
+    # 
+    isd  = np.double(options['standardize'])
+    intr = np.double(options['intr'])
+    if (intr == True) & (family == 'cox'):
+        print('Warning: Cox model has no intercept!')
+        
+    jsd        = options['standardize_resp']
+    thresh     = options['thresh']    
+    lambdau    = options['lambdau']
+    lambda_min = options['lambda_min']
+    
+    if len(lambda_min) == 0:
+        if nobs < nvars:
+            lambda_min = 0.01
+        else:
+            lambda_min = 1e-4
+    
+    lempty = (len(lambdau) == 0)
+    if lempty:
+        if (lambda_min >= 1):
+            raise ValueError('ERROR: lambda_min should be less than 1')
+        flmin = lambda_min
+        ulam  = 0.0
+    else:
+        flmin = 1.0
+        if any(lambdau < 0):
+            raise ValueError('ERROR: lambdas should be non-negative')
+        
+        ulam = -np.sort(-lambdau)    # reverse sort
+        nlam = lambdau.size
+    #
+    maxit = options['maxit']
+    gtype = options['gtype']
+    if len(gtype) == 0:
+        if (nvars < 500):
+            gtype = 'covariance'
+        else:
+            gtype = 'naive'
+    
+    # ltype
+    ltype = options['ltype']
+    ltypelist = ['Newton', 'modified.Newton']
+    indxtf    = [x.startswith(ltype) for x in ltypelist]
+    indl      = [i for i in range(len(indxtf)) if indxtf[i] == True]
+    if len(indl) != 1:
+        raise ValueError('ERROR: ltype should be one of ''Newton'' or ''modified.Newton''')
+    else:
+        kopt = indl
+    
     
     ## finally call the appropriate fit code
     if family == 'gaussian':

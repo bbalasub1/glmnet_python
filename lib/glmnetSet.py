@@ -39,7 +39,7 @@ def glmnetSet(opts = None):
         "pmax"                : np.empty([0]),
         "exclude"             : np.empty([0]),
         "penalty_factor"      : np.empty([0]),
-        "cl"                  : [float("-inf"), float("inf")], 
+        "cl"                  : [np.double("-inf"), np.double("inf")], 
         "maxit"               : 1e5,
         "gtype"               : [],
         "ltype"               : 'Newton',
