@@ -2,5 +2,4 @@
 git add .
 git status
 now=`date`
-echo $now
 git commit -m "version as of $now"
