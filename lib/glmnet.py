@@ -3,8 +3,8 @@
 glmnet:
 
 Pre:
-    x <numpy array of nobs x nvars, required>       : regression x variable 
-    y <numpy array of nobs x 1 or more, required>   : regression y variable 
+    x <scipy array of nobs x nvars, required>       : regression x variable 
+    y <scipy array of nobs x 1 or more, required>   : regression y variable 
     family <string, optional>                       : family to fit (gaussian, binomail, poisson, multinomial, cox, mgaussian)
     options <dict, optional>                        : fit parameters
     
@@ -15,7 +15,7 @@ Post:
 """
 from glmnetSet import glmnetSet
 from glmnetControl import glmnetControl
-import numpy as np
+import scipy as sp
 
 def glmnet(x, y, family = 'gaussian', options = None):
     
@@ -57,7 +57,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
     # check weights length
     weights = options['weights']
     if len(weights) == 0:
-        weights = np.ones([nobs, 1], dtype = np.double)
+        weights = sp.ones([nobs, 1], dtype = sp.double)
     elif len(weights) != nobs:
         raise ValueError('Error: Number of elements in ''weights'' not equal to number of rows of ''x''')
     
@@ -80,17 +80,17 @@ def glmnet(x, y, family = 'gaussian', options = None):
     exclude = options['exclude']
     print('WARNING!! check Exclude implementation for type !!!')
     if len(exclude) == 0:
-        exclude = np.unique(exclude)
-        if np.any(exclude > 0 & exclude < nvars):
+        exclude = sp.unique(exclude)
+        if sp.any(exclude > 0 & exclude < nvars):
             raise ValueError('Error: Some excluded variables are out of range')
-        jd = np.append(len(exclude), exclude)
+        jd = sp.append(len(exclude), exclude)
     else:
         jd = 0
         
     # check vp    
     vp = options['penalty_factor']
     if len(vp) == 0:
-        vp = np.ones([1, nvars])
+        vp = sp.ones([1, nvars])
     
     # inparms
     inparms = glmnetControl()
@@ -103,12 +103,12 @@ def glmnet(x, y, family = 'gaussian', options = None):
     if any(cl[1,:] < 0):
         raise ValueError('Error: The lower bound on cl must be non-negative')
         
-    cl[0, cl[0, :] == np.double('-inf')] = -1.0*inparms['big']    
-    cl[1, cl[1, :] == np.double('inf')]  =  1.0*inparms['big']    
+    cl[0, cl[0, :] == sp.double('-inf')] = -1.0*inparms['big']    
+    cl[1, cl[1, :] == sp.double('inf')]  =  1.0*inparms['big']    
     
     if cl.shape[1] < nvars:
         if cl.shape[1] == 1:
-            cl = cl*np.ones([1, nvars])
+            cl = cl*sp.ones([1, nvars])
         else:
             raise ValueError('ERROR: Require length 1 or nvars lower and upper limits')
     else:
@@ -125,8 +125,8 @@ def glmnet(x, y, family = 'gaussian', options = None):
             exit_rec = 1
             
     # 
-    isd  = np.double(options['standardize'])
-    intr = np.double(options['intr'])
+    isd  = sp.double(options['standardize'])
+    intr = sp.double(options['intr'])
     if (intr == True) & (family == 'cox'):
         print('Warning: Cox model has no intercept!')
         
@@ -152,7 +152,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
         if any(lambdau < 0):
             raise ValueError('ERROR: lambdas should be non-negative')
         
-        ulam = -np.sort(-lambdau)    # reverse sort
+        ulam = -sp.sort(-lambdau)    # reverse sort
         nlam = lambdau.size
     #
     maxit = options['maxit']
@@ -173,7 +173,24 @@ def glmnet(x, y, family = 'gaussian', options = None):
     else:
         kopt = indl
     
+    if family == 'multinomial':
+        mtype = options['mtype']
+        mtypelist = ['ungrouped', 'grouped']
+        indxtf    = [x.startswith(mtype) for x in mtypelist]
+        indm      = [i for i in range(len(indxtf)) if indxtf[i] == True]
+    if len(indm) != 1:
+        raise ValueError('Error: mtype should be one of ''ungrouped'' or ''grouped''')
+    elif (indm == 2):
+        kopt = 2
+    #
+    offset = options['offset']
+    # sparse    
+    is_sparse = False
+    if sp.sparse.issparse(x):
+        is_sparse = False
+        
     
+   
     ## finally call the appropriate fit code
     if family == 'gaussian':
         # call elnet
