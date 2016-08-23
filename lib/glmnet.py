@@ -189,12 +189,25 @@ def glmnet(x, y, family = 'gaussian', options = None):
     if sp.sparse.issparse(x):
         is_sparse = False
         
+    else:
+        irs = sp.empty([0])
+        pcs = sp.empty([0])
+        idx = sp.where(x != 0)
+        x = x[idx]
+        irs = idx[0]
+        jcs = idx[1]
+        # calculate pcs
+        h = sp.histogram(jcs, sp.arange(1,nvars))
+        pcs = sp.insert(sp.cumsum(h), 0, 0) 
+        
+    if sp.sparse.issparse(y):
+        y = y.todense()
     
    
     ## finally call the appropriate fit code
     if family == 'gaussian':
         # call elnet
-        pass
+        fit = elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, thresh, isd, intr, maxit, family)
     elif family == 'binomial':
         # call lognet
         pass
