@@ -1,8 +1,0 @@
-#!/bin/bash
-# git remote add origin https://github.com/bbalasub1/glmnet_python.git
-git add .
-git status
-now=`date`
-git commit -m "version as of $now"
-#git push origin master
-git push https://github.com/bbalasub1/glmnet_python.git master
