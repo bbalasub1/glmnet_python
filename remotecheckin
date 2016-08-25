@@ -5,4 +5,4 @@ git status
 now=`date`
 git commit -m "version as of $now"
 #git push origin master
-git push https://github.com/bbalasub1/glmnet_python.git master
+git push https://bbalasub1@github.com/bbalasub1/glmnet_python.git master
