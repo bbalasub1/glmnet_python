@@ -1,6 +1,5 @@
-###########################################
+﻿###########################################
 # Example f77 code (hello.f)
-# 
 #c###########################################################
 #      subroutine func(x, N, y)
 #c
@@ -35,8 +34,7 @@
 ###########################################
 #   
 # Note: compilation also works for GLMnet.f
-#      
-      
+            
 import numpy as np
 import ctypes 
 
@@ -64,8 +62,5 @@ y = np.array(np.arange(6)) + 2.5
 yref = y.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 z = ctypes.c_double(20.0)
 myLibx.arrfunc_(xref,yref, ctypes.byref(z))
-print(x)
-print(y)
-print(z)
-
+print(x); print(y); print(z)
 

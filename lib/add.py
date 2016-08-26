@@ -64,7 +64,28 @@ y = np.array(np.arange(6)) + 2.5
 yref = y.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 z = ctypes.c_double(20.0)
 myLibx.arrfunc_(xref,yref, ctypes.byref(z))
-print(x)
-print(y)
+print(x); print(y); print(z)
+print('############################')
+
+# part 3
+x = ctypes.c_double(5.0);
+y = ctypes.c_double(11.0);
+z = ctypes.c_double(1.0);
+myLibx.addfunc_(ctypes.byref(x), ctypes.byref(y), ctypes.byref(z))
 print(z)
+print('############################')
+
+# part 4
+x = ctypes.c_int(5);
+y = ctypes.c_double(11.0);
+z = ctypes.c_double(1.0);
+myLibx.test1_(ctypes.byref(x), ctypes.byref(y), ctypes.byref(z))
+print(z)
+x = ctypes.c_int(-1);
+y = ctypes.c_double(11.0);
+z = ctypes.c_double(1.0);
+myLibx.test1_(ctypes.byref(x), ctypes.byref(y), ctypes.byref(z))
+print(z)
+
+
 

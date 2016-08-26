@@ -13,16 +13,20 @@ Post:
 
 @author: bbalasub
 """
-from glmnetSet import glmnetSet
-from glmnetControl import glmnetControl
-import scipy as sp
 
 def glmnet(x, y, family = 'gaussian', options = None):
     
+    # import methods for later
+    from glmnetSet import glmnetSet
+    from glmnetControl import glmnetControl
+    import scipy as sp
+    
+    print("Starting glmnet...")
     ## set input default options
     # set options to default if nothing is passed in    
     if options is None:
         options = glmnetSet();
+    print("glmnetSet success...")
     
     ## match the family, abbreviation allowed
     fambase = ['gaussian','binomial','poisson','multinomial','cox','mgaussian'];
@@ -38,7 +42,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
     
     ## prepare options
     options = glmnetSet(options)
-
+    
     ## error check options parameters
     if options['alpha'] > 1.0 :
         print('Warning: alpha > 1.0; setting to 1.0')
@@ -81,7 +85,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
     print('WARNING!! check Exclude implementation for type !!!')
     if len(exclude) == 0:
         exclude = sp.unique(exclude)
-        if sp.any(exclude > 0 & exclude < nvars):
+        if sp.any(exclude > 0) & (exclude < nvars):
             raise ValueError('Error: Some excluded variables are out of range')
         jd = sp.append(len(exclude), exclude)
     else:
@@ -116,7 +120,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
         
         
     exit_rec = 0
-    if any(cl.reshape([1,cl.size]) == 0):
+    if sp.any(cl.reshape([1,cl.size]) == 0):
         fdev = inparms['fdev']
         if fdev != 0:
             optset = dict()
@@ -178,32 +182,31 @@ def glmnet(x, y, family = 'gaussian', options = None):
         mtypelist = ['ungrouped', 'grouped']
         indxtf    = [x.startswith(mtype) for x in mtypelist]
         indm      = [i for i in range(len(indxtf)) if indxtf[i] == True]
-    if len(indm) != 1:
-        raise ValueError('Error: mtype should be one of ''ungrouped'' or ''grouped''')
-    elif (indm == 2):
-        kopt = 2
+        if len(indm) == 0:
+            raise ValueError('Error: mtype should be one of ''ungrouped'' or ''grouped''')
+        elif (indm == 2):
+            kopt = 2
     #
     offset = options['offset']
     # sparse    
     is_sparse = False
     if sp.sparse.issparse(x):
-        is_sparse = False
-        
-    else:
-        irs = sp.empty([0])
-        pcs = sp.empty([0])
+        is_sparse = True
         idx = sp.where(x != 0)
         x = x[idx]
         irs = idx[0]
         jcs = idx[1]
         # calculate pcs
-        h = sp.histogram(jcs, sp.arange(1,nvars))
-        pcs = sp.insert(sp.cumsum(h), 0, 0) 
+        h = sp.histogram(jcs, sp.arange(1,nvars + 1))
+        h = h[0]
+        pcs = sp.insert(sp.cumsum(h), 0, 0)         
+    else:
+        irs = sp.empty([0])
+        pcs = sp.empty([0])
         
     if sp.sparse.issparse(y):
         y = y.todense()
     
-   
     ## finally call the appropriate fit code
     if family == 'gaussian':
         # call elnet
