@@ -86,6 +86,16 @@ y = ctypes.c_double(11.0);
 z = ctypes.c_double(1.0);
 myLibx.test1_(ctypes.byref(x), ctypes.byref(y), ctypes.byref(z))
 print(z)
+print('############################')
+
+# part 5
+x = ctypes.c_int(5);
+y = ctypes.c_int(11);
+myLibx.test2_(ctypes.byref(x), ctypes.byref(y))
+print(x)
+print(y)
+
+
 
 
 

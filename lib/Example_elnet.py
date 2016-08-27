@@ -112,20 +112,40 @@ rsq_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 alm   = scipy.zeros([nlam, 1], dtype = scipy.float64)
 alm_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # nlp
-nlp = 0
+nlp = -1
 nlp_r = ctypes.c_int(nlp)
 # jerr
-jerr = 0
+jerr = -1
 jerr_r = ctypes.c_int(jerr)
-# tpar
-tpar = -1
-tpar_r = ctypes.c_double(tpar)
+# elnet
+glmlib.elnet_(ctypes.byref(ka_r), 
+              ctypes.byref(parm_r), 
+              ctypes.byref(no_r), 
+              ctypes.byref(ni_r),
+              x_r, 
+              y_r, 
+              w_r, 
+              jd_r, 
+              vp_r, 
+              cl_r, 
+              ctypes.byref(ne_r), 
+              ctypes.byref(nx_r), 
+              ctypes.byref(nlam_r), 
+              ctypes.byref(flmin_r), 
+              ulam_r, 
+              ctypes.byref(thr_r), 
+              ctypes.byref(isd_r), 
+              ctypes.byref(intr_r), 
+              ctypes.byref(maxit_r), 
+              ctypes.byref(lmu_r),
+              a0_r, 
+              ca_r, 
+              ia_r, 
+              nin_r, 
+              rsq_r, 
+              alm_r, 
+              ctypes.byref(nlp_r), 
+              ctypes.byref(jerr_r))
 
-glmlib.elnet_(ctypes.byref(ka_r), ctypes.byref(parm_r), ctypes.byref(no_r), ctypes.byref(ni_r),
-              x_r, y_r, w_r, jd_r, vp_r, cl_r, ctypes.byref(ne_r), ctypes.byref(nx_r), 
-              ctypes.byref(nlam_r), ctypes.byref(flmin_r), ulam_r, ctypes.byref(thr_r), 
-              ctypes.byref(isd_r), ctypes.byref(intr_r), ctypes.byref(maxit_r), ctypes.byref(lmu_r),
-              a0_r, ca_r, ia_r, nin_r, rsq_r, alm_r, ctypes.byref(nlp_r), ctypes.byref(jerr_r), 
-              ctypes.byref(tpar_r))
+print(a0)
 
-print(tpar_r)
