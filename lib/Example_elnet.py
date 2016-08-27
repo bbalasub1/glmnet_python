@@ -24,7 +24,7 @@ x = x.astype(dtype = scipy.float64, order = 'F', copy = True)
 # --------- INPUTS -------------------
 ######################################
 # ka
-ka_r = ctypes.c_int(1) # naive algo
+ka_r = ctypes.c_int(1) 
 # parm
 parm_r = ctypes.c_double(1.0)
 # no
@@ -39,12 +39,15 @@ x_r = x.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 y_r = y.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # w
 w = scipy.ones([no, 1], dtype = scipy.float64)
+w = w.astype(dtype = scipy.float64, order = 'F', copy = True)    
 w_r = w.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # jd
-jd = scipy.ones([1], dtype = scipy.int64)
+jd = scipy.ones([1], dtype = scipy.int32)
+jd = jd.astype(dtype = scipy.int32, order = 'F', copy = True)    
 jd_r = jd.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 # vp
 vp = scipy.ones([ni, 1], dtype = scipy.float64)
+vp = vp.astype(dtype = scipy.float64, order = 'F', copy = True)    
 vp_r = vp.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # cl
 options = glmnetSet()
@@ -59,6 +62,7 @@ if cl.shape[1] < ni:
         raise ValueError('ERROR: Require length 1 or nvars lower and upper limits')
 else:
     cl = cl[:, 0:ni-1]
+cl = cl.astype(dtype = scipy.float64, order = 'F', copy = True)    
 cl_r = cl.ctypes.data_as(ctypes.POINTER(ctypes.c_double))    
 # ne
 ne = ni + 1    
@@ -74,6 +78,7 @@ flmin = 1.0e-4
 flmin_r = ctypes.c_double(flmin)
 # ulam
 ulam   = scipy.zeros([1], dtype = scipy.float64)
+ulam = ulam.astype(dtype = scipy.float64, order = 'F', copy = True)    
 ulam_r = ulam.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # thr
 thr = 1.0e-7
@@ -91,25 +96,31 @@ maxit_r = ctypes.c_int(maxit)
 # --------- OUTPUTS -------------------
 ######################################
 # lmu
-lmu = 0
+lmu = -1
 lmu_r = ctypes.c_int(lmu)
 # a0
 a0   = scipy.zeros([nlam, 1], dtype = scipy.float64)
+a0 = a0.astype(dtype = scipy.float64, order = 'F', copy = True)    
 a0_r = a0.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # ca
 ca   = scipy.zeros([nx, nlam], dtype = scipy.float64)
+ca = ca.astype(dtype = scipy.float64, order = 'F', copy = True)    
 ca_r = ca.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # ia
-ia   = scipy.zeros([nx, 1], dtype = scipy.int64)
+ia   = -1*scipy.ones([nx, 1], dtype = scipy.int32)
+ia = ia.astype(dtype = scipy.float64, order = 'F', copy = True)    
 ia_r = ia.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 # nin
-nin   = scipy.zeros([nlam, 1], dtype = scipy.int64)
+nin   = -1*scipy.ones([nlam, 1], dtype = scipy.int32)
+nin = nin.astype(dtype = scipy.float64, order = 'F', copy = True)    
 nin_r = nin.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 # rsq
-rsq   = scipy.zeros([nlam, 1], dtype = scipy.float64)
+rsq   = -1*scipy.ones([nlam, 1], dtype = scipy.float64)
+rsq = rsq.astype(dtype = scipy.float64, order = 'F', copy = True)    
 rsq_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # alm
-alm   = scipy.zeros([nlam, 1], dtype = scipy.float64)
+alm   = -1*scipy.ones([nlam, 1], dtype = scipy.float64)
+alm = alm.astype(dtype = scipy.float64, order = 'F', copy = True)    
 alm_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # nlp
 nlp = -1
