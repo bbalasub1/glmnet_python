@@ -718,6 +718,7 @@ c
       real ulam(nlam),a0(nlam),rsq(nlam),alm(nlam)                          789
       integer jd(*),ia(nx),nin(nlam)                                        790
       real, dimension (:), allocatable :: vq; 
+      tpar=15
       if(maxval(vp) .gt. 0.0)goto 10021                                     793
       jerr=10000                                                            793
       return                                                                793
