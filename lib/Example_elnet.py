@@ -120,8 +120,8 @@ rsq = rsq.astype(dtype = scipy.float64, order = 'F', copy = True)
 rsq_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # alm
 alm   = -1*scipy.ones([nlam, 1], dtype = scipy.float64)
-alm = alm.astype(dtype = scipy.float64, order = 'F', copy = True)    
-alm_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
+alm   = alm.astype(dtype = scipy.float64, order = 'F', copy = True)    
+alm_r = alm.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # nlp
 nlp = -1
 nlp_r = ctypes.c_int(nlp)
