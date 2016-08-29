@@ -89,8 +89,8 @@ print(z)
 print('############################')
 
 # part 5
-x = ctypes.c_int(5);
-y = ctypes.c_int(11);
+x = ctypes.c_double(5);
+y = ctypes.c_double(11);
 myLibx.test2_(ctypes.byref(x), ctypes.byref(y))
 print(x)
 print(y)

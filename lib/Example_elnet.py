@@ -12,9 +12,20 @@ glmlib = ctypes.cdll.LoadLibrary('./GLMnet.so') # this is a bit of a pain.
                                                 # unless a new python console is started
                                                 # the shared library will persist in memory
 # load data (identical to QuickStartExample.RData)
+# glmnet=function(x,y,family=c("gaussian","binomial","poisson","multinomial","cox","mgaussian"),
+# weights,offset=NULL,alpha=1.0,nlambda=100,
+# lambda.min.ratio=ifelse(nobs<nvars,1e-2,1e-4),lambda=NULL,standardize=TRUE,
+# intercept=TRUE,thresh=1e-7,dfmax=nvars+1,pmax=min(dfmax*2+20,nvars),
+# exclude,penalty.factor=rep(1,nvars),lower.limits=-Inf,upper.limits=Inf,maxit=100000,
+# type.gaussian=ifelse(nvars<500,"covariance","naive"),
+# type.logistic=c("Newton","modified.Newton"),standardize.response=FALSE,
+# type.multinomial=c("ungrouped","grouped")){
+
 baseDataDir= '/home/bbalasub/Desktop/Summer2016/glmnet/glmnet_R/'
-y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat')
-x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat')
+y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
+x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
+
+# convert x and y to 'F' (fortran) order and scipy float64
 y = y.astype(dtype = scipy.float64, order = 'F', copy = True)
 x = x.astype(dtype = scipy.float64, order = 'F', copy = True)
 # call elnet directly
@@ -38,7 +49,7 @@ x_r = x.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # y
 y_r = y.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # w
-w = scipy.ones([no, 1], dtype = scipy.float64)
+w = scipy.ones([no], dtype = scipy.float64)
 w = w.astype(dtype = scipy.float64, order = 'F', copy = True)    
 w_r = w.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # jd
@@ -46,7 +57,7 @@ jd = scipy.ones([1], dtype = scipy.int32)
 jd = jd.astype(dtype = scipy.int32, order = 'F', copy = True)    
 jd_r = jd.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 # vp
-vp = scipy.ones([ni, 1], dtype = scipy.float64)
+vp = scipy.ones([ni], dtype = scipy.float64)
 vp = vp.astype(dtype = scipy.float64, order = 'F', copy = True)    
 vp_r = vp.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # cl
@@ -84,7 +95,7 @@ ulam_r = ulam.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 thr = 1.0e-7
 thr_r = ctypes.c_double(thr)
 # isd
-isd = 0
+isd = 1
 isd_r = ctypes.c_int(isd)
 # intr
 intr = 1
@@ -99,7 +110,7 @@ maxit_r = ctypes.c_int(maxit)
 lmu = -1
 lmu_r = ctypes.c_int(lmu)
 # a0
-a0   = scipy.zeros([nlam, 1], dtype = scipy.float64)
+a0   = scipy.zeros([nlam], dtype = scipy.float64)
 a0 = a0.astype(dtype = scipy.float64, order = 'F', copy = True)    
 a0_r = a0.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # ca
@@ -107,19 +118,19 @@ ca   = scipy.zeros([nx, nlam], dtype = scipy.float64)
 ca = ca.astype(dtype = scipy.float64, order = 'F', copy = True)    
 ca_r = ca.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # ia
-ia   = -1*scipy.ones([nx, 1], dtype = scipy.int32)
-ia = ia.astype(dtype = scipy.float64, order = 'F', copy = True)    
+ia   = -1*scipy.ones([nx], dtype = scipy.int32)
+ia = ia.astype(dtype = scipy.int32, order = 'F', copy = True)    
 ia_r = ia.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 # nin
-nin   = -1*scipy.ones([nlam, 1], dtype = scipy.int32)
-nin = nin.astype(dtype = scipy.float64, order = 'F', copy = True)    
+nin   = -1*scipy.ones([nlam], dtype = scipy.int32)
+nin = nin.astype(dtype = scipy.int32, order = 'F', copy = True)    
 nin_r = nin.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 # rsq
-rsq   = -1*scipy.ones([nlam, 1], dtype = scipy.float64)
+rsq   = -1*scipy.ones([nlam], dtype = scipy.float64)
 rsq = rsq.astype(dtype = scipy.float64, order = 'F', copy = True)    
 rsq_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # alm
-alm   = -1*scipy.ones([nlam, 1], dtype = scipy.float64)
+alm   = -1*scipy.ones([nlam], dtype = scipy.float64)
 alm   = alm.astype(dtype = scipy.float64, order = 'F', copy = True)    
 alm_r = alm.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # nlp
@@ -129,7 +140,7 @@ nlp_r = ctypes.c_int(nlp)
 jerr = -1
 jerr_r = ctypes.c_int(jerr)
 # elnet
-glmlib.elnet_(ctypes.byref(ka_r), 
+glmlib.elnet_( ctypes.byref(ka_r),
               ctypes.byref(parm_r), 
               ctypes.byref(no_r), 
               ctypes.byref(ni_r),
@@ -158,5 +169,6 @@ glmlib.elnet_(ctypes.byref(ka_r),
               ctypes.byref(nlp_r), 
               ctypes.byref(jerr_r))
 
-print(a0)
-
+print('lmu='); print(lmu_r.value)
+print('a0='); print(a0)
+print('alm='); print(alm)
