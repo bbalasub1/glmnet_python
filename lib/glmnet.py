@@ -85,7 +85,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
     print('WARNING!! check Exclude implementation for type !!!')
     if len(exclude) == 0:
         exclude = sp.unique(exclude)
-        if sp.any(exclude > 0) & (exclude < nvars):
+        if sp.any(exclude > 0) and (exclude < nvars):
             raise ValueError('Error: Some excluded variables are out of range')
         jd = sp.append(len(exclude), exclude)
     else:
@@ -131,7 +131,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
     # 
     isd  = sp.double(options['standardize'])
     intr = sp.double(options['intr'])
-    if (intr == True) & (family == 'cox'):
+    if (intr == True) and (family == 'cox'):
         print('Warning: Cox model has no intercept!')
         
     jsd        = options['standardize_resp']
