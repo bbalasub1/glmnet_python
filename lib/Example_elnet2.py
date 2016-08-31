@@ -25,4 +25,4 @@ y = y.astype(dtype = scipy.float64, order = 'F', copy = True)
 x = x.astype(dtype = scipy.float64, order = 'F', copy = True)
 
 
-glmnet.glmnet(x = x, y = y, alpha = 2.0)
+glmnet.glmnet(x = x, y = y)

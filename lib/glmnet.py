@@ -24,6 +24,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     from glmnetSet import glmnetSet
     from glmnetControl import glmnetControl
     import scipy
+    from elnet import elnet
     
     # ####################################
     # check inputs x, y 
@@ -87,7 +88,7 @@ def glmnet(*, x, y, family='gaussian', **options):
 
     ## 
     parm  = options['alpha']
-    nlam  = scipy.integer(options['nlambda'])
+    nlam  = scipy.int32(options['nlambda'])
     nobs  = x.shape[0]
     nvars = x.shape[1]
     
@@ -119,6 +120,8 @@ def glmnet(*, x, y, family='gaussian', **options):
     # check jd
     exclude = options['exclude']
     print('WARNING!! check Exclude implementation for type !!!')
+    print('TBD!! check scipy int32!!!')
+    print('WARNING!! this is not done yet!!!')
     if len(exclude) == 0:
         exclude = scipy.unique(exclude)
         if scipy.any(exclude > 0) and (exclude < nvars):
@@ -165,8 +168,8 @@ def glmnet(*, x, y, family='gaussian', **options):
             exit_rec = 1
             
     # 
-    isd  = scipy.double(options['standardize'])
-    intr = scipy.double(options['intr'])
+    isd  = scipy.int32(options['standardize'])
+    intr = scipy.int32(options['intr'])
     if (intr == True) and (family == 'cox'):
         print('Warning: Cox model has no intercept!')
         
@@ -186,7 +189,7 @@ def glmnet(*, x, y, family='gaussian', **options):
         if (lambda_min >= 1):
             raise ValueError('ERROR: lambda_min should be less than 1')
         flmin = lambda_min
-        ulam  = 0.0
+        ulam  = scipy.zeros([0.0], dtype = scipy.float64)
     else:
         flmin = 1.0
         if any(lambdau < 0):
