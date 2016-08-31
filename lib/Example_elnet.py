@@ -26,8 +26,9 @@ y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
 x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
 
 # convert x and y to 'F' (fortran) order and scipy float64
-y = y.astype(dtype = scipy.float64, order = 'F', copy = True)
-x = x.astype(dtype = scipy.float64, order = 'F', copy = True)
+y = y.astype(dtype = scipy.float64, order = 'C', copy = True)
+x = x.astype(dtype = scipy.float64, order = 'C', copy = True)
+
 # call elnet directly
 #      subroutine elnet  (ka,parm,no,ni,x,y,w,jd,vp,cl,ne,nx,nlam,flmin,u    787 
 #     *lam,thr,isd,intr,maxit,  lmu,a0,ca,ia,nin,rsq,alm,nlp,jerr)
@@ -89,7 +90,7 @@ flmin = 1.0e-4
 flmin_r = ctypes.c_double(flmin)
 # ulam
 ulam   = scipy.zeros([1], dtype = scipy.float64)
-ulam = ulam.astype(dtype = scipy.float64, order = 'F', copy = True)    
+ulam   = ulam.astype(dtype = scipy.float64, order = 'F', copy = True)    
 ulam_r = ulam.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # thr
 thr = 1.0e-7
@@ -111,23 +112,23 @@ lmu = -1
 lmu_r = ctypes.c_int(lmu)
 # a0
 a0   = scipy.zeros([nlam], dtype = scipy.float64)
-a0 = a0.astype(dtype = scipy.float64, order = 'F', copy = True)    
+a0   = a0.astype(dtype = scipy.float64, order = 'F', copy = True)    
 a0_r = a0.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # ca
 ca   = scipy.zeros([nx, nlam], dtype = scipy.float64)
-ca = ca.astype(dtype = scipy.float64, order = 'F', copy = True)    
+ca   = ca.astype(dtype = scipy.float64, order = 'F', copy = True)    
 ca_r = ca.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # ia
 ia   = -1*scipy.ones([nx], dtype = scipy.int32)
-ia = ia.astype(dtype = scipy.int32, order = 'F', copy = True)    
+ia   = ia.astype(dtype = scipy.int32, order = 'F', copy = True)    
 ia_r = ia.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 # nin
 nin   = -1*scipy.ones([nlam], dtype = scipy.int32)
-nin = nin.astype(dtype = scipy.int32, order = 'F', copy = True)    
+nin   = nin.astype(dtype = scipy.int32, order = 'F', copy = True)    
 nin_r = nin.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
 # rsq
 rsq   = -1*scipy.ones([nlam], dtype = scipy.float64)
-rsq = rsq.astype(dtype = scipy.float64, order = 'F', copy = True)    
+rsq   = rsq.astype(dtype = scipy.float64, order = 'F', copy = True)    
 rsq_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
 # alm
 alm   = -1*scipy.ones([nlam], dtype = scipy.float64)

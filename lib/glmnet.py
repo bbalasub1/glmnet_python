@@ -5,8 +5,10 @@ glmnet:
 Pre:
     x <scipy array of nobs x nvars, required>       : regression x variable 
     y <scipy array of nobs x 1 or more, required>   : regression y variable 
-    family <string, optional>                       : family to fit (gaussian, binomail, poisson, multinomial, cox, mgaussian)
-    options <dict, optional>                        : fit parameters
+    family <string, optional>                       : family to fit 
+       (one of gaussian, binomail, poisson, multinomial, cox, mgaussian)
+    options <dict, optional>                        : fit parameters 
+       (see comments that follow for a list of parameters)
     
 Post: 
     
@@ -14,19 +16,48 @@ Post:
 @author: bbalasub
 """
 
-def glmnet(x, y, family = 'gaussian', options = None):
-    
-    # import methods for later
+# define all variables to be keyword-only arguments
+# options is a dictionary of optional parameters    
+def glmnet(*, x, y, family='gaussian', **options):
+
+    # import packages/methods
     from glmnetSet import glmnetSet
     from glmnetControl import glmnetControl
-    import scipy as sp
+    import scipy
     
-    print("Starting glmnet...")
+    # ####################################
+    # check inputs x, y 
+    # ####################################
+    #
+    # check to make sure x and y are scipy, float64 arrays
+    # fortran order is not checked as isfortran seems to not work 
+    # properly for y of shape (no,). in addition, isfortran is marked to be 
+    #  deprecated in numpy
+    # this is a strict check : the user is expected to know what they are 
+    #  passing into glmnet
+    #  -- we don't attempt to convert other inputs types into scipy float64. 
+    if not( isinstance(x, scipy.ndarray) and x.dtype == 'float64'):
+        raise ValueError('x input must be a scipy float64 ndarray')
+    if not( isinstance(y, scipy.ndarray) and y.dtype == 'float64'):
+        raise ValueError('y input must be a scipy float64 ndarray')
+
+    # TODO: we make sure that fortran ordered arrays are passed into GLMnet.f
+    # not sure the copy=True is necessary. we may be unnecessarily copying 
+    # large arrays. needs investigation
+    # however, forcing array into fortran order may be necessary -- if the
+    # underlying fortran code contains smart cache usage tricks. Not sure about
+    # this at this point
+    y = y.astype(dtype = scipy.float64, order = 'F', copy = True)
+    x = x.astype(dtype = scipy.float64, order = 'F', copy = True)
+
+    # ####################################
+    # create options dictionary
+    # ####################################
+    #
     ## set input default options
     # set options to default if nothing is passed in    
     if options is None:
         options = glmnetSet();
-    print("glmnetSet success...")
     
     ## match the family, abbreviation allowed
     fambase = ['gaussian','binomial','poisson','multinomial','cox','mgaussian'];
@@ -42,28 +73,33 @@ def glmnet(x, y, family = 'gaussian', options = None):
     
     ## prepare options
     options = glmnetSet(options)
+    print(options)
     
     ## error check options parameters
-    if options['alpha'] > 1.0 :
+    alpha = scipy.double(options['alpha'])
+    if alpha > 1.0 :
         print('Warning: alpha > 1.0; setting to 1.0')
-        options['alpha'] = 1.0
+        options['alpha'] = scipy.double(1.0)
  
-    if options['alpha'] < 0.0 :
+    if alpha < 0.0 :
         print('Warning: alpha < 0.0; setting to 0.0')
-        options['alpha'] = 0.0
+        options['alpha'] = scipy.double(0.0)
 
     ## 
     parm  = options['alpha']
-    nlam  = options['nlambda']
+    nlam  = scipy.integer(options['nlambda'])
     nobs  = x.shape[0]
     nvars = x.shape[1]
     
     # check weights length
     weights = options['weights']
     if len(weights) == 0:
-        weights = sp.ones([nobs, 1], dtype = sp.double)
+        weights = scipy.ones([nobs, 1], dtype = scipy.double)
     elif len(weights) != nobs:
         raise ValueError('Error: Number of elements in ''weights'' not equal to number of rows of ''x''')
+    # check if weights are scipy nd array
+    if not( isinstance(weights, scipy.ndarray) and weights.dtype == 'float64'):
+        raise ValueError('weights input must be a scipy float64 ndarray')
     
     # check y length
     nrowy = y.shape[0]
@@ -84,17 +120,17 @@ def glmnet(x, y, family = 'gaussian', options = None):
     exclude = options['exclude']
     print('WARNING!! check Exclude implementation for type !!!')
     if len(exclude) == 0:
-        exclude = sp.unique(exclude)
-        if sp.any(exclude > 0) and (exclude < nvars):
+        exclude = scipy.unique(exclude)
+        if scipy.any(exclude > 0) and (exclude < nvars):
             raise ValueError('Error: Some excluded variables are out of range')
-        jd = sp.append(len(exclude), exclude)
+        jd = scipy.append(len(exclude), exclude)
     else:
         jd = 0
         
     # check vp    
     vp = options['penalty_factor']
     if len(vp) == 0:
-        vp = sp.ones([1, nvars])
+        vp = scipy.ones([1, nvars])
     
     # inparms
     inparms = glmnetControl()
@@ -107,12 +143,12 @@ def glmnet(x, y, family = 'gaussian', options = None):
     if any(cl[1,:] < 0):
         raise ValueError('Error: The lower bound on cl must be non-negative')
         
-    cl[0, cl[0, :] == sp.double('-inf')] = -1.0*inparms['big']    
-    cl[1, cl[1, :] == sp.double('inf')]  =  1.0*inparms['big']    
+    cl[0, cl[0, :] == scipy.double('-inf')] = -1.0*inparms['big']    
+    cl[1, cl[1, :] == scipy.double('inf')]  =  1.0*inparms['big']    
     
     if cl.shape[1] < nvars:
         if cl.shape[1] == 1:
-            cl = cl*sp.ones([1, nvars])
+            cl = cl*scipy.ones([1, nvars])
         else:
             raise ValueError('ERROR: Require length 1 or nvars lower and upper limits')
     else:
@@ -120,7 +156,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
         
         
     exit_rec = 0
-    if sp.any(cl.reshape([1,cl.size]) == 0):
+    if scipy.any(cl.reshape([1,cl.size]) == 0):
         fdev = inparms['fdev']
         if fdev != 0:
             optset = dict()
@@ -129,8 +165,8 @@ def glmnet(x, y, family = 'gaussian', options = None):
             exit_rec = 1
             
     # 
-    isd  = sp.double(options['standardize'])
-    intr = sp.double(options['intr'])
+    isd  = scipy.double(options['standardize'])
+    intr = scipy.double(options['intr'])
     if (intr == True) and (family == 'cox'):
         print('Warning: Cox model has no intercept!')
         
@@ -156,7 +192,7 @@ def glmnet(x, y, family = 'gaussian', options = None):
         if any(lambdau < 0):
             raise ValueError('ERROR: lambdas should be non-negative')
         
-        ulam = -sp.sort(-lambdau)    # reverse sort
+        ulam = -scipy.sort(-lambdau)    # reverse sort
         nlam = lambdau.size
     #
     maxit = options['maxit']
@@ -190,21 +226,21 @@ def glmnet(x, y, family = 'gaussian', options = None):
     offset = options['offset']
     # sparse    
     is_sparse = False
-    if sp.sparse.issparse(x):
+    if scipy.sparse.issparse(x):
         is_sparse = True
-        idx = sp.where(x != 0)
+        idx = scipy.where(x != 0)
         x = x[idx]
         irs = idx[0]
         jcs = idx[1]
         # calculate pcs
-        h = sp.histogram(jcs, sp.arange(1,nvars + 1))
+        h = scipy.histogram(jcs, scipy.arange(1,nvars + 1))
         h = h[0]
-        pcs = sp.insert(sp.cumsum(h), 0, 0)         
+        pcs = scipy.insert(scipy.cumsum(h), 0, 0)         
     else:
-        irs = sp.empty([0])
-        pcs = sp.empty([0])
+        irs = scipy.empty([0])
+        pcs = scipy.empty([0])
         
-    if sp.sparse.issparse(y):
+    if scipy.sparse.issparse(y):
         y = y.todense()
     
     ## finally call the appropriate fit code

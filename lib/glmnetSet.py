@@ -22,25 +22,25 @@ Post:
 """
 
 def glmnetSet(opts = None):
-    import scipy as sp
+    import scipy
     
     # default options
     options = {
-        "weights"             : sp.empty([0]),
-        "offset"              : sp.empty([0]),
-        "alpha"               : 1.0,
-        "nlambda"             : 100,
-        "lambda_min"          : sp.empty([0]),
-        "lambdau"             : sp.empty([0]),
+        "weights"             : scipy.empty([0]),
+        "offset"              : scipy.empty([0]),
+        "alpha"               : scipy.double(1.0),
+        "nlambda"             : scipy.integer(100),
+        "lambda_min"          : scipy.empty([0]),
+        "lambdau"             : scipy.empty([0]),
         "standardize"         : True,
         "intr"                : True,
-        "thresh"              : 1e-7,
-        "dfmax"               : sp.empty([0]),
-        "pmax"                : sp.empty([0]),
-        "exclude"             : sp.empty([0]),
-        "penalty_factor"      : sp.empty([0]),
-        "cl"                  : sp.array([[sp.double(-sp.inf)], [sp.double(sp.inf)]]), 
-        "maxit"               : 1e5,
+        "thresh"              : scipy.double(1e-7),
+        "dfmax"               : scipy.empty([0]),
+        "pmax"                : scipy.empty([0]),
+        "exclude"             : scipy.empty([0]),
+        "penalty_factor"      : scipy.empty([0]),
+        "cl"                  : scipy.array([[scipy.double(-scipy.inf)], [scipy.double(scipy.inf)]]), 
+        "maxit"               : scipy.double(1e5),
         "gtype"               : [],
         "ltype"               : 'Newton',
         "standardize_resp"    : False,
