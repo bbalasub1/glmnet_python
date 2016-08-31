@@ -24,8 +24,6 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     nulldev = (y - ybar)**2 * weights
     # ka
     lst = ['covariance', 'naive']
-    print(gtype)
-    print(type(gtype))
     ka = [i for i in range(len(lst)) if lst[i] == gtype]
     if len(ka) == 0:
         raise ValueError('unrecognized type for ka');
@@ -40,6 +38,17 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
 
     # now convert types and allocate memort before calling 
     # glmnet fortran library
+    ######################################
+    # --------- INPUTS -------------------
+    ######################################
+    x = x.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    y = y.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    weights = weights.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    jd = jd.astype(dtype = scipy.int32, order = 'F', copy = True)        
+    vp = vp.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    cl = cl.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    ulam   = ulam.astype(dtype = scipy.float64, order = 'F', copy = True)    
+
     ######################################
     # --------- OUTPUTS -------------------
     ######################################
