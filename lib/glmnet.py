@@ -42,15 +42,6 @@ def glmnet(*, x, y, family='gaussian', **options):
     if not( isinstance(y, scipy.ndarray) and y.dtype == 'float64'):
         raise ValueError('y input must be a scipy float64 ndarray')
 
-    # TODO: we make sure that fortran ordered arrays are passed into GLMnet.f
-    # not sure the copy=True is necessary. we may be unnecessarily copying 
-    # large arrays. needs investigation
-    # however, forcing array into fortran order may be necessary -- if the
-    # underlying fortran code contains smart cache usage tricks. Not sure about
-    # this at this point
-    y = y.astype(dtype = scipy.float64, order = 'F', copy = True)
-    x = x.astype(dtype = scipy.float64, order = 'F', copy = True)
-
     # ####################################
     # create options dictionary
     # ####################################
@@ -227,7 +218,7 @@ def glmnet(*, x, y, family='gaussian', **options):
             kopt = 2
     #
     offset = options['offset']
-    # sparse    
+    # sparse (if is_sparse, convert to compressed sparse row format)   
     is_sparse = False
     if scipy.sparse.issparse(x):
         is_sparse = True
@@ -268,7 +259,11 @@ def glmnet(*, x, y, family='gaussian', **options):
     else:
         raise ValueError('calling a family of fits that has not been implemented yet')
             
-    # post process, package and return data
+    if exit_rec == 1:
+        optset['fdev'] = fdev
+        #TODO: Call glmnetControl(optset) to set persistent parameters
+        
+    # return fit
     return fit
 
 #----------------------------------------- 

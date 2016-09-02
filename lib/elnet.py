@@ -47,13 +47,14 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     # --------- PROCESS INPUTS -----------
     ######################################
     # force inputs into column order and scipy float64
-    x = x.astype(dtype = scipy.float64, order = 'F', copy = True)    
-    y = y.astype(dtype = scipy.float64, order = 'F', copy = True)    
-    weights = weights.astype(dtype = scipy.float64, order = 'F', copy = True)    
-    jd = jd.astype(dtype = scipy.int32, order = 'F', copy = True)        
-    vp = vp.astype(dtype = scipy.float64, order = 'F', copy = True)    
-    cl = cl.astype(dtype = scipy.float64, order = 'F', copy = True)    
-    ulam   = ulam.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    copyFlag = False
+    x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
+    y = y.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
+    weights = weights.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
+    jd = jd.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)        
+    vp = vp.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
+    cl = cl.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
+    ulam   = ulam.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
 
     ######################################
     # --------- ALLOCATE OUTPUTS ---------
@@ -63,27 +64,27 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     lmu_r = ctypes.c_int(lmu)
     # a0
     a0   = scipy.zeros([nlam], dtype = scipy.float64)
-    a0   = a0.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    a0   = a0.astype(dtype = scipy.float64, order = 'F', copy = False)    
     a0_r = a0.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # ca
     ca   = scipy.zeros([nx, nlam], dtype = scipy.float64)
-    ca   = ca.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    ca   = ca.astype(dtype = scipy.float64, order = 'F', copy = False)    
     ca_r = ca.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # ia
     ia   = -1*scipy.ones([nx], dtype = scipy.int32)
-    ia   = ia.astype(dtype = scipy.int32, order = 'F', copy = True)    
+    ia   = ia.astype(dtype = scipy.int32, order = 'F', copy = False)    
     ia_r = ia.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
     # nin
     nin   = -1*scipy.ones([nlam], dtype = scipy.int32)
-    nin   = nin.astype(dtype = scipy.int32, order = 'F', copy = True)    
+    nin   = nin.astype(dtype = scipy.int32, order = 'F', copy = False)    
     nin_r = nin.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
     # rsq
     rsq   = -1*scipy.ones([nlam], dtype = scipy.float64)
-    rsq   = rsq.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    rsq   = rsq.astype(dtype = scipy.float64, order = 'F', copy = False)    
     rsq_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # alm
     alm   = -1*scipy.ones([nlam], dtype = scipy.float64)
-    alm   = alm.astype(dtype = scipy.float64, order = 'F', copy = True)    
+    alm   = alm.astype(dtype = scipy.float64, order = 'F', copy = False)    
     alm_r = alm.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # nlp
     nlp = -1
@@ -179,8 +180,8 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     fit['nulldev'] = nulldev
     fit['df']= df
     fit['lambdau'] = alm
-    fit['npasses'] = nlp
-    fit['jerr'] = jerr
+    fit['npasses'] = nlp_r.value
+    fit['jerr'] = jerr_r.value
     fit['dim'] = scipy.array([nvars, lmu], dtype = scipy.integer)
     fit['offset'] = is_offset
     fit['class'] = 'elnet'    

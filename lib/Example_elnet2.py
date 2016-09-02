@@ -20,9 +20,4 @@ baseDataDir= '/home/bbalasub/Desktop/Summer2016/glmnet/glmnet_R/'
 y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
 x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
 
-# convert x and y to 'F' (fortran) order and scipy float64
-#y = y.astype(dtype = scipy.float64, order = 'F', copy = True)
-#x = x.astype(dtype = scipy.float64, order = 'F', copy = True)
-
-
 fit = glmnet.glmnet(x = x, y = y)
