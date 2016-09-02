@@ -5,6 +5,8 @@ Created on Tue Aug 30 21:40:50 2016
 @author: bbalasub
 """
 
+# is offset implemented correctly?
+# 
 def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty, 
           nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, thresh, isd, intr, 
           maxit, family):
@@ -36,11 +38,15 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     else:
         is_offset = True
 
+    # remove offset from y
+    y = y - offset
+    
     # now convert types and allocate memort before calling 
     # glmnet fortran library
     ######################################
-    # --------- INPUTS -------------------
+    # --------- PROCESS INPUTS -----------
     ######################################
+    # force inputs into column order and scipy float64
     x = x.astype(dtype = scipy.float64, order = 'F', copy = True)    
     y = y.astype(dtype = scipy.float64, order = 'F', copy = True)    
     weights = weights.astype(dtype = scipy.float64, order = 'F', copy = True)    
@@ -50,7 +56,7 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     ulam   = ulam.astype(dtype = scipy.float64, order = 'F', copy = True)    
 
     ######################################
-    # --------- OUTPUTS -------------------
+    # --------- ALLOCATE OUTPUTS ---------
     ######################################
     # lmu
     lmu = -1
@@ -126,13 +132,63 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
               ctypes.byref(jerr_r)
               )
    
-    print('lmu='); print(lmu_r.value)
-    print('a0='); print(a0)
-    print('alm='); print(alm)
-    print('len alm = ', len(alm))
-           
-    # return fit as a dict          
-    fit = dict()          
+    #  ###################################
+    #   post process results
+    #  ###################################  
+     
+    # check for error
+    if (jerr_r.value > 0):
+        raise ValueError("Fatal glmnet error in library call : error code = ", jerr_r.value)
+    elif (jerr_r.value < 0):
+        print("Warning: Non-fatal error in glmnet library call: error code = ", jerr_r.value)
+        print("Check results for accuracy. Partial or no results returned.")
+    
+    # clip output to correct sizes
+    lmu = lmu_r.value
+    a0 = a0[0:lmu]
+    ca = ca[0:nx, 0:lmu]    
+    ia = ia[0:nx]
+    nin = nin[0:lmu]
+    rsq = rsq[0:lmu]
+    alm = alm[0:lmu]
+    
+    # ninmax
+    ninmax = max(nin)
+    # fix first value of alm (from inf to correct value)
+    if lempty:
+        t1 = scipy.log(alm[1])
+        t2 = scipy.log(alm[2])
+        alm[0] = scipy.exp(2*t1 - t2)        
+    # create return fit dictionary
+    if ninmax > 0:
+        ca = ca[0:ninmax, :]
+        df = scipy.sum(scipy.absolute(ca) > 0, axis=0)
+        ja = ia[0:ninmax] - 1    # ia is 1-indexed in fortran
+        oja = scipy.argsort(ja)
+        ja1 = ja[oja]
+        beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
+        beta[ja1, :] = ca[oja, :]
+    else:
+        beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
+        df = scipy.zeros([1, lmu], dtype = scipy.float64)
+    
+    fit = dict()
+    fit['a0'] = a0
+    fit['beta'] = beta
+    fit['dev'] = rsq
+    fit['nulldev'] = nulldev
+    fit['df']= df
+    fit['lambdau'] = alm
+    fit['npasses'] = nlp
+    fit['jerr'] = jerr
+    fit['dim'] = scipy.array([nvars, lmu], dtype = scipy.integer)
+    fit['offset'] = is_offset
+    fit['class'] = 'elnet'    
+ 
+    #  ###################################
+    #   return to caller
+    #  ###################################  
+
     return fit
 #----------------------------------------- 
 # end of method elmnet

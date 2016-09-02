@@ -269,7 +269,7 @@ def glmnet(*, x, y, family='gaussian', **options):
         raise ValueError('calling a family of fits that has not been implemented yet')
             
     # post process, package and return data
-    return -1
+    return fit
 
 #----------------------------------------- 
 # end of method glmnet   
