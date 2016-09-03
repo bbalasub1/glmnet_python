@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug 30 21:40:50 2016
 
 @author: bbalasub
 """
 
-def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty, 
-          nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, thresh, isd, intr, 
-          maxit, family):
+def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm, 
+          nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
+          thresh, isd, intr, maxit, kopt, family):
 
     # import packages/methods
     import scipy
@@ -18,6 +17,71 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     # unless a new python console is started
     # the shared library will persist in memory
     glmlib = ctypes.cdll.LoadLibrary('./GLMnet.so') 
+    
+    # 
+    noo = y.shape[0]
+    nc = y.shape[1]
+    if not (noo == nobs):
+        raise ValueError('x and y have different number of rows in call to glmnet')
+    if nc == 1:
+        classes, sy = scipy.unique(y, return_inverse = True)
+        nc = len(classes)
+        indexes = scipy.eye(nc, nc)
+        y = indexes[sy, :]
+    else:
+        classes = scipy.arange(nc) + 1 # 1:nc
+    #
+    if family == 'binomial':
+        if nc > 2:
+            raise ValueError('More than two classes in y. use multinomial family instead')
+        else:
+            nc = 1
+            y = y[:, [2, 1]]
+    #
+    if (len(weights) != 0): 
+        t = weights > 0
+        if scipy.any(t):
+            y = y[t, :]
+            x = x[t, :]
+            weights = weights[t]
+            nobs = scipy.sum(t)
+        else:
+            t = scipy.empty([1], type = scipy.integer)
+        #
+        if len(y.shape) == 1:
+            mv = len(y)
+            ny = 1
+        else:    
+            mv, ny = y.shape 
+            
+        y = y*scipy.tile(weights, 1, ny)
+    
+    #
+    if len(offset) == 0:
+        offset = y*0
+        is_offset = False
+    else:
+        if len(t) != 0:
+            offset = offset[t, :]
+        do = offset.shape
+        if do[0] != nobs:
+            raise ValueError('offset should have the same number of values as observations in binominal/multinomial call to glmnet')
+        if nc == 1:
+            if do[1] == 1:
+                offset = scipy.column_stack((offset, -offset), 1)
+            if do[1] > 2:
+                raise ValueError('offset should have 1 or 2 columns in binomial call to glmnet')
+        if (family == 'multinomial') and (do[1] != nc):
+            raise ValueError('offset should have same shape as y in multinomial call to glmnet')
+        if_offset = True
+
+    #
+    if is_sparse:
+        pass
+    else:
+        pass
+    
+            
     # pre-process data     
     ybar = scipy.dot(y, weights)
     ybar = ybar/sum(weights)
@@ -39,7 +103,7 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     # remove offset from y
     y = y - offset
     
-    # now convert types and allocate memory before calling 
+    # now convert types and allocate memort before calling 
     # glmnet fortran library
     ######################################
     # --------- PROCESS INPUTS -----------

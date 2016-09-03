@@ -25,6 +25,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     from glmnetControl import glmnetControl
     import scipy
     from elnet import elnet
+    from lognet import lognet
     
     # ####################################
     # check inputs x, y 
@@ -60,6 +61,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     
     ## prepare options
     options = glmnetSet(options)
+    print('glmnet.py options:')
     print(options)
     
     ## error check options parameters
