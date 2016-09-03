@@ -132,7 +132,7 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
               ctypes.byref(jerr_r)
               )
     else:
-        # call fortran routines
+        # call fortran elnet routine
         glmlib.elnet_( 
               ctypes.byref(ctypes.c_int(ka)),
               ctypes.byref(ctypes.c_double(parm)), 
