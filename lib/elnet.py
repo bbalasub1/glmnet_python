@@ -5,8 +5,6 @@ Created on Tue Aug 30 21:40:50 2016
 @author: bbalasub
 """
 
-# is offset implemented correctly?
-# 
 def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty, 
           nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, thresh, isd, intr, 
           maxit, family):
@@ -46,9 +44,11 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     ######################################
     # --------- PROCESS INPUTS -----------
     ######################################
-    # force inputs into column order and scipy float64
+    # force inputs into fortran order and scipy float64
     copyFlag = False
-    x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
+    x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag) 
+    irs = irs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)
+    pcs = pcs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)    
     y = y.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     weights = weights.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     jd = jd.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)        
@@ -98,8 +98,39 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     #   main glmnet fortran caller
     #  ###################################  
     if is_sparse:
-        # call glmnetProcessor
-        print('is_sparse not implemented')
+        # sparse elnet
+              glmlib.spelnet_( 
+              ctypes.byref(ctypes.c_int(ka)),
+              ctypes.byref(ctypes.c_double(parm)), 
+              ctypes.byref(ctypes.c_int(len(weights))), 
+              ctypes.byref(ctypes.c_int(nvars)),
+              x.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+              irs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
+              pcs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
+              y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+              weights.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+              jd.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
+              vp.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+              cl.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+              ctypes.byref(ctypes.c_int(ne)), 
+              ctypes.byref(ctypes.c_int(nx)), 
+              ctypes.byref(ctypes.c_int(nlam)), 
+              ctypes.byref(ctypes.c_double(flmin)), 
+              ulam.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+              ctypes.byref(ctypes.c_double(thresh)), 
+              ctypes.byref(ctypes.c_int(isd)), 
+              ctypes.byref(ctypes.c_int(intr)), 
+              ctypes.byref(ctypes.c_int(maxit)), 
+              ctypes.byref(lmu_r),
+              a0_r, 
+              ca_r, 
+              ia_r, 
+              nin_r, 
+              rsq_r, 
+              alm_r, 
+              ctypes.byref(nlp_r), 
+              ctypes.byref(jerr_r)
+              )
     else:
         # call fortran routines
         glmlib.elnet_( 

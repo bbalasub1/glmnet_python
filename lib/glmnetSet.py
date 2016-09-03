@@ -37,7 +37,7 @@ def glmnetSet(opts = None):
         "thresh"              : scipy.double(1e-7),
         "dfmax"               : scipy.empty([0]),
         "pmax"                : scipy.empty([0]),
-        "exclude"             : scipy.empty([0]),
+        "exclude"             : scipy.empty([0], dtype = scipy.integer),
         "penalty_factor"      : scipy.empty([0]),
         "cl"                  : scipy.array([[scipy.double(-scipy.inf)], [scipy.double(scipy.inf)]]), 
         "maxit"               : scipy.int32(1e5),

@@ -31,12 +31,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     # ####################################
     #
     # check to make sure x and y are scipy, float64 arrays
-    # fortran order is not checked as isfortran seems to not work 
-    # properly for y of shape (no,). in addition, isfortran is marked to be 
-    #  deprecated in numpy
-    # this is a strict check : the user is expected to know what they are 
-    #  passing into glmnet
-    #  -- we don't attempt to convert other inputs types into scipy float64. 
+    # fortran order is not checked as we force a convert later 
     if not( isinstance(x, scipy.ndarray) and x.dtype == 'float64'):
         raise ValueError('x input must be a scipy float64 ndarray')
     if not( isinstance(y, scipy.ndarray) and y.dtype == 'float64'):
@@ -110,17 +105,16 @@ def glmnet(*, x, y, family='gaussian', **options):
 
     # check jd
     exclude = options['exclude']
-    print('WARNING!! check Exclude implementation for type !!!')
-    print('TBD!! check scipy int32!!!')
-    print('WARNING!! this is not done yet!!!')
-    if len(exclude) == 0:
+    # TBD: test this
+    if not (len(exclude) == 0):
         exclude = scipy.unique(exclude)
-        if scipy.any(exclude > 0) and (exclude < nvars):
+        if scipy.any(exclude <= 0) or (exclude > nvars):
             raise ValueError('Error: Some excluded variables are out of range')
-        jd = scipy.append(len(exclude), exclude)
+        else:    
+            jd = scipy.append(len(exclude), exclude)
     else:
-        jd = 0
-        
+        jd = scipy.zeros([1,], dtype = scipy.integer)
+
     # check vp    
     vp = options['penalty_factor']
     if len(vp) == 0:
@@ -222,14 +216,10 @@ def glmnet(*, x, y, family='gaussian', **options):
     is_sparse = False
     if scipy.sparse.issparse(x):
         is_sparse = True
-        idx = scipy.where(x != 0)
-        x = x[idx]
-        irs = idx[0]
-        jcs = idx[1]
-        # calculate pcs
-        h = scipy.histogram(jcs, scipy.arange(1,nvars + 1))
-        h = h[0]
-        pcs = scipy.insert(scipy.cumsum(h), 0, 0)         
+        tx = scipy.sparse.csc_matrix(x, dtype = scipy.float64)
+        x = tx.data
+        irs = tx.indices
+        pcs = tx.ind_ptr
     else:
         irs = scipy.empty([0])
         pcs = scipy.empty([0])
@@ -240,12 +230,14 @@ def glmnet(*, x, y, family='gaussian', **options):
     ## finally call the appropriate fit code
     if family == 'gaussian':
         # call elnet
-        fit = elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, thresh, isd, intr, maxit, family)
-    elif family == 'binomial':
+        fit = elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, 
+                    lempty, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
+                    thresh, isd, intr, maxit, family)
+    elif (family == 'binomial') or (family == 'multinomial'):
         # call lognet
-        pass
-    elif family == 'multinomial':
-        # call lognet
+        fit = lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
+                     nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam,
+                     thresh, isd, intr, maxit, kopt, family);
         pass
     elif family == 'cox':
         # call coxnet
