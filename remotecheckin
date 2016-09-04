@@ -3,7 +3,7 @@
 git add .
 git status
 now=`date`
-msgStr="version as of $now"
+msgStr="version as of $now"+"$1"
 git commit -m "$msgStr"
 #git push origin master
 git push https://bbalasub1@github.com/bbalasub1/glmnet_python.git master
