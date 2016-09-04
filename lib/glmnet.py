@@ -176,7 +176,7 @@ def glmnet(*, x, y, family='gaussian', **options):
         if (lambda_min >= 1):
             raise ValueError('ERROR: lambda_min should be less than 1')
         flmin = lambda_min
-        ulam  = scipy.zeros([0.0], dtype = scipy.float64)
+        ulam  = scipy.zeros([1], dtype = scipy.float64)
     else:
         flmin = 1.0
         if any(lambdau < 0):
@@ -201,7 +201,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     if len(indl) != 1:
         raise ValueError('ERROR: ltype should be one of ''Newton'' or ''modified.Newton''')
     else:
-        kopt = indl
+        kopt = indl[0]
     
     if family == 'multinomial':
         mtype = options['mtype']

@@ -12,6 +12,7 @@ Created on Tue Aug 30 20:27:07 2016
 @author: bbalasub
 """
 import sys
+sys.path.append('../test')
 sys.path.append('../lib')
 
 import scipy
@@ -21,16 +22,21 @@ import importlib
 
 importlib.reload(glmnet)
 
-glmlib = ctypes.cdll.LoadLibrary('./GLMnet.so') # this is a bit of a pain. 
-                                                # unless a new python console is started
-
+# parameters
 baseDataDir= '/home/bbalasub/Desktop/Summer2016/glmnet/github/glmnet_python/data/'
-##  elnet caller 
-y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
-x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
+testType = 'binomial'
 
-fit = glmnet.glmnet(x = x, y = y, family = 'gaussian')
-print('fit:\n', fit)
+# call test functions
+if testType == 'gaussian':
+    ##  elnet caller 
+    y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
+    x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
+    fit = glmnet.glmnet(x = x, y = y, family = 'gaussian')
+    print('fit:\n', fit)
 
-# lognet caller
-y = scipy.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = scipy.float64)
+if testType == 'binomial':
+    # lognet caller
+    x = scipy.loadtxt(baseDataDir + 'BinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
+    y = scipy.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = scipy.float64)
+    fit = glmnet.glmnet(x = x, y = y, family = 'binomial')
+    print('fit:\n', fit)
