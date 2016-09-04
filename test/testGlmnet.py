@@ -23,7 +23,7 @@ importlib.reload(glmnet)
 
 # parameters
 baseDataDir= '/home/bbalasub/Desktop/Summer2016/glmnet/github/glmnet_python/data/'
-testType = 'mgaussian'
+testType = 'binomial'
 
 # call test functions
 if testType == 'gaussian':

@@ -28,6 +28,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     from lognet import lognet
     from coxnet import coxnet
     from mrelnet import mrelnet
+    from fishnet import fishnet
     
     # ####################################
     # check inputs x, y 
@@ -254,7 +255,9 @@ def glmnet(*, x, y, family='gaussian', **options):
                       thresh, isd, jsd, intr, maxit, family)
     elif family == 'poisson':
         # call fishnet
-        pass
+        fit = fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
+                      nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam,
+                      thresh, isd, intr, maxit, family); 
     else:
         raise ValueError('calling a family of fits that has not been implemented yet')
             

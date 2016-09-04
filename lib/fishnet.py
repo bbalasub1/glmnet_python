@@ -4,9 +4,9 @@
 @author: bbalasub
 """
 
-def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm, 
+def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm, 
           nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
-          thresh, isd, intr, maxit, kopt, family):
+          thresh, isd, intr, maxit, family):
 
     # import packages/methods
     import scipy
@@ -15,67 +15,13 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # load shared fortran library
     glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
     
-    # 
-    noo = y.shape[0]
-    if len(y.shape) > 1:
-        nc = y.shape[1]
-    else:
-        nc = 1
-        
-    if (noo != nobs):
-        raise ValueError('x and y have different number of rows in call to glmnet')
+    if scipy.any( y < 0):
+        raise ValueError('negative responses not permitted for Poisson family')
     
-    if nc == 1:
-        classes, sy = scipy.unique(y, return_inverse = True)
-        nc = len(classes)
-        indexes = scipy.eye(nc, nc)
-        y = indexes[sy, :]
-    else:
-        classes = scipy.arange(nc) + 1 # 1:nc
-    #
-    if family == 'binomial':
-        if nc > 2:
-            raise ValueError('More than two classes in y. use multinomial family instead')
-        else:
-            nc = 1
-            y = y[:, [1, 0]]
-    #
-    if (len(weights) != 0): 
-        t = weights > 0
-        if scipy.any(t):
-            t = scipy.reshape(t, (len(y), ))
-            y = y[t, :]
-            x = x[t, :]
-            weights = weights[t]
-            nobs = scipy.sum(t)
-        else:
-            t = scipy.empty([1], type = scipy.integer)
-        #
-        if len(y.shape) == 1:
-            mv = len(y)
-            ny = 1
-        else:    
-            mv, ny = y.shape 
-            
-        y = y*scipy.tile(weights, (1, ny))
-    
-    #
     if len(offset) == 0:
         offset = y*0
         is_offset = False
     else:
-        if len(t) != 0:
-            offset = offset[t, :]
-        do = offset.shape
-        if do[0] != nobs:
-            raise ValueError('offset should have the same number of values as observations in binominal/multinomial call to glmnet')
-        if nc == 1:
-            if do[1] == 1:
-                offset = scipy.column_stack((offset, -offset), 1)
-            if do[1] > 2:
-                raise ValueError('offset should have 1 or 2 columns in binomial call to glmnet')
-        if (family == 'multinomial') and (do[1] != nc):
-            raise ValueError('offset should have same shape as y in multinomial call to glmnet')
         is_offset = True
   
     # now convert types and allocate memort before calling 
@@ -141,16 +87,16 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     #  ###################################  
     if is_sparse:
         # sparse lognet
-        glmlib.slognet_( 
+        glmlib.spfishnet_( 
               ctypes.byref(ctypes.c_double(parm)), 
               ctypes.byref(ctypes.c_int(nobs)),
               ctypes.byref(ctypes.c_int(nvars)),
-              ctypes.byref(ctypes.c_int(nc)),
-              x.ctypes.data_as(ctypes.POINTER(ctypes.c_double)),
+              x.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               irs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               pcs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)),  
               y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               offset.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+              weights.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               jd.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               vp.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               cl.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
@@ -163,7 +109,6 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
               ctypes.byref(ctypes.c_int(isd)), 
               ctypes.byref(ctypes.c_int(intr)), 
               ctypes.byref(ctypes.c_int(maxit)), 
-              ctypes.byref(ctypes.c_int(kopt)), 
               ctypes.byref(lmu_r),
               a0_r, 
               ca_r, 
@@ -176,15 +121,14 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
               ctypes.byref(jerr_r)
               )
     else:
-        # call fortran lognet routine
-        glmlib.lognet_( 
+        glmlib.fishnet_( 
               ctypes.byref(ctypes.c_double(parm)), 
               ctypes.byref(ctypes.c_int(nobs)),
               ctypes.byref(ctypes.c_int(nvars)),
-              ctypes.byref(ctypes.c_int(nc)),
               x.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               offset.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+              weights.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               jd.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               vp.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               cl.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
@@ -197,7 +141,6 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
               ctypes.byref(ctypes.c_int(isd)), 
               ctypes.byref(ctypes.c_int(intr)), 
               ctypes.byref(ctypes.c_int(maxit)), 
-              ctypes.byref(ctypes.c_int(kopt)), 
               ctypes.byref(lmu_r),
               a0_r, 
               ca_r, 
@@ -238,82 +181,31 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         t2 = scipy.log(alm[2])
         alm[0] = scipy.exp(2*t1 - t2)        
     # create return fit dictionary
-    if family == 'multinomial':
-        a0 = a0 - scipy.tile(scipy.mean(a0), (nc, 1))
-        dfmat = a0.copy()
-        dd = scipy.array([nvars, lmu], dtype = scipy.integer)
-        beta_list = list()
-        if ninmax > 0:
-            # TODO: is the reshape here done right?
-            ca = scipy.reshape(ca, (nx, nc, lmu))
-            ca = ca[0:ninmax, :, :]
-            ja = ia[0:ninmax] - 1    # ia is 1-indexed in fortran
-            oja = scipy.argsort(ja)
-            ja1 = ja[oja]
-            df = scipy.any(scipy.absolute(ca) > 0, axis=1)
-            df = scipy.sum(df)            
-            df = scipy.reshape(df, (1, df.size))
-            for k in range(0, nc):
-                ca1 = scipy.reshape(ca[:,k,:], (ninmax, lmu))
-                cak = ca1[oja,:]
-                dfmat[k, :] = scipy.sum(scipy.absolute(cak) > 0, axis = 0)
-            beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
-            beta[ja1, :] = cak
-            beta_list.append(beta)
-        else:
-            for k in range(0, nc):
-                dfmat[k, :] = scipy.zeros([1, lmu], dtype = scipy.float64)
-                beta_list.append(scipy.zeros([nvars, lmu], dtype = scipy.float64))
-            #
-            df = scipy.zeros([1, lmu], dtype = scipy.float64)
-        #
-        if kopt == 2:
-            grouped = True
-        else:
-            grouped = False
-        #        
-        fit = dict()
-        fit['a0'] = a0
-        fit['label'] = classes
-        fit['beta'] = beta_list
-        fit['dev'] = dev
-        fit['nulldev'] = dev0
-        fit['dfmat']= dfmat
-        fit['df'] = df
-        fit['lambdau'] = alm
-        fit['npasses'] = nlp_r.value
-        fit['jerr'] = jerr_r.value
-        fit['dim'] = dd
-        fit['grouped'] = grouped
-        fit['offset'] = is_offset
-        fit['class'] = 'multnet'    
+    dd = scipy.array([nvars, lmu], dtype = scipy.integer)    
+    if ninmax > 0:
+        ca = ca[0:ninmax, :]
+        df = scipy.sum(scipy.absolute(ca) > 0, axis = 0)
+        ja = ia[0:ninmax] - 1    # ia is 1-indexed in fortran
+        oja = scipy.argsort(ja)
+        ja1 = ja[oja]
+        beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
+        beta[ja1, :] = ca[oja, :]
     else:
-        dd = scipy.array([nvars, lmu], dtype = scipy.integer)
-        if ninmax > 0:
-            ca = ca[0:ninmax,:];
-            df = scipy.sum(scipy.absolute(ca) > 0, axis = 0);
-            ja = ia[0:ninmax] - 1; # ia is 1-indexes in fortran
-            oja = scipy.argsort(ja)
-            ja1 = ja[oja]
-            beta = scipy.zeros([nvars, lmu], dtype = scipy.float64);
-            beta[ja1, :] = ca[oja, :];
-        else:
-            beta = scipy.zeros([nvars,lmu], dtype = scipy.float64);
-            df = scipy.zeros([1,lmu], dtype = scipy.float64);
-        #
-        fit = dict()
-        fit['a0'] = a0
-        fit['label'] = classes
-        fit['beta'] = beta
-        fit['dev'] = dev
-        fit['nulldev'] = dev0_r.value
-        fit['df'] = df
-        fit['lambdau'] = alm
-        fit['npasses'] = nlp_r.value
-        fit['jerr'] = jerr_r.value
-        fit['dim'] = dd
-        fit['offset'] = is_offset
-        fit['class'] = 'lognet'  
+        beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
+        df = scipy.zeros([1, lmu], dtype = scipy.float64)
+            
+    fit = dict()
+    fit['a0'] = a0
+    fit['beta'] = beta
+    fit['dev'] = dev
+    fit['nulldev'] = dev0
+    fit['df'] = df
+    fit['lambdau'] = alm
+    fit['npasses'] = nlp_r.value
+    fit['jerr'] = jerr_r.value
+    fit['dim'] = dd
+    fit['offset'] = is_offset
+    fit['class'] = 'fishnet'    
     
     
     #  ###################################
