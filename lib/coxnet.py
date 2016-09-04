@@ -143,13 +143,13 @@ def coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     ca = ca[0:nx, 0:lmu]    
     ia = ia[0:nx]
     nin = nin[0:lmu]
-    rsq = rsq[0:lmu]
-    alm = alm[0:lmu]
+    dev = dev[0:lmu]
+    alm = alm[0:lmu]    
     
     # ninmax
     ninmax = max(nin)
     # fix first value of alm (from inf to correct value)
-    if lempty:
+    if ulam == 0.0:
         t1 = scipy.log(alm[1])
         t2 = scipy.log(alm[2])
         alm[0] = scipy.exp(2*t1 - t2)        
@@ -167,17 +167,16 @@ def coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         df = scipy.zeros([1, lmu], dtype = scipy.float64)
     
     fit = dict()
-    fit['a0'] = a0
     fit['beta'] = beta
-    fit['dev'] = rsq
-    fit['nulldev'] = nulldev
+    fit['dev'] = dev
+    fit['nulldev'] = dev0
     fit['df']= df
     fit['lambdau'] = alm
     fit['npasses'] = nlp_r.value
     fit['jerr'] = jerr_r.value
     fit['dim'] = scipy.array([nvars, lmu], dtype = scipy.integer)
     fit['offset'] = is_offset
-    fit['class'] = 'elnet'    
+    fit['class'] = 'coxnet'    
  
     #  ###################################
     #   return to caller
