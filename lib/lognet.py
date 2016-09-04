@@ -231,6 +231,7 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     
     # clip output to correct sizes
     lmu = lmu_r.value
+    print(a0)
     a0 = a0[0:lmu]
     ca = ca[0:nx, 0:lmu]    
     ia = ia[0:nx]
@@ -312,10 +313,9 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         fit = dict()
         fit['a0'] = a0
         fit['label'] = classes
-        fit['beta'] = beta_list
+        fit['beta'] = beta
         fit['dev'] = dev
-        fit['nulldev'] = dev0
-        fit['dfmat']= dfmat
+        fit['nulldev'] = dev0_r.value
         fit['df'] = df
         fit['lambdau'] = alm
         fit['npasses'] = nlp_r.value
