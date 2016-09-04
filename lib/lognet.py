@@ -239,7 +239,7 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # create return fit dictionary
     if family == 'multinomial':
         a0 = a0 - scipy.tile(scipy.mean(a0), (nc, 1))
-        dfmat = a0
+        dfmat = a0.copy()
         dd = scipy.array([nvars, lmu], dtype = scipy.integer)
         beta_list = list()
         if ninmax > 0:

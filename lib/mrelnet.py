@@ -187,7 +187,7 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         alm[0] = scipy.exp(2*t1 - t2)        
     # create return fit dictionary
     if nr > 1:
-        dfmat = a0
+        dfmat = a0.copy()
         dd = scipy.array([nvars, lmu], dtype = scipy.integer)
         beta_list = list()
         if ninmax > 0:
