@@ -26,6 +26,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     import scipy
     from elnet import elnet
     from lognet import lognet
+    from coxnet import coxnet
     
     # ####################################
     # check inputs x, y 
