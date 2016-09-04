@@ -240,10 +240,11 @@ def glmnet(*, x, y, family='gaussian', **options):
         fit = lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
                      nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam,
                      thresh, isd, intr, maxit, kopt, family);
-        pass
     elif family == 'cox':
         # call coxnet
-        pass
+        fit = coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
+                     nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam,
+                     thresh, isd, maxit, family);
     elif family == 'mgaussian':
         # call mrelnet
         pass
