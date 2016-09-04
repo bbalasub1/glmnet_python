@@ -14,10 +14,8 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     import ctypes
     
     # load shared fortran library
-    # this is a bit of a pain. 
-    # unless a new python console is started
-    # the shared library will persist in memory
     glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
+    
     # pre-process data     
     ybar = scipy.dot(y, weights)
     ybar = ybar/sum(weights)

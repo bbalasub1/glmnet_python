@@ -16,7 +16,6 @@ sys.path.append('../test')
 sys.path.append('../lib')
 
 import scipy
-import ctypes 
 import glmnet 
 import importlib
 
@@ -24,7 +23,7 @@ importlib.reload(glmnet)
 
 # parameters
 baseDataDir= '/home/bbalasub/Desktop/Summer2016/glmnet/github/glmnet_python/data/'
-testType = 'cox'
+testType = 'mgaussian'
 
 # call test functions
 if testType == 'gaussian':
@@ -42,10 +41,17 @@ if testType == 'binomial':
     print('fit:\n', fit)
 
 if testType == 'cox':
-    # lognet caller
+    # coxnet caller
     x = scipy.loadtxt(baseDataDir + 'CoxExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'CoxExampleY.dat', dtype = scipy.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'cox')
     print('fit:\n', fit)
 
+if testType == 'mgaussian':
+    # coxnet caller
+    x = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleX.dat', dtype = scipy.float64, delimiter = ',')
+    y = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = scipy.float64, delimiter = ',')
+    fit = glmnet.glmnet(x = x, y = y, family = 'mgaussian')
+    print('fit:\n', fit)
 
+    

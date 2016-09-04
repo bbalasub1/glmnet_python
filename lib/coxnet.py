@@ -16,9 +16,6 @@ def coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     import ctypes
     
     # load shared fortran library
-    # this is a bit of a pain. 
-    # unless a new python console is started
-    # the shared library will persist in memory
     glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
     
     # pre-process data     
@@ -184,6 +181,6 @@ def coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
 
     return fit
 #----------------------------------------- 
-# end of method elmnet
+# end of method coxnet
 #----------------------------------------- 
     

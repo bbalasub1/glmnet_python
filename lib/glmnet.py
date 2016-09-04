@@ -27,6 +27,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     from elnet import elnet
     from lognet import lognet
     from coxnet import coxnet
+    from mrelnet import mrelnet
     
     # ####################################
     # check inputs x, y 
@@ -161,7 +162,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     if (intr == True) and (family == 'cox'):
         print('Warning: Cox model has no intercept!')
         
-    jsd        = options['standardize_resp']
+    jsd        = scipy.int32(options['standardize_resp'])
     thresh     = options['thresh']    
     lambdau    = options['lambdau']
     lambda_min = options['lambda_min']
@@ -240,15 +241,17 @@ def glmnet(*, x, y, family='gaussian', **options):
         # call lognet
         fit = lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
                      nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam,
-                     thresh, isd, intr, maxit, kopt, family);
+                     thresh, isd, intr, maxit, kopt, family)
     elif family == 'cox':
         # call coxnet
         fit = coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
                      nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam,
-                     thresh, isd, maxit, family);
+                     thresh, isd, maxit, family)
     elif family == 'mgaussian':
         # call mrelnet
-        pass
+        fit = mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm, 
+                      nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
+                      thresh, isd, jsd, intr, maxit, family)
     elif family == 'poisson':
         # call fishnet
         pass
