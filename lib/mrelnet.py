@@ -3,16 +3,15 @@
 
 @author: bbalasub
 """
+# import packages/methods
+import scipy
+import ctypes
+from wtmean import wtmean
 
 def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm, 
           nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
           thresh, isd, jsd, intr, maxit, family):
 
-    # import packages/methods
-    import scipy
-    import ctypes
-    from wtmean import wtmean
-    
     # load shared fortran library
     glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
     

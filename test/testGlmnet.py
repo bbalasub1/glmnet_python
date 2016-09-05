@@ -5,12 +5,6 @@ Created on Fri Sep  2 11:39:55 2016
 @author: bbalasub
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Aug 30 20:27:07 2016
-
-@author: bbalasub
-"""
 import sys
 sys.path.append('../test')
 sys.path.append('../lib')
@@ -23,7 +17,7 @@ import pprint
 importlib.reload(glmnet)
 
 # parameters
-baseDataDir= '/home/bbalasub/Desktop/Summer2016/glmnet/glmnet_python/data/'
+baseDataDir= '../data/'
 testType = 'poisson'
 
 # call test functions

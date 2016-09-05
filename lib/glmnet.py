@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-glmnet:
+glmnet: provides a wrapper to call the glmnet fortran routines. all variables
+        in the arguments are keyword-only arguments. options is a dict() of 
+        optional parameters
 
 Pre:
     x <scipy array of nobs x nvars, required>       : regression x variable 
@@ -8,7 +10,6 @@ Pre:
     family <string, optional>                       : family to fit 
        (one of gaussian, binomail, poisson, multinomial, cox, mgaussian)
     options <dict, optional>                        : fit parameters 
-       (see comments that follow for a list of parameters)
     
 Post: 
 
@@ -20,37 +21,26 @@ Notes:
 @author: bbalasub
 """
 
-# define all variables to be keyword-only arguments
-# options is a dictionary of optional parameters    
-def glmnet(*, x, y, family='gaussian', **options):
+# import packages/methods
+from glmnetSet import glmnetSet
+from glmnetControl import glmnetControl
+import scipy
+from elnet import elnet
+from lognet import lognet
+from coxnet import coxnet
+from mrelnet import mrelnet
+from fishnet import fishnet
 
-    # import packages/methods
-    from glmnetSet import glmnetSet
-    from glmnetControl import glmnetControl
-    import scipy
-    from elnet import elnet
-    from lognet import lognet
-    from coxnet import coxnet
-    from mrelnet import mrelnet
-    from fishnet import fishnet
+def glmnet(*, x, y, family='gaussian', **options):
     
-    # ####################################
-    # check inputs x, y 
-    # ####################################
-    #
-    # check to make sure x and y are scipy, float64 arrays
+    # check inputs: make sure x and y are scipy, float64 arrays
     # fortran order is not checked as we force a convert later 
     if not( isinstance(x, scipy.ndarray) and x.dtype == 'float64'):
         raise ValueError('x input must be a scipy float64 ndarray')
     if not( isinstance(y, scipy.ndarray) and y.dtype == 'float64'):
         raise ValueError('y input must be a scipy float64 ndarray')
 
-    # ####################################
-    # create options dictionary
-    # ####################################
-    #
-    ## set input default options
-    # set options to default if nothing is passed in    
+    # create options
     if options is None:
         options = glmnetSet();
     

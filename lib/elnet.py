@@ -4,15 +4,14 @@ Created on Tue Aug 30 21:40:50 2016
 
 @author: bbalasub
 """
-
+# import packages/methods
+import scipy
+import ctypes
+    
 def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty, 
           nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, thresh, isd, intr, 
           maxit, family):
 
-    # import packages/methods
-    import scipy
-    import ctypes
-    
     # load shared fortran library
     glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
     
@@ -42,7 +41,7 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     ######################################
     # --------- PROCESS INPUTS -----------
     ######################################
-    # force inputs into fortran order and scipy float64
+    # force inputs into fortran order and into the correct scipy datatype
     copyFlag = False
     x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag) 
     irs = irs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)

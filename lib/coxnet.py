@@ -6,14 +6,13 @@ status -- column 1
 
 @author: bbalasub
 """
-
+# import packages/methods
+import scipy
+import ctypes
+    
 def coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
           nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
           thresh, isd, maxit, family):
-              
-    # import packages/methods
-    import scipy
-    import ctypes
     
     # load shared fortran library
     glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
