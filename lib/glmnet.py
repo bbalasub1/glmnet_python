@@ -11,8 +11,12 @@ Pre:
        (see comments that follow for a list of parameters)
     
 Post: 
-    
 
+Notes:
+[*] Make sure that the GLMnet.f libraries are compiled using the following options:   
+
+      gfortran GLMnet.f -fPIC -fdefault-real-8 -shared -o GLMnet.so
+      
 @author: bbalasub
 """
 
@@ -68,25 +72,24 @@ def glmnet(*, x, y, family='gaussian', **options):
     print(options)
     
     ## error check options parameters
-    alpha = scipy.double(options['alpha'])
+    alpha = scipy.float64(options['alpha'])
     if alpha > 1.0 :
         print('Warning: alpha > 1.0; setting to 1.0')
-        options['alpha'] = scipy.double(1.0)
+        options['alpha'] = scipy.float64(1.0)
  
     if alpha < 0.0 :
         print('Warning: alpha < 0.0; setting to 0.0')
-        options['alpha'] = scipy.double(0.0)
+        options['alpha'] = scipy.float64(0.0)
 
     ## 
-    parm  = options['alpha']
+    parm  = scipy.float64(options['alpha'])
     nlam  = scipy.int32(options['nlambda'])
-    nobs  = x.shape[0]
-    nvars = x.shape[1]
+    nobs, nvars  = x.shape
     
     # check weights length
     weights = options['weights']
     if len(weights) == 0:
-        weights = scipy.ones([nobs, 1], dtype = scipy.double)
+        weights = scipy.ones([nobs, 1], dtype = scipy.float64)
     elif len(weights) != nobs:
         raise ValueError('Error: Number of elements in ''weights'' not equal to number of rows of ''x''')
     # check if weights are scipy nd array
@@ -113,12 +116,12 @@ def glmnet(*, x, y, family='gaussian', **options):
     # TBD: test this
     if not (len(exclude) == 0):
         exclude = scipy.unique(exclude)
-        if scipy.any(exclude <= 0) or (exclude > nvars):
+        if scipy.any(exclude <= 0) or scipy.any(exclude > nvars):
             raise ValueError('Error: Some excluded variables are out of range')
         else:    
             jd = scipy.append(len(exclude), exclude)
     else:
-        jd = scipy.zeros([1,], dtype = scipy.integer)
+        jd = scipy.zeros([1,1], dtype = scipy.integer)
 
     # check vp    
     vp = options['penalty_factor']
@@ -136,20 +139,20 @@ def glmnet(*, x, y, family='gaussian', **options):
     if any(cl[1,:] < 0):
         raise ValueError('Error: The lower bound on cl must be non-negative')
         
-    cl[0, cl[0, :] == scipy.double('-inf')] = -1.0*inparms['big']    
-    cl[1, cl[1, :] == scipy.double('inf')]  =  1.0*inparms['big']    
+    cl[0, cl[0, :] == scipy.float64('-inf')] = -1.0*inparms['big']    
+    cl[1, cl[1, :] == scipy.float64('inf')]  =  1.0*inparms['big']    
     
     if cl.shape[1] < nvars:
         if cl.shape[1] == 1:
             cl = cl*scipy.ones([1, nvars])
         else:
-            raise ValueError('ERROR: Require length 1 or nvars lower and upper limits')
+            raise ValueError('Error: Require length 1 or nvars lower and upper limits')
     else:
-        cl = cl[:, 0:nvars-1]
+        cl = cl[:, 0:nvars]
         
         
     exit_rec = 0
-    if scipy.any(cl.reshape([1,cl.size]) == 0):
+    if scipy.any(cl == 0.0):
         fdev = inparms['fdev']
         if fdev != 0:
             optset = dict()

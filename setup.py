@@ -6,7 +6,7 @@ setup(name='glmnet_python',
 	url = '',
 	author = '',
 	author_email = 'bbalasub@stanford.edu',
-	license = 'MIT',
+	license = 'GPL-2',
 	packages=['lib'],
 	zip_safe = FALSE)
 

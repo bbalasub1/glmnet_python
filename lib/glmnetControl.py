@@ -15,15 +15,15 @@ def glmnetControl(pars = None):
     
     # default options
     ivals = dict();
-    ivals["fdev"]    = scipy.double(1e-5)
-    ivals["devmax"]  = scipy.double(0.999)
-    ivals["eps"]     = scipy.double(1e-6)
-    ivals["big"]     = scipy.double(9.9e35)
-    ivals["mnlam"]   = scipy.double(5)
-    ivals["pmin"]    = scipy.double(1e-5)
-    ivals["exmx"]    = scipy.double(250)
-    ivals["prec"]    = scipy.double(1e-10)
-    ivals["mxit"]    = scipy.double(100)
+    ivals["fdev"]    = scipy.float64(1e-5)
+    ivals["devmax"]  = scipy.float64(0.999)
+    ivals["eps"]     = scipy.float64(1e-6)
+    ivals["big"]     = scipy.float64(9.9e35)
+    ivals["mnlam"]   = scipy.float64(5)
+    ivals["pmin"]    = scipy.float64(1e-5)
+    ivals["exmx"]    = scipy.float64(250)
+    ivals["prec"]    = scipy.float64(1e-10)
+    ivals["mxit"]    = scipy.float64(100)
     
     # quick return if no user opts
     if pars == None:
