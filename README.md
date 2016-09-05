@@ -14,11 +14,11 @@ Unzip the package into a suitable location.
 
 Recompile the GLMnet.so shared library (located in ./lib) using:
 
-      gfortran GLMnet.f -fPIC -fdefault-real-8 -shared -o GLMnet.so
+      ```gfortran GLMnet.f -fPIC -fdefault-real-8 -shared -o GLMnet.so```
  
-Currently, the checked-in version of GLMnet.so is compiled using:
+Currently, the checked-in version of GLMnet.so is compiled for:
 
-Linux version 2.6.32-573.26.1.el6.x86_64 (gcc version 4.4.7 20120313 (Red Hat 4.4.7-16) (GCC) ) for CentOS 6.7 (Final)
+Linux version 2.6.32-573.26.1.el6.x86_64 (gcc version 4.4.7 20120313 (Red Hat 4.4.7-16) (GCC) ) for CentOS 6.7 (Final) running on a 8-core Intel(R) Core(TM) i7-2630QM CPU machine. The gfortran version used was 4.4.7 20120313 (Red Hat 4.4.7-17) (GCC).
  
 ## Authors:
 
