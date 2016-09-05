@@ -18,10 +18,10 @@ Recompile the GLMnet.so shared library (located in ./lib) using:
  
 Currently, the checked-in version of GLMnet.so is compiled for the following config:
 
- Linux: Linux version 2.6.32-573.26.1.el6.x86_64 (gcc version 4.4.7 20120313 (Red Hat 4.4.7-16) (GCC) ) 
- OS: CentOS 6.7 (Final) 
- Hardware: 8-core Intel(R) Core(TM) i7-2630QM 
- gfortran: version 4.4.7 20120313 (Red Hat 4.4.7-17) (GCC)
+ **Linux:** Linux version 2.6.32-573.26.1.el6.x86_64 (gcc version 4.4.7 20120313 (Red Hat 4.4.7-16) (GCC) ) 
+ **OS:** CentOS 6.7 (Final) 
+ **Hardware:** 8-core Intel(R) Core(TM) i7-2630QM 
+ **gfortran:** version 4.4.7 20120313 (Red Hat 4.4.7-17) (GCC)
  
 ## Authors:
 
