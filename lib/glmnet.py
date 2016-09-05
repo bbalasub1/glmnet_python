@@ -81,7 +81,6 @@ def glmnet(*, x, y, family='gaussian', **options):
         print('Warning: alpha < 0.0; setting to 0.0')
         options['alpha'] = scipy.float64(0.0)
 
-    ## 
     parm  = scipy.float64(options['alpha'])
     nlam  = scipy.int32(options['nlambda'])
     nobs, nvars  = x.shape
@@ -159,8 +158,7 @@ def glmnet(*, x, y, family='gaussian', **options):
             optset['fdev'] = 0
             glmnetControl(optset)
             exit_rec = 1
-            
-    # 
+             
     isd  = scipy.int32(options['standardize'])
     intr = scipy.int32(options['intr'])
     if (intr == True) and (family == 'cox'):
@@ -182,7 +180,7 @@ def glmnet(*, x, y, family='gaussian', **options):
         if (lambda_min >= 1):
             raise ValueError('ERROR: lambda_min should be less than 1')
         flmin = lambda_min
-        ulam  = scipy.zeros([1], dtype = scipy.float64)
+        ulam  = scipy.zeros([1,1], dtype = scipy.float64)
     else:
         flmin = 1.0
         if any(lambdau < 0):
@@ -190,8 +188,8 @@ def glmnet(*, x, y, family='gaussian', **options):
         
         ulam = -scipy.sort(-lambdau)    # reverse sort
         nlam = lambdau.size
-    #
-    maxit = options['maxit']
+    
+    maxit =  scipy.int32(options['maxit'])
     gtype = options['gtype']
     if len(gtype) == 0:
         if (nvars < 500):
