@@ -22,11 +22,11 @@ Linux version 2.6.32-573.26.1.el6.x86_64 (gcc version 4.4.7 20120313 (Red Hat 4.
  
 ## Authors:
 
-Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani Fortran code was written by Jerome Friedman R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hastie.
+Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani. Fortran code was written by Jerome Friedman. R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hastie.
 
 The original MATLAB wrapper was written by Hui Jiang (14 Jul 2009), and was updated and is maintained by Junyang Qian (30 Aug 2013).
 
-This python wrapper for glmnet was written by B. J. Balakumar, bbalasub@stanford.edu (5 Sep 2016).
+This python wrapper (which was adapted from the MATLAB and R wrappers) was written by B. J. Balakumar, bbalasub@stanford.edu (5 Sep 2016).
 
 Department of Statistics, Stanford University, Stanford, California, USA. 
 
