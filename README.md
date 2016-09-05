@@ -14,7 +14,7 @@ Unzip the package into a suitable location.
 
 Recompile the GLMnet.so shared library (located in ./lib) using:
 
-      ```gfortran GLMnet.f -fPIC -fdefault-real-8 -shared -o GLMnet.so```
+    gfortran GLMnet.f -fPIC -fdefault-real-8 -shared -o GLMnet.so
  
 Currently, the checked-in version of GLMnet.so is compiled for:
 
