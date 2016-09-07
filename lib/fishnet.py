@@ -23,7 +23,7 @@ def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     else:
         is_offset = True
   
-    # now convert types and allocate memort before calling 
+    # now convert types and allocate memory before calling 
     # glmnet fortran library
     ######################################
     # --------- PROCESS INPUTS -----------

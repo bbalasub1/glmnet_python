@@ -18,7 +18,7 @@ importlib.reload(glmnet)
 
 # parameters
 baseDataDir= '../data/'
-testType = 'poisson'
+testType = 'gaussian'
 
 # call test functions
 if testType == 'gaussian':
@@ -26,6 +26,7 @@ if testType == 'gaussian':
     y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
     x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
     fit = glmnet.glmnet(x = x, y = y, family = 'gaussian')
+    #fit = glmnet.glmnet(x = x, y = y, family = 'gaussian', alpha = 0.5)
     print('fit:')
     pprint.pprint(fit)
 

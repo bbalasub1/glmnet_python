@@ -31,7 +31,7 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         is_offset = True
     #
     y = y - offset
-    # now convert types and allocate memort before calling 
+    # now convert types and allocate memory before calling 
     # glmnet fortran library
     ######################################
     # --------- PROCESS INPUTS -----------

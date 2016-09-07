@@ -77,7 +77,7 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
             raise ValueError('offset should have same shape as y in multinomial call to glmnet')
         is_offset = True
   
-    # now convert types and allocate memort before calling 
+    # now convert types and allocate memory before calling 
     # glmnet fortran library
     ######################################
     # --------- PROCESS INPUTS -----------
