@@ -14,7 +14,6 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
     ptype = getFromList(ptype, ['coef', '2norm'], 'ptype should be one of ''coef'', ''2norm'' ')    
 
     if x['class'] in ['elnet', 'lognet', 'coxnet', 'fishnet']:
-        print(x['class'])
         plotCoef(x['beta'], [], x['lambdau'], x['df'], x['dev'], 
         label, xvar, '', 'Coefficients', **options)
 
@@ -35,7 +34,6 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
             if x['class'] == 'multnet':
                 for i in range(ncl):
                     str = 'Coefficients: Class %d' % (i) 
-                    print(options)
                     plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
                              x['dev'], label, xvar, '', str, **options)
             else:
@@ -79,7 +77,6 @@ def nonzeroCoef(beta, bystep = False):
     if len(result.shape) == 1:
         result = scipy.reshape(result, [result.shape[0], 1])
     if not bystep:
-        print(result.shape)
         result = scipy.any(result, axis = 1)
     
     return(result)

@@ -286,7 +286,7 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         fit['label'] = classes
         fit['beta'] = beta_list
         fit['dev'] = dev
-        fit['nulldev'] = dev0
+        fit['nulldev'] = dev0_r.value
         fit['dfmat']= dfmat
         fit['df'] = df
         fit['lambdau'] = alm

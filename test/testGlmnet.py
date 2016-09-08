@@ -21,7 +21,7 @@ importlib.reload(glmnetPlot)
 # parameters
 baseDataDir= '../data/'
 testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
-testType = testTypeList[4]
+testType = testTypeList[5]
 
 # call test functions
 if testType == 'gaussian':

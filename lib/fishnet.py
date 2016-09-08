@@ -197,7 +197,7 @@ def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     fit['a0'] = a0
     fit['beta'] = beta
     fit['dev'] = dev
-    fit['nulldev'] = dev0
+    fit['nulldev'] = dev0_r.value
     fit['df'] = df
     fit['lambdau'] = alm
     fit['npasses'] = nlp_r.value
