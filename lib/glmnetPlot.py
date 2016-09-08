@@ -146,10 +146,8 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
             xpos = min(index)
             adjpos = 0
         bsize = beta.shape
-        print(beta.shape)
         for i in range(beta.shape[1]):
             str = '%d' % idwhich[i]
-            print('x = ', 0.5*xpos + 0.5*xlim1[adjpos], 'y = ', beta[bsize[0] - 1, i])
             ax1.text(1/2*xpos + 1/2*xlim1[adjpos], beta[bsize[0]-1, i], str)
     
     plt.show()
