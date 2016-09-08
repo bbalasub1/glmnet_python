@@ -206,9 +206,9 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
                 ca1 = scipy.reshape(ca[:,k,:], (ninmax, lmu))
                 cak = ca1[oja,:]
                 dfmat[k, :] = scipy.sum(scipy.absolute(cak) > 0, axis = 0)
-            beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
-            beta[ja1, :] = cak
-            beta_list.append(beta)
+                beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
+                beta[ja1, :] = cak
+                beta_list.append(beta)
         else:
             for k in range(0, nr):
                 dfmat[k, :] = scipy.zeros([1, lmu], dtype = scipy.float64)
@@ -232,8 +232,8 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         else:
             beta = scipy.zeros([nvars,lmu], dtype = scipy.float64);
             df = scipy.zeros([1,lmu], dtype = scipy.float64);
-        #
-    fit['beta'] = beta
+            fit['beta'] = beta
+            
     fit['a0'] = a0
     fit['dev'] = rsq
     fit['nulldev'] = nulldev
