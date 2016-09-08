@@ -101,12 +101,18 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # lmu
     lmu = -1
     lmu_r = ctypes.c_int(lmu)
+    # a0, ca
+    print("nc = ", nc)
+    if nc == 1:
+        a0   = scipy.zeros([nlam], dtype = scipy.float64)
+        ca = scipy.zeros([nx, nlam], dtype = scipy.float64)
+    else:
+        a0   = scipy.zeros([nc, nlam], dtype = scipy.float64)
+        ca   = scipy.zeros([nx, nc, nlam], dtype = scipy.float64)
     # a0
-    a0   = scipy.zeros([nlam], dtype = scipy.float64)
     a0   = a0.astype(dtype = scipy.float64, order = 'F', copy = False)    
     a0_r = a0.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
-    # ca
-    ca   = scipy.zeros([nx, nlam], dtype = scipy.float64)
+    # ca    
     ca   = ca.astype(dtype = scipy.float64, order = 'F', copy = False)    
     ca_r = ca.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # ia
@@ -222,8 +228,12 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     
     # clip output to correct sizes
     lmu = lmu_r.value
-    a0 = a0[0:lmu]
-    ca = ca[0:nx, 0:lmu]    
+    if nc == 1:
+        a0 = a0[0:lmu]
+        ca = ca[0:nx, 0:lmu]    
+    else:
+        a0 = a0[0:nc, 0:lmu]
+        ca = ca[0:nx, 0:nc, 0:lmu]    
     ia = ia[0:nx]
     nin = nin[0:lmu]
     dev = dev[0:lmu]
@@ -237,6 +247,8 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         t2 = scipy.log(alm[2])
         alm[0] = scipy.exp(2*t1 - t2)        
     # create return fit dictionary
+    print(ca.shape)
+     
     if family == 'multinomial':
         a0 = a0 - scipy.tile(scipy.mean(a0), (nc, 1))
         dfmat = a0.copy()
@@ -256,9 +268,9 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
                 ca1 = scipy.reshape(ca[:,k,:], (ninmax, lmu))
                 cak = ca1[oja,:]
                 dfmat[k, :] = scipy.sum(scipy.absolute(cak) > 0, axis = 0)
-            beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
-            beta[ja1, :] = cak
-            beta_list.append(beta)
+                beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
+                beta[ja1, :] = cak
+                beta_list.append(beta)
         else:
             for k in range(0, nc):
                 dfmat[k, :] = scipy.zeros([1, lmu], dtype = scipy.float64)

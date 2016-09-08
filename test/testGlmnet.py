@@ -18,7 +18,7 @@ importlib.reload(glmnet)
 
 # parameters
 baseDataDir= '../data/'
-testType = 'gaussian'
+testType = 'multinomial'
 
 # call test functions
 if testType == 'gaussian':
@@ -38,6 +38,14 @@ if testType == 'binomial':
     print('fit:')
     pprint.pprint(fit)
 
+if testType == 'multinomial':
+    # coxnet caller
+    x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
+    y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
+    fit = glmnet.glmnet(x = x, y = y, family = 'multinomial')
+    print('fit:')
+    pprint.pprint(fit)    
+
 if testType == 'cox':
     # coxnet caller
     x = scipy.loadtxt(baseDataDir + 'CoxExampleX.dat', dtype = scipy.float64, delimiter = ',')
@@ -52,7 +60,7 @@ if testType == 'mgaussian':
     y = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = scipy.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'mgaussian')
     print('fit:')
-    pprint.pprint(fit)
+    pprint.pprint(fit)    
     
 if testType == 'poisson':
     # coxnet caller

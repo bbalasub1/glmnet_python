@@ -47,7 +47,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     ## match the family, abbreviation allowed
     fambase = ['gaussian','binomial','poisson','multinomial','cox','mgaussian'];
     # find index of family in fambase
-    indxtf = [x.startswith(family) for x in fambase] # find index of family in fambase
+    indxtf = [x.startswith(family.lower()) for x in fambase] # find index of family in fambase
     famind = [i for i in range(len(indxtf)) if indxtf[i] == True]
     if len(famind) == 0:
         raise ValueError('Family should be one of ''gaussian'', ''binomial'', ''poisson'', ''multinomial'', ''cox'', ''mgaussian''')
@@ -189,8 +189,8 @@ def glmnet(*, x, y, family='gaussian', **options):
     
     # ltype
     ltype = options['ltype']
-    ltypelist = ['Newton', 'modified.Newton']
-    indxtf    = [x.startswith(ltype) for x in ltypelist]
+    ltypelist = ['newton', 'modified.newton']
+    indxtf    = [x.startswith(ltype.lower()) for x in ltypelist]
     indl      = [i for i in range(len(indxtf)) if indxtf[i] == True]
     if len(indl) != 1:
         raise ValueError('ERROR: ltype should be one of ''Newton'' or ''modified.Newton''')
@@ -200,7 +200,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     if family == 'multinomial':
         mtype = options['mtype']
         mtypelist = ['ungrouped', 'grouped']
-        indxtf    = [x.startswith(mtype) for x in mtypelist]
+        indxtf    = [x.startswith(mtype.lower()) for x in mtypelist]
         indm      = [i for i in range(len(indxtf)) if indxtf[i] == True]
         if len(indm) == 0:
             raise ValueError('Error: mtype should be one of ''ungrouped'' or ''grouped''')
