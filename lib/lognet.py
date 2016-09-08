@@ -102,7 +102,6 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     lmu = -1
     lmu_r = ctypes.c_int(lmu)
     # a0, ca
-    print("nc = ", nc)
     if nc == 1:
         a0   = scipy.zeros([nlam], dtype = scipy.float64)
         ca = scipy.zeros([nx, nlam], dtype = scipy.float64)
@@ -247,7 +246,6 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
         t2 = scipy.log(alm[2])
         alm[0] = scipy.exp(2*t1 - t2)        
     # create return fit dictionary
-    print(ca.shape)
      
     if family == 'multinomial':
         a0 = a0 - scipy.tile(scipy.mean(a0), (nc, 1))

@@ -15,7 +15,8 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
 
     if x['class'] in ['elnet', 'lognet', 'coxnet', 'fishnet']:
         print(x['class'])
-        plotCoef(x['beta'], [], x['lambda'], x['df'], x['dev'], '', 'Coefficients', options)
+        plotCoef(x['beta'], [], x['lambdau'], x['df'], x['dev'], 
+        label, xvar, '', 'Coefficients', **options)
 
     elif x['class'] in ['multnet', 'mrelnet']:
         beta = x['beta']
@@ -107,18 +108,50 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
     if len(xlab) == 0:
         xlab = iname
 
-    # prepare for figure    
-    plt.figure()    
+    # draw the figures
+    fig, ax1 = plt.subplots()    
     # plot x vs y
     beta = scipy.transpose(beta)
-    plt.plot(index, beta, **options)
+    ax1.plot(index, beta, **options)
     
-    # TODO: draw lambdau and df axes on the figure
+    ax2 = ax1.twiny()
+    ax2.xaxis.tick_top()
     
+    xlim1 = ax1.get_xlim()
+    ylim1 = ax2.get_ylim()
     
-    # TODO: put label
+    atdf = ax1.get_xticks()
+    indat = scipy.ones(atdf.shape, dtype = scipy.integer)
+    if index[-1] >= index[1]:
+        for j in range(len(index)-1, -1, -1):
+            indat[atdf <= index[j]] = j
+    else:
+        for j in range(len(index)):
+            indat[atdf <= index[j]] = j
+    prettydf = df[indat]
+    prettydf[-1] = df[-1]        
     
+    ax2.set(XLim=[min(index), max(index)], XTicks = atdf, XTickLabels = prettydf)
+    ax2.grid()
+    ax1.yaxis.grid()
     
+    ax1.set_xlabel(xlab)
+    ax1.set_ylabel(ylab)
     
-# plotCoef
+    # put the labels
+    if label:
+        xpos = max(index)
+        adjpos = 1
+        if xvar == 'lambda':
+            xpos = min(index)
+            adjpos = 0
+        bsize = beta.shape
+        print(beta.shape)
+        for i in range(beta.shape[1]):
+            str = '%d' % idwhich[i]
+            print('x = ', 0.5*xpos + 0.5*xlim1[adjpos], 'y = ', beta[bsize[0] - 1, i])
+            ax1.text(1/2*xpos + 1/2*xlim1[adjpos], beta[bsize[0]-1, i], str)
+    
+    plt.show()
+# end of plotCoef
 # =========================================

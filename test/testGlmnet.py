@@ -13,12 +13,14 @@ import scipy
 import glmnet 
 import importlib
 import pprint
+import glmnetPlot
 
 importlib.reload(glmnet)
+importlib.reload(glmnetPlot)    
 
 # parameters
 baseDataDir= '../data/'
-testType = 'multinomial'
+testType = 'gaussian'
 
 # call test functions
 if testType == 'gaussian':
@@ -70,4 +72,8 @@ if testType == 'poisson':
     print('fit:')
     pprint.pprint(fit)
 
-    
+
+# glmnetPlot.glmnetPlot(fit)
+
+glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
+
