@@ -15,7 +15,6 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
 
     if x['class'] in ['elnet', 'lognet', 'coxnet', 'fishnet']:
         print(x['class'])
-        # TODO get plotCoef working
         plotCoef(x['beta'], [], x['lambda'], x['df'], x['dev'], '', 'Coefficients', options)
 
     elif x['class'] in ['multnet', 'mrelnet']:
@@ -35,12 +34,13 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
             if x['class'] == 'multnet':
                 for i in range(ncl):
                     str = 'Coefficients: Class %d' % (i) 
+                    print(options)
                     plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
-                             x['dev'], label, xvar, '', str, options = options)
+                             x['dev'], label, xvar, '', str, **options)
             else:
                     str = 'Coefficients: Response %d' % (i) 
                     plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
-                             x['dev'], label, xvar, '', str, options = options)
+                             x['dev'], label, xvar, '', str, **options)
         else:
             dfseq = scipy.round_(scipy.mean(x['dfmat'], axis = 0))
             coefnorm = beta[1]*0
@@ -50,11 +50,11 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
             if x['class'] == 'multnet':
                 str = 'Coefficient 2Norms'
                 plotCoef(coefnorm, norm, x['lambdau'], dfseq, x['dev'],
-                         label, xvar, '',str, options);
+                         label, xvar, '',str, **options);
             else:
                 str = 'Coefficient 2Norms'
                 plotCoef(coefnorm, norm, x['lambdau'], x['dfmat'][0,:], x['dev'],
-                         label, xvar, '', str, options);                
+                         label, xvar, '', str, **options);                
 
 
 
@@ -109,10 +109,16 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
 
     # prepare for figure    
     plt.figure()    
-    
+    # plot x vs y
     beta = scipy.transpose(beta)
-    plt.plot(index, beta)
+    plt.plot(index, beta, **options)
+    
+    # TODO: draw lambdau and df axes on the figure
     
     
-
+    # TODO: put label
+    
+    
+    
+# plotCoef
 # =========================================
