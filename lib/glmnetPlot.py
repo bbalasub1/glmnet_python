@@ -76,7 +76,10 @@ def getFromList(xvar, xvarbase, errMsg):
 # =========================================
 def nonzeroCoef(beta, bystep = False):
     result = scipy.absolute(beta) > 0
+    if len(result.shape) == 1:
+        result = scipy.reshape(result, [result.shape[0], 1])
     if not bystep:
+        print(result.shape)
         result = scipy.any(result, axis = 1)
     
     return(result)

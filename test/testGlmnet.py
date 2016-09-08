@@ -20,7 +20,8 @@ importlib.reload(glmnetPlot)
 
 # parameters
 baseDataDir= '../data/'
-testType = 'gaussian'
+testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
+testType = testTypeList[4]
 
 # call test functions
 if testType == 'gaussian':
@@ -41,7 +42,7 @@ if testType == 'binomial':
     pprint.pprint(fit)
 
 if testType == 'multinomial':
-    # coxnet caller
+    # multinomial caller
     x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'multinomial')
@@ -57,7 +58,7 @@ if testType == 'cox':
     pprint.pprint(fit)
 
 if testType == 'mgaussian':
-    # coxnet caller
+    # mgaussian caller
     x = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = scipy.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'mgaussian')
@@ -65,7 +66,7 @@ if testType == 'mgaussian':
     pprint.pprint(fit)    
     
 if testType == 'poisson':
-    # coxnet caller
+    # poisson caller
     x = scipy.loadtxt(baseDataDir + 'PoissonExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'PoissonExampleY.dat', dtype = scipy.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'poisson')
@@ -73,7 +74,7 @@ if testType == 'poisson':
     pprint.pprint(fit)
 
 
-# glmnetPlot.glmnetPlot(fit)
+glmnetPlot.glmnetPlot(fit, label = True)
 
-glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
+# glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
 
