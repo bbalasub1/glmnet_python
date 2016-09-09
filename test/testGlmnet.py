@@ -14,14 +14,16 @@ import glmnet
 import importlib
 import pprint
 import glmnetPlot
+import glmnetPredict
 
 importlib.reload(glmnet)
 importlib.reload(glmnetPlot)    
+importlib.reload(glmnetPredict)    
 
 # parameters
 baseDataDir= '../data/'
 testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
-testType = testTypeList[4]
+testType = testTypeList[0]
 
 # call test functions
 if testType == 'gaussian':
@@ -75,6 +77,8 @@ if testType == 'poisson':
 
 
 glmnetPlot.glmnetPlot(fit, label = True)
-
 # glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
+
+f = glmnetPredict.glmnetPredict(fit, x[0:1,:])
+
 
