@@ -130,6 +130,18 @@ def glmnetPredict(fit, newx = scipy.empty([0]), s = scipy.empty([0]), ptype = 'l
             toff = scipy.transpose(offset)
             for i in range(nlambda):
                 dp[:, i, :] = dp[:, i, :] + toff
+                
+            if ptype == 'response':
+                pp = scipy.exp(dp)
+                psum = scipy.sum(pp, axis = 0)
+                result = scipy.transpose(pp/scipy.tile(psum, [nclass, 1]), [2, 0, 1])
+            if ptype == 'link':
+                result = scipy.transpose(dp, [2, 0, 1])
+            if ptype == 'class':
+                dp = scipy.transpose(dp, [2, 0, 1])
+                result = scipy.empty([0])
+                for i in range(dp.shape[2]):
+                    result = scipy.append(result, fit['label'][softmax(dp[:, :, i])])
 
     #========================================
     # coxnet
