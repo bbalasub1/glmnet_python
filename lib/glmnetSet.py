@@ -56,6 +56,7 @@ def glmnetSet(opts = None):
     # if options are passed in by user, update options with values from opts
     optsInOptions = set(opts.keys()) - set(options.keys());
     if len(optsInOptions) > 0:          # assert 'opts' keys are subsets of 'options' keys
+        print(optsInOptions, ' : unknown option for glmnetSet')
         raise ValueError('attempting to set glmnet options that are not known to glmnetSet')
     else:        
         options = {**options, **opts}   # update values

@@ -6,12 +6,17 @@ Created on Thu Sep  8 15:27:30 2016
 """
 import scipy
 
-def glmnetPredict(fit, newx = scipy.empty([0]), s = scipy.empty([0]), ptype = 'link', exact = False, offset = scipy.empty([0])):
+def glmnetPredict(fit,\
+                  newx = scipy.empty([0]), \
+                  s = scipy.empty([0]), \
+                  ptype = 'link', \
+                  exact = False, \
+                  offset = scipy.empty([0])):
     
     typebase = ['link', 'response', 'coefficients', 'nonzero', 'class']
     indxtf   = [x.startswith(ptype.lower()) for x in typebase]
     indl     = [i for i in range(len(indxtf)) if indxtf[i] == True]
-    ptype = indl[0]
+    ptype = typebase[indl[0]]
     
     if len(newx) == 0 and ptype != 'coefficients' and ptype != 'nonzero':
         raise ValueError('You need to supply a value for ''newx''')
@@ -20,7 +25,7 @@ def glmnetPredict(fit, newx = scipy.empty([0]), s = scipy.empty([0]), ptype = 'l
     # check for this. newx = x[0:1, :] is a python 2D array and would work; 
     # but newx = x[0, :] is a python 1D array and should not be passed into 
     # glmnetPredict    
-    if len(newx.shape) == 1:
+    if len(newx.shape) == 1 and newx.shape[0] > 0:
         raise ValueError('newx must be a 2D (not a 1D) python array')
    
     if exact == True and len(s) > 0:
