@@ -16,7 +16,7 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
     
     # pre-process data     
-    ybar = scipy.dot(y, weights)
+    ybar = scipy.dot(scipy.transpose(y), weights)
     ybar = ybar/sum(weights)
     nulldev = (y - ybar)**2 * weights
     # ka

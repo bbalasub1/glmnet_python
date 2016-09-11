@@ -58,8 +58,8 @@ def glmnet(*, x, y, family='gaussian', **options):
     
     ## prepare options
     options = glmnetSet(options)
-    print('glmnet.py options:')
-    print(options)
+    #print('glmnet.py options:')
+    #print(options)
     
     ## error check options parameters
     alpha = scipy.float64(options['alpha'])

@@ -14,6 +14,10 @@ POST:
 import scipy
 
 def wtmean(mat,weights):
+    if len(weights.shape) == 1:
+        weights = scipy.reshape(weights, [scipy.size(weights), 1])
+    print('weights = ', weights.shape)
+    print('mat = ', mat.shape)    
     wmat = isfinite(mat)*weights
     mat[isnan(mat)] = 0
     swmat = mat*wmat

@@ -55,10 +55,9 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
                 plotCoef(coefnorm, norm, x['lambdau'], x['dfmat'][0,:], x['dev'],
                          label, xvar, '', str, **options);                
 
-
-
-
-
+# end of glmnetplot
+# =========================================
+#
 # =========================================
 # helper functions
 # =========================================

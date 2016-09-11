@@ -5,6 +5,7 @@ Created on Thu Sep  8 15:27:30 2016
 @author: bbalasub
 """
 import scipy
+import scipy.interpolate
 
 def glmnetPredict(fit,\
                   newx = scipy.empty([0]), \
@@ -44,7 +45,7 @@ def glmnetPredict(fit,\
         
         a0 = scipy.reshape(a0, [1, a0.size])   # convert to 1 x N for appending
         nbeta = scipy.append(a0, fit['beta'], axis = 0)        
-        if len(s) > 0:
+        if scipy.size(s) > 0:
             lambdau = fit['lambdau']
             lamlist = lambda_interp(lambdau, s)
             nbeta = nbeta[:, lamlist['left']]*scipy.tile(scipy.transpose(lamlist['frac']), [nbeta.shape[0], 1]) \
@@ -81,7 +82,6 @@ def glmnetPredict(fit,\
             result = fit['label'][result]
 
     # multnet / mrelnet
-    #========================================
     if fit['class'] == 'mrelnet':
         if type == 'response':
             ptype = 'link'
@@ -148,7 +148,6 @@ def glmnetPredict(fit,\
                 for i in range(dp.shape[2]):
                     result = scipy.append(result, fit['label'][softmax(dp[:, :, i])])
 
-    #========================================
     # coxnet
     if fit['class'] == 'coxnet':
         nbeta = fit['beta']        
@@ -207,12 +206,14 @@ def lambda_interp(lambdau, s):
         coord = scipy.interpolate.interp1d(lambdau, range(k))(sfrac)
         left = scipy.floor(coord).astype(scipy.integer, copy = False)
         right = scipy.ceil(coord).astype(scipy.integer, copy = False)
-        sfrac = (sfrac - lambdau[right])/(lambdau[left] - lambdau[right])
-        sfrac[left == right] = 1
+        if left != right:
+            sfrac = (sfrac - lambdau[right])/(lambdau[left] - lambdau[right])
+        else:
+            sfrac[left == right] = 1.0
     result = dict()    
     result['left'] = left
     result['right'] = right
-    result['sfrac'] = sfrac
+    result['frac'] = sfrac
     
     return(result)
 # end of lambda_interp    
