@@ -1,6 +1,6 @@
 # glmnet python 
 
-## Caution: This is an alpha-version
+### ...this is an alpha, not tested extensively so far version...
 
 ## Introduction
 
