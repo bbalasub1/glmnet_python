@@ -4,6 +4,7 @@ Created on Fri Sep  2 11:39:55 2016
 
 @author: bbalasub
 """
+
 #%%
 import sys
 sys.path.append('../test')
@@ -78,10 +79,10 @@ if testType == 'poisson':
     pprint.pprint(fit)
 
 
-#glmnetPlot.glmnetPlot(fit, label = True)
+# glmnetPlot.glmnetPlot(fit, label = True)
 # glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
-
 #f = glmnetPredict.glmnetPredict(fit, x[0:1,:])
+
 #%%
 import cvglmnetCoef
 import importlib
@@ -89,3 +90,12 @@ importlib.reload(cvglmnetCoef)
 
 coef = cvglmnetCoef.cvglmnetCoef(fit, s= scipy.array([0.1]))
 print('coef=', coef)
+
+
+#%%
+import cvglmnetPlot
+import importlib
+importlib.reload(cvglmnetPlot)
+cvglmnetPlot.cvglmnetPlot(fit)
+
+

@@ -117,7 +117,7 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
     ax2.xaxis.tick_top()
     
     xlim1 = ax1.get_xlim()
-    ylim1 = ax2.get_ylim()
+    ylim1 = ax1.get_ylim()
     
     atdf = ax1.get_xticks()
     indat = scipy.ones(atdf.shape, dtype = scipy.integer)
