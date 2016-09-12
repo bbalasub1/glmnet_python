@@ -17,85 +17,71 @@ import pprint
 import glmnetPlot
 import glmnetPredict
 import cvglmnet
+import cvglmnetPlot
 
 importlib.reload(glmnet)
 importlib.reload(glmnetPlot)    
 importlib.reload(glmnetPredict)    
 importlib.reload(cvglmnet)    
+importlib.reload(cvglmnetPlot)
 
 # parameters
 baseDataDir= '../data/'
 testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
 testType = testTypeList[0]
+runType = 'cvglmnet'
 
 # call test functions
 if testType == 'gaussian':
     ##  elnet caller 
     y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
     x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
-    fit = cvglmnet.cvglmnet(x = x, y = y, family = 'gaussian')
-    #fit = glmnet.glmnet(x = x, y = y, family = 'gaussian')
-    print('fit:')
-    pprint.pprint(fit)
 
 if testType == 'binomial':
     # lognet caller
     x = scipy.loadtxt(baseDataDir + 'BinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = scipy.float64)
-    fit = glmnet.glmnet(x = x, y = y, family = 'binomial')
-    print('fit:')
-    pprint.pprint(fit)
 
 if testType == 'multinomial':
     # multinomial caller
     x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
-    fit = glmnet.glmnet(x = x, y = y, family = 'multinomial')
-    print('fit:')
-    pprint.pprint(fit)    
 
 if testType == 'cox':
     # coxnet caller
     x = scipy.loadtxt(baseDataDir + 'CoxExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'CoxExampleY.dat', dtype = scipy.float64, delimiter = ',')
-    fit = glmnet.glmnet(x = x, y = y, family = 'cox')
-    print('fit:')
-    pprint.pprint(fit)
 
 if testType == 'mgaussian':
     # mgaussian caller
     x = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = scipy.float64, delimiter = ',')
-    fit = glmnet.glmnet(x = x, y = y, family = 'mgaussian')
-    print('fit:')
-    pprint.pprint(fit)    
     
 if testType == 'poisson':
     # poisson caller
     x = scipy.loadtxt(baseDataDir + 'PoissonExampleX.dat', dtype = scipy.float64, delimiter = ',')
     y = scipy.loadtxt(baseDataDir + 'PoissonExampleY.dat', dtype = scipy.float64, delimiter = ',')
-    fit = glmnet.glmnet(x = x, y = y, family = 'poisson')
-    print('fit:')
-    pprint.pprint(fit)
 
+if runType == 'cvglmnet':
+    fit = cvglmnet.cvglmnet(x = x, y = y, family = testType)
+    cvglmnetPlot.cvglmnetPlot(fit)
+elif runType == 'glmnet':
+    fit = glmnet.glmnet(x = x, y = y, family = testType)
+    glmnetPlot.glmnetPlot(fit, label = True)
+    glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
+    f = glmnetPredict.glmnetPredict(fit, x[0:1,:])
 
-# glmnetPlot.glmnetPlot(fit, label = True)
-# glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
-#f = glmnetPredict.glmnetPredict(fit, x[0:1,:])
+print('fit:')
+pprint.pprint(fit)
 
-#%%
-import cvglmnetCoef
-import importlib
-importlib.reload(cvglmnetCoef)
-
-coef = cvglmnetCoef.cvglmnetCoef(fit, s= scipy.array([0.1]))
-print('coef=', coef)
 
 
 #%%
-import cvglmnetPlot
-import importlib
-importlib.reload(cvglmnetPlot)
-cvglmnetPlot.cvglmnetPlot(fit)
+#import cvglmnetCoef
+#import importlib
+#importlib.reload(cvglmnetCoef)
+#
+#coef = cvglmnetCoef.cvglmnetCoef(fit, s= scipy.array([0.1]))
+#print('coef=', coef)
 
 
