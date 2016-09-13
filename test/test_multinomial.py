@@ -38,15 +38,16 @@ if testType == 'multinomial':
     y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
 
     # glmnet, glmnetPlot, glmnetPredict
-    #fit = glmnet.glmnet(x = x, y = y, family = testType)
-    #glmnetPlot.glmnetPlot(fit, label = True)
-    #glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
-    #f = glmnetPredict.glmnetPredict(fit, x[0:1,:])
+    fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = testType)
+    #glmnetPlot.glmnetPlot(fit.copy(), label = True)
+    glmnetPlot.glmnetPlot(fit.copy(), xvar = 'lambda', label = True)
+    f = glmnetPredict.glmnetPredict(fit.copy(), x[0:10,:])
     
     # cvglmnet, cvglmnetPlot
-    fit = cvglmnet.cvglmnet(x = x, y = y, family = testType, grouped = True)
+    fit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family = testType, grouped = True)
     cvglmnetPlot.cvglmnetPlot(fit)
-    # pprint
+
+    # print fit
     print('fit:')
     pprint.pprint(fit)
 

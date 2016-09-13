@@ -55,8 +55,8 @@ def cvglmnet(x, \
     
     nz = glmnetPredict(glmfit, scipy.empty([0]), scipy.empty([0]), 'nonzero')
     if glmfit['class'] == 'multnet':        
-        nnz = scipy.zeros([len(options['lambdau']), nz.shape[1]])
-        for i in range(nz.shape[1]):
+        nnz = scipy.zeros([len(options['lambdau']), len(nz)])
+        for i in range(len(nz)):
             nnz[:, i] = scipy.transpose(scipy.sum(nz[i], axis = 0))
         nz = scipy.ceil(scipy.median(nnz, axis = 1))    
     elif glmfit['class'] == 'mrelnet':

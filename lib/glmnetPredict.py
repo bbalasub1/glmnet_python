@@ -44,7 +44,7 @@ def glmnetPredict(fit,\
             a0 = scipy.transpose(fit['a0'])
         
         a0 = scipy.reshape(a0, [1, a0.size])   # convert to 1 x N for appending
-        nbeta = scipy.append(a0, fit['beta'], axis = 0)        
+        nbeta = scipy.row_stack( (a0, fit['beta']) )        
         if scipy.size(s) > 0:
             lambdau = fit['lambdau']
             lamlist = lambda_interp(lambdau, s)
@@ -58,8 +58,8 @@ def glmnetPredict(fit,\
         if ptype == 'nonzero':
             result = nonzeroCoef(nbeta[1:nbeta.shape[0], :], True)
             return(result)
-        result = scipy.dot(scipy.append(scipy.ones([newx.shape[0], 1]) \
-                              , newx, axis = 1) , nbeta)
+        result = scipy.dot(scipy.column_stack( (scipy.ones([newx.shape[0], 1]) \
+                              , newx) ) , nbeta)
         if fit['offset']:
             if len(offset) == 0:
                 raise ValueError('No offset provided for prediction, yet used in fit of glmnet')                              
@@ -97,14 +97,14 @@ def glmnetPredict(fit,\
             lambdau = fit['lambdau']
             lamlist = lambda_interp(lambdau, s)
             for i in range(nclass):
-                kbeta = scipy.append(a0[i, :], nbeta[i], axis = 0)
+                kbeta = scipy.row_stack( (a0[i, :], nbeta[i]) )
                 kbeta = kbeta[:, lamlist['left']]*scipy.tile(scipy.transpose(lamlist['frac']), [kbeta.shape[0], 1]) \
                         + kbeta[:, lamlist['right']]*( 1 - scipy.tile(scipy.transpose(lamlist['frac']), [kbeta.shape[0], 1]))
                 nbeta[i] = kbeta
         else:
             for i in range(nclass):
-                nbeta[i] = scipy.append(a0[i, :], nbeta[i], axis = 0)
-            nlambda = len(fit['lambda'])    
+                nbeta[i] = scipy.row_stack( (a0[i, :], nbeta[i]) )
+            nlambda = len(fit['lambdau'])    
 
         if ptype == 'coefficients':
             result = nbeta
@@ -125,7 +125,7 @@ def glmnetPredict(fit,\
         npred = newx.shape[0]
         dp = scipy.zeros([nclass, nlambda, npred], dtype = scipy.float64)
         for i in range(nclass):
-            fitk = scipy.dot( scipy.append(scipy.ones([newx.shape[0], 1]), newx, axis = 1), nbeta[i] )
+            fitk = scipy.dot( scipy.column_stack( (scipy.ones([newx.shape[0], 1]), newx) ), nbeta[i] )
             dp[i, :, :] = dp[i, :, :] + scipy.reshape(scipy.transpose(fitk), [1, nlambda, npred])
 
         if fit['offset']:
@@ -137,17 +137,17 @@ def glmnetPredict(fit,\
             for i in range(nlambda):
                 dp[:, i, :] = dp[:, i, :] + toff
                 
-            if ptype == 'response':
-                pp = scipy.exp(dp)
-                psum = scipy.sum(pp, axis = 0)
-                result = scipy.transpose(pp/scipy.tile(psum, [nclass, 1]), [2, 0, 1])
-            if ptype == 'link':
-                result = scipy.transpose(dp, [2, 0, 1])
-            if ptype == 'class':
-                dp = scipy.transpose(dp, [2, 0, 1])
-                result = scipy.empty([0])
-                for i in range(dp.shape[2]):
-                    result = scipy.append(result, fit['label'][softmax(dp[:, :, i])])
+        if ptype == 'response':
+            pp = scipy.exp(dp)
+            psum = scipy.sum(pp, axis = 0, keepdims = True)
+            result = scipy.transpose(pp/scipy.tile(psum, [nclass, 1, 1]), [2, 0, 1])
+        if ptype == 'link':
+            result = scipy.transpose(dp, [2, 0, 1])
+        if ptype == 'class':
+            dp = scipy.transpose(dp, [2, 0, 1])
+            result = scipy.empty([0])
+            for i in range(dp.shape[2]):
+                result = scipy.append(result, fit['label'][softmax(dp[:, :, i])])
 
     # coxnet
     if fit['class'] == 'coxnet':

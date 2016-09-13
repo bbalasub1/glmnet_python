@@ -38,13 +38,13 @@ if testType == 'binomial':
     y = scipy.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = scipy.float64)
 
     # glmnet, glmnetPlot, glmnetPredict
-    fit = glmnet.glmnet(x = x, y = y, family = testType)
+    fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = testType)
     glmnetPlot.glmnetPlot(fit, label = True)
     glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
-    f = glmnetPredict.glmnetPredict(fit, x[0:1,:])
+    f = glmnetPredict.glmnetPredict(fit, x[0:10,:])
     
     # cvglmnet, cvglmnetPlot
-    fit = cvglmnet.cvglmnet(x = x, y = y, family = testType, ptype='class')
+    fit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family = testType, ptype='class')
     cvglmnetPlot.cvglmnetPlot(fit)
     # pprint
     print('fit:')

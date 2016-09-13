@@ -63,7 +63,7 @@ def cvmultnet(fit, \
     y = y/scipy.tile(ywt, [1, y.shape[1]])
     weights = weights*ywt
     N = y.shape[0] - scipy.sum(scipy.isnan(predmat[:,1,:]), axis = 0, keepdims = True)
-    bigY = scipy.tile(y, [1, 1, lambdau.size])
+    bigY = scipy.tile(y[:, :, None], [1, 1, lambdau.size])
 
     if ptype == 'mse':
         cvraw = scipy.sum((bigY - predmat)**2, axis = 1).squeeze()
