@@ -4,9 +4,11 @@
 
 This is a python alpha-version of the R glmnet library. The underlying fortran codes are the same as the R version, and uses a pathwise coordinate descent algorithm. 
 
-Currently, glmnet calls work for gaussian, multi-variate gaussian, binomial, multinomial, poisson and cox models are implemted models are implemented.
+Currently, glmnet calls for gaussian, multi-variate gaussian, binomial, multinomial, poisson and cox models are implemented for both normal and sparse matrices.
 
 Additionally, cross-validation is also implemented for gaussian, binomial and multinomial models. 
+
+CV for multi-variate gaussian, cox and poisson models are yet to be implemented. Further, all CV is done serially. Parallel versions are yet to be implemented.
 
 During installation, the fortran code is compiled in the local machine using gfortran, and is called by the python code. 
 
