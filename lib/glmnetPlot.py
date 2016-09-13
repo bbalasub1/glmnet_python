@@ -133,7 +133,8 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
     ax2.set(XLim=[min(index), max(index)], XTicks = atdf, XTickLabels = prettydf)
     ax2.grid()
     ax1.yaxis.grid()
-    
+
+    ax2.set_xlabel('Degrees of Freedom')    
     ax1.set_xlabel(xlab)
     ax1.set_ylabel(ylab)
     

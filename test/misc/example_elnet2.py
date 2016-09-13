@@ -11,7 +11,7 @@ import importlib
 
 importlib.reload(glmnet)
 
-glmlib = ctypes.cdll.LoadLibrary('./GLMnet.so') # this is a bit of a pain. 
+glmlib = ctypes.cdll.LoadLibrary('../../lib/GLMnet.so') # this is a bit of a pain. 
                                                 # unless a new python console is started
   
 baseDataDir= '/home/bbalasub/Desktop/Summer2016/glmnet/glmnet_R/'

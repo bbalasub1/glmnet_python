@@ -8,7 +8,7 @@ from glmnet import glmnet
 from glmnetControl import glmnetControl
 from glmnetSet import glmnetSet
 
-glmlib = ctypes.cdll.LoadLibrary('./GLMnet.so') # this is a bit of a pain. 
+glmlib = ctypes.cdll.LoadLibrary('../../lib/GLMnet.so') # this is a bit of a pain. 
                                                 # unless a new python console is started
                                                 # the shared library will persist in memory
 # load data (identical to QuickStartExample.RData)
