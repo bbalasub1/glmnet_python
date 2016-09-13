@@ -82,10 +82,11 @@ def glmnetPredict(fit,\
             result = fit['label'][result]
 
     # multnet / mrelnet
-    if fit['class'] == 'mrelnet':
-        if type == 'response':
-            ptype = 'link'
-        fit['grouped'] = True
+    if fit['class'] == 'mrelnet' or fit['class'] == 'multnet':
+        if fit['class'] == 'mrelnet':
+            if type == 'response':
+                ptype = 'link'
+            fit['grouped'] = True
         
         a0 = fit['a0']
         nbeta = fit['beta']

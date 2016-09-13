@@ -28,8 +28,8 @@ importlib.reload(cvglmnetPlot)
 # parameters
 baseDataDir= '../data/'
 testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
-testType = testTypeList[0]
-runType = 'cvglmnet'
+testType = testTypeList[1]
+runType = 'cvglmnet'  # runType is cvglmnet or glmnet
 
 # call test functions
 if testType == 'gaussian':
@@ -63,7 +63,7 @@ if testType == 'poisson':
     y = scipy.loadtxt(baseDataDir + 'PoissonExampleY.dat', dtype = scipy.float64, delimiter = ',')
 
 if runType == 'cvglmnet':
-    fit = cvglmnet.cvglmnet(x = x, y = y, family = testType)
+    fit = cvglmnet.cvglmnet(x = x, y = y, family = testType, ptype='class')
     cvglmnetPlot.cvglmnetPlot(fit)
 elif runType == 'glmnet':
     fit = glmnet.glmnet(x = x, y = y, family = testType)

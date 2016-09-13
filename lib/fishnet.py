@@ -175,7 +175,7 @@ def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # ninmax
     ninmax = max(nin)
     # fix first value of alm (from inf to correct value)
-    if ulam == 0.0:
+    if ulam[0] == 0.0:
         t1 = scipy.log(alm[1])
         t2 = scipy.log(alm[2])
         alm[0] = scipy.exp(2*t1 - t2)        

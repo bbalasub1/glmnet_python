@@ -11,6 +11,8 @@ from glmnetPredict import glmnetPredict
 import scipy
 from glmnet import glmnet
 from cvelnet import cvelnet
+from cvlognet import cvlognet
+from cvmultnet import cvmultnet
 
 def cvglmnet(x, \
              y, \
@@ -89,25 +91,25 @@ def cvglmnet(x, \
             opts['weights'] = opts['weights'][~which, ]
             opts['lambdau'] = options['lambdau']
             if is_offset:
-                print(opts['offset'].size)
                 if opts['offset'].size > 0:
                     opts['offset'] = opts['offset'][~which, ]
             xr = x[~which, ]
             yr = y[~which, ]
-            cpredmat.append(glmnet(x = xr, y = yr, family = family, **opts))
-            
+            newFit = glmnet(x = xr, y = yr, family = family, **opts)
+            cpredmat.append(newFit)
+    
     if cpredmat[0]['class'] == 'elnet':
         cvstuff = cvelnet( cpredmat, options['lambdau'], x, y \
                           , options['weights'], options['offset'] \
                           , foldid, ptype, grouped, keep)
-#    elif cpredmat[0]['class'] == 'lognet':
-#        cvstuff = cvlognet(cpredmat, options['lambdau'], x, y \
-#                          , options['weights'], options['offset'] \
-#                          , foldid, ptype, grouped, keep)
-#    elif cpredmat[0]['class'] == 'multnet':
-#        cvstuff = cvmultnet(cpredmat, options['lambdau'], x, y \
-#                          , options['weights'], options['offset'] \
-#                          , foldid, ptype, grouped, keep)
+    elif cpredmat[0]['class'] == 'lognet':
+        cvstuff = cvlognet(cpredmat, options['lambdau'], x, y \
+                          , options['weights'], options['offset'] \
+                          , foldid, ptype, grouped, keep)
+    elif cpredmat[0]['class'] == 'multnet':
+        cvstuff = cvmultnet(cpredmat, options['lambdau'], x, y \
+                          , options['weights'], options['offset'] \
+                          , foldid, ptype, grouped, keep)
 #    elif cpredmat[0]['class'] == 'coxnet':
 #        cvstuff = cvcoxnet(cpredmat, options['lambdau'], x, y \
 #                          , options['weights'], options['offset'] \

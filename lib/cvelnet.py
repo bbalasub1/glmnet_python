@@ -24,16 +24,17 @@ def cvelnet(fit, \
                  'mae':'Mean Absolute Error'}
     if ptype == 'default':
         ptype = 'mse'
-    if not ptype in ['mse', 'mae', 'deviance']:
-        print('Warning: only ''mse'', ''deviance'' or ''mar'' available for Gaussian models; ''mse'' used')
+
+    ptypeList = ['mse', 'mae', 'deviance']    
+    if not ptype in ptypeList:
+        print('Warning: only ', ptypeList, 'available for Gaussian models; ''mse'' used')
         ptype = 'mse'
     if len(offset) > 0:
         y = y - offset
 
     predmat = scipy.ones([y.size, lambdau.size])*scipy.NAN               
     nfolds = scipy.amax(foldid) + 1
-    nlams = []
-    
+    nlams = [] 
     for i in range(nfolds):
         which = foldid == i
         fitobj = fit[i].copy()

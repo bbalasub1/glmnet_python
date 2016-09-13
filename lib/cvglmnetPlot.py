@@ -18,10 +18,10 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
                  ecolor = (0.5, 0.5, 0.5), \
                  **options
                  )
-    plt.hold()
+    plt.hold(True)         
     plt.plot(sloglam, cvobject['cvm'], linestyle = 'dashed',\
              marker = 'o', markerfacecolor = 'r')             
-        
+    
     xlim1 = ax1.get_xlim()
     ylim1 = ax1.get_ylim()
     
@@ -34,7 +34,6 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
         plt.plot(xval, ylim1, color = 'b', linestyle = 'dashed', \
              linewidth = 1)
 
-    
     ax2 = ax1.twiny()
     ax2.xaxis.tick_top()
 
@@ -65,7 +64,7 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
         
     ax1.set_ylabel(cvobject['name'])
     
-    plt.show()
+    #plt.show()
 
     
     
