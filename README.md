@@ -1,16 +1,18 @@
-# glmnet python 
+# Glmnet for python 
 
 ## Introduction
 
-This is a python version of the popular glmnet library for fitting the entire lasso or elastic-net regularization path for linear regression, logistic and multinomial regression models, poisson regression and the cox model. This is a beta-release. The underlying fortran codes are the same as the R version, and uses a cyclical path-wise coordinate descent algorithm as described in the papers linked below. 
+This is a python version of the popular glmnet library. Glmnet fits the entire lasso or elastic-net regularization path for linear regression, logistic and multinomial regression models, poisson regression and the cox model. This is a beta-release. 
+
+The underlying fortran codes are the same as the R version, and uses a cyclical path-wise coordinate descent algorithm as described in the papers linked below. 
 
 Currently, glmnet calls for gaussian, multi-variate gaussian, binomial, multinomial, poisson and cox models are implemented for both normal and sparse matrices.
 
-Additionally, cross-validation is also implemented for gaussian, binomial and multinomial models. CV for multi-variate gaussian, cox and poisson models are yet to be implemented. Further, all CV is done serially. Parallel versions are yet to be implemented.
+Additionally, cross-validation is also implemented for gaussian, binomial and multinomial models. CV for multi-variate gaussian, cox and poisson models are yet to be implemented. Note that all CV is done serially in the current version. Parallel versions will be implemented in the future.
 
 During installation, the fortran code is compiled in the local machine using gfortran, and is called by the python code. 
 
-The best starting point to use this library is to start with the Jupyter notebooks in the test directory (glmnet_examples).
+**The best starting point to use this library is to start with the Jupyter notebooks in the test directory (glmnet_examples.ipynb).**
 
 ## Installation
 
