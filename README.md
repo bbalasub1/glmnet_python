@@ -12,7 +12,9 @@ Additionally, cross-validation is also implemented for gaussian, binomial and mu
 
 During installation, the fortran code is compiled in the local machine using `gfortran`, and is called by the python code. 
 
-**The best starting point to use this library is to start with the Jupyter notebooks in the `test` directory (glmnet_examples.ipynb).**
+````diff
+-The best starting point to use this library is to start with the Jupyter notebooks in the `test` directory (glmnet_examples.ipynb).
+````
 
 ## Installation
 
