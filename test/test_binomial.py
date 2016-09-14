@@ -11,23 +11,34 @@ sys.path.append('../test')
 sys.path.append('../lib')
 
 import scipy
-import glmnet 
 import importlib
-import pprint
+import matplotlib.pyplot as plt
+
+import glmnet 
 import glmnetPlot
+import glmnetPrint
+import glmnetCoef
 import glmnetPredict
+
 import cvglmnet
+import cvglmnetCoef
 import cvglmnetPlot
+import cvglmnetPredict
 
 importlib.reload(glmnet)
 importlib.reload(glmnetPlot)    
-importlib.reload(glmnetPredict)    
+importlib.reload(glmnetPrint)
+importlib.reload(glmnetCoef)    
+importlib.reload(glmnetPredict)
+
 importlib.reload(cvglmnet)    
+importlib.reload(cvglmnetCoef)
 importlib.reload(cvglmnetPlot)
+importlib.reload(cvglmnetPredict)
 
 # parameters
 baseDataDir= '../data/'
-testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
+#testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
 testType = 'binomial'
 runType = 'cvglmnet'  # runType is cvglmnet or glmnet
 
