@@ -12,7 +12,9 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
     
     sloglam = sign_lambda*scipy.log(cvobject['lambdau'])
 
-    fig, ax1 = plt.subplots()    
+    fig = plt.gcf()
+    ax1 = plt.gca()
+    #fig, ax1 = plt.subplots()    
     
     plt.errorbar(sloglam, cvobject['cvm'], cvobject['cvsd'], \
                  ecolor = (0.5, 0.5, 0.5), \

@@ -13,13 +13,13 @@ def cvglmnetCoef(obj, s = None):
     if s is None or len(s) == 0:
         s = obj['lambda_1se']
         
-    if s.dtype == scipy.float64:
+    if isinstance(s, scipy.ndarray):
         lambdau = s
-    elif s.dtype == scipy.char:
+    elif isinstance(s, str):
         sbase = ['lambda_1se', 'lambda_min']
         indxtf = [x.startswith(s.lower()) for x in sbase] # find index of family in fambase
         sind= [i for i in range(len(indxtf)) if indxtf[i] == True]
-        s = sbase[sind]
+        s = sbase[sind[0]]
         lambdau = obj[s]
     else:
         raise ValueError('Invalid form of s')
