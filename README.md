@@ -15,7 +15,7 @@ During installation, the fortran code is compiled in the local machine using `gf
 ````diff
 +Getting started:
 ````
-The best starting point to use this library is to start with the Jupyter notebooks in the `test` directory (glmnet_examples.ipynb).
+The best starting point to use this library is to start with the Jupyter notebooks in the `test` directory (glmnet_examples.ipynb). Detailed explanations, most used parameter values, and plenty of examples are provided there.
 
 ## Installation
 
