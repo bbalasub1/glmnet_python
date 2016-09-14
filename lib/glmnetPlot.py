@@ -14,7 +14,7 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
     ptype = getFromList(ptype, ['coef', '2norm'], 'ptype should be one of ''coef'', ''2norm'' ')    
 
     if x['class'] in ['elnet', 'lognet', 'coxnet', 'fishnet']:
-        plotCoef(x['beta'], [], x['lambdau'], x['df'], x['dev'], 
+        handle = plotCoef(x['beta'], [], x['lambdau'], x['df'], x['dev'], 
         label, xvar, '', 'Coefficients', **options)
 
     elif x['class'] in ['multnet', 'mrelnet']:
@@ -34,11 +34,11 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
             if x['class'] == 'multnet':
                 for i in range(ncl):
                     str = 'Coefficients: Class %d' % (i) 
-                    plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
+                    handle = plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
                              x['dev'], label, xvar, '', str, **options)
             else:
                     str = 'Coefficients: Response %d' % (i) 
-                    plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
+                    handle = plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
                              x['dev'], label, xvar, '', str, **options)
         else:
             dfseq = scipy.round_(scipy.mean(x['dfmat'], axis = 0))
@@ -48,13 +48,14 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
             coefnorm = scipy.sqrt(coefnorm)
             if x['class'] == 'multnet':
                 str = 'Coefficient 2Norms'
-                plotCoef(coefnorm, norm, x['lambdau'], dfseq, x['dev'],
+                handle = plotCoef(coefnorm, norm, x['lambdau'], dfseq, x['dev'],
                          label, xvar, '',str, **options);
             else:
                 str = 'Coefficient 2Norms'
-                plotCoef(coefnorm, norm, x['lambdau'], x['dfmat'][0,:], x['dev'],
+                handle = plotCoef(coefnorm, norm, x['lambdau'], x['dfmat'][0,:], x['dev'],
                          label, xvar, '', str, **options);                
 
+    return(handle)
 # end of glmnetplot
 # =========================================
 #
@@ -108,7 +109,10 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
         xlab = iname
 
     # draw the figures
-    fig, ax1 = plt.subplots()    
+    #fig, ax1 = plt.subplots()    
+    fig = plt.gcf()
+    ax1 = plt.gca()
+    
     # plot x vs y
     beta = scipy.transpose(beta)
     ax1.plot(index, beta, **options)
@@ -151,5 +155,12 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
             ax1.text(1/2*xpos + 1/2*xlim1[adjpos], beta[bsize[0]-1, i], str)
     
     plt.show()
+    
+    handle = dict()
+    handle['fig'] = fig
+    handle['ax1'] = ax1
+    handle['ax2'] = ax2
+    return(handle)
+
 # end of plotCoef
 # =========================================

@@ -93,10 +93,33 @@ plt.ylim(0, 9)
 plt.legend( ('alpha = 1', 'alpha = 0.5', 'alpha = 0'), loc = 'upper left', prop={'size':6})
 
 #%%
+plt.figure()
+cl = scipy.array([[-0.7], [0.5]], dtype = scipy.float64)
+tfit=glmnet.glmnet(x = x.copy(),y= y.copy(), cl = cl)
+glmnetPlot.glmnetPlot(tfit)
+
+#%%
+plt.figure()
 pfac = scipy.ones([1, 20])
 pfac[0, 4] = 0; pfac[0, 9] = 0; pfac[0, 14] = 0
-#p.fac[c(5, 10, 15)] = 0
 pfit = glmnet.glmnet(x = x.copy(), y = y.copy(), penalty_factor = pfac)
 glmnetPlot.glmnetPlot(pfit, label = True)
 
+#%%
+plt.figure()
+scipy.random.seed(101)
+x = scipy.random.rand(100,10)
+y = scipy.random.rand(100,1)
+fit = glmnet.glmnet(x = x, y = y)
+glmnetPlot.glmnetPlot(fit)
 
+#%%
+plt.figure()
+c = glmnetCoef.glmnetCoef(fit)
+c = c[1:, -1] # remove intercept and get the coefficients at the end of the path 
+h = glmnetPlot.glmnetPlot(fit)
+ax1 = h['ax1']
+xloc = plt.xlim()
+xloc = xloc[1]
+for i in range(len(c)):
+    ax1.text(xloc, c[i], 'var' + str(i)); 

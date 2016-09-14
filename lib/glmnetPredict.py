@@ -207,10 +207,15 @@ def lambda_interp(lambdau, s):
         coord = scipy.interpolate.interp1d(lambdau, range(k))(sfrac)
         left = scipy.floor(coord).astype(scipy.integer, copy = False)
         right = scipy.ceil(coord).astype(scipy.integer, copy = False)
-        if left != right:
-            sfrac = (sfrac - lambdau[right])/(lambdau[left] - lambdau[right])
-        else:
-            sfrac[left == right] = 1.0
+        #
+        tf = left != right
+        sfrac[tf] = (sfrac[tf] - lambdau[right[tf]])/(lambdau[left[tf]] - lambdau[right[tf]])
+        sfrac[~tf] = 1.0
+        #if left != right:
+        #    sfrac = (sfrac - lambdau[right])/(lambdau[left] - lambdau[right])
+        #else:
+        #    sfrac[left == right] = 1.0
+        
     result = dict()    
     result['left'] = left
     result['right'] = right
