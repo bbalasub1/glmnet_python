@@ -46,6 +46,7 @@ glmnetPredict.glmnetPredict(fit, newx = x[0:5,], ptype='class', s = scipy.array(
 
 cvfit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family = 'binomial', ptype = 'class')
 
+plt.figure()
 cvglmnetPlot.cvglmnetPlot(cvfit)
 
 cvfit['lambda_min']
@@ -54,7 +55,7 @@ cvfit['lambda_1se']
 
 cvglmnetCoef.cvglmnetCoef(cvfit, s = 'lambda_min')
 
-glmnetPredict.glmnetPredict(cvfit, newx = x[0:10, ], s = 'lambda_min', ptype = 'class')
+cvglmnetPredict.cvglmnetPredict(cvfit, newx = x[0:10, ], s = 'lambda_min', ptype = 'class')
 
 
 

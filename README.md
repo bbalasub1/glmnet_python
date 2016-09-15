@@ -8,7 +8,9 @@ The underlying fortran codes are the same as the `R` version, and uses a cyclica
 
 Currently, `glmnet` library methods for gaussian, multi-variate gaussian, binomial, multinomial, poisson and cox models are implemented for both normal and sparse matrices.
 
-Additionally, cross-validation is also implemented for gaussian, binomial and multinomial models. CV for multi-variate gaussian, cox and poisson models are yet to be implemented. Note that all CV is done serially in the current version. Parallel versions will be implemented in the future.
+Additionally, cross-validation is also implemented for gaussian, multivariate gaussian, binomial and multinomial models. CV for cox and poisson models are yet to be implemented. 
+
+CV can be done in both serial and parallel manner. Parallellization is done using multiprocessing and joblib libraries.
 
 During installation, the fortran code is compiled in the local machine using `gfortran`, and is called by the python code. 
 

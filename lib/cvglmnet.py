@@ -13,6 +13,7 @@ from glmnet import glmnet
 from cvelnet import cvelnet
 from cvlognet import cvlognet
 from cvmultnet import cvmultnet
+from cvmrelnet import cvmrelnet
 
 def cvglmnet(x, \
              y, \
@@ -82,22 +83,13 @@ def cvglmnet(x, \
     cpredmat = list()
     foldid = scipy.reshape(foldid, [foldid.size, ])
     if parallel == True:
-        # TODO: parallel not yet implemented
-        raise NotImplementedError('Parallel for cvglmnet not yet implemented')
+        num_cores = multiprocessing.cpu_count()
+        cpredmat = joblib.Parallel(n_jobs=num_cores)(joblib.delayed(doCV)(i, x, y, family, foldid, nfolds, is_offset, **options) for i in range(nfolds))
     else:
         for i in range(nfolds):
-            which = foldid == i
-            opts = options.copy()
-            opts['weights'] = opts['weights'][~which, ]
-            opts['lambdau'] = options['lambdau']
-            if is_offset:
-                if opts['offset'].size > 0:
-                    opts['offset'] = opts['offset'][~which, ]
-            xr = x[~which, ]
-            yr = y[~which, ]
-            newFit = glmnet(x = xr, y = yr, family = family, **opts)
+            newFit = doCV(i, x, y, family, foldid, nfolds, is_offset, **options)
             cpredmat.append(newFit)
-    
+        
     if cpredmat[0]['class'] == 'elnet':
         cvstuff = cvelnet( cpredmat, options['lambdau'], x, y \
                           , options['weights'], options['offset'] \
@@ -110,12 +102,12 @@ def cvglmnet(x, \
         cvstuff = cvmultnet(cpredmat, options['lambdau'], x, y \
                           , options['weights'], options['offset'] \
                           , foldid, ptype, grouped, keep)
+    elif cpredmat[0]['class'] == 'mrelnet':
+        cvstuff = cvmrelnet(cpredmat, options['lambdau'], x, y \
+                          , options['weights'], options['offset'] \
+                          , foldid, ptype, grouped, keep)
 #    elif cpredmat[0]['class'] == 'coxnet':
 #        cvstuff = cvcoxnet(cpredmat, options['lambdau'], x, y \
-#                          , options['weights'], options['offset'] \
-#                          , foldid, ptype, grouped, keep)
-#    elif cpredmat[0]['class'] == 'mrelnet':
-#        cvstuff = cmrelnet(cpredmat, options['lambdau'], x, y \
 #                          , options['weights'], options['offset'] \
 #                          , foldid, ptype, grouped, keep)
 #    elif cpredmat[0]['class'] == 'fishnet':
@@ -151,13 +143,16 @@ def cvglmnet(x, \
         
 # end of cvglmnet
 #==========================
-
-# TODO: parallel stuff
-# This is future reference code for parallel implementation 
-#    inputs = range(10)
-#    num_cores = multiprocessing.cpu_count()
-#    results = joblib.Parallel(n_jobs=num_cores)(joblib.delayed(childFunc)(i) for i in inputs)
-
-#def childFunc(i):
-#	    return i * i
+def doCV(i, x, y, family, foldid, nfolds, is_offset, **options):
+    which = foldid == i
+    opts = options.copy()
+    opts['weights'] = opts['weights'][~which, ]
+    opts['lambdau'] = options['lambdau']
+    if is_offset:
+        if opts['offset'].size > 0:
+            opts['offset'] = opts['offset'][~which, ]
+    xr = x[~which, ]
+    yr = y[~which, ]
+    newFit = glmnet(x = xr, y = yr, family = family, **opts)    
+    return(newFit)
     

@@ -40,9 +40,13 @@ y = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = scipy.float
 # call glmnet
 mfit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = 'mgaussian')
 
+plt.figure()
 glmnetPlot.glmnetPlot(mfit, xvar = 'lambda', label = True, ptype = '2norm')
 
 f = glmnetPredict.glmnetPredict(mfit, x[0:5,:], s = scipy.float64([0.1, 0.01]))
 print(f[:,:,0])
 print(f[:,:,1])
 
+plt.figure()
+cvmfit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family = "mgaussian", parallel = True)
+cvglmnetPlot.cvglmnetPlot(cvmfit)

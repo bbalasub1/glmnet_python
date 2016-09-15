@@ -114,12 +114,12 @@ def glmnetPredict(fit,\
             if fit['grouped']:
                 result = list()
                 tn = nbeta[0].shape[0]
-                result.append(nonzeroCoef(nbeta[0][1:tn, 0:1], True))
+                result.append(nonzeroCoef(nbeta[0][1:tn, :], True))
             else:
                 result = list()
                 for i in range(nclass):
                     tn = nbeta[0].shape[0]
-                    result.append(nonzeroCoef(nbeta[0][1:tn, 0:1], True))  
+                    result.append(nonzeroCoef(nbeta[0][1:tn, :], True))  
             return(result)
             
         npred = newx.shape[0]
