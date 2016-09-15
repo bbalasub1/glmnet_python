@@ -1,53 +1,51 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Sep 12 22:08:51 2016
+# Import relevant modules and setup for calling glmnet
 
-@author: bbalasub
-"""
-
-#%%
 import sys
 sys.path.append('../test')
 sys.path.append('../lib')
 
 import scipy
-import glmnet 
 import importlib
-import pprint
+import matplotlib.pyplot as plt
+import warnings
+
+import glmnet 
 import glmnetPlot
+import glmnetPrint
+import glmnetCoef
 import glmnetPredict
+
 import cvglmnet
+import cvglmnetCoef
 import cvglmnetPlot
+import cvglmnetPredict
 
 importlib.reload(glmnet)
 importlib.reload(glmnetPlot)    
-importlib.reload(glmnetPredict)    
+importlib.reload(glmnetPrint)
+importlib.reload(glmnetCoef)    
+importlib.reload(glmnetPredict)
+
 importlib.reload(cvglmnet)    
+importlib.reload(cvglmnetCoef)
 importlib.reload(cvglmnetPlot)
+importlib.reload(cvglmnetPredict)
 
 # parameters
 baseDataDir= '../data/'
-testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
-testType = 'multinomial'
-runType = 'cvglmnet'  # runType is cvglmnet or glmnet
 
-# call test functions
-if testType == 'multinomial':
-    ##  multinomial caller 
-    x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
-    y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
+# load data
+x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
+y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
 
-    # glmnet, glmnetPlot, glmnetPredict
-    fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = testType)
-    #glmnetPlot.glmnetPlot(fit.copy(), label = True)
-    glmnetPlot.glmnetPlot(fit.copy(), xvar = 'lambda', label = True)
-    f = glmnetPredict.glmnetPredict(fit.copy(), x[0:10,:])
-    
-    # cvglmnet, cvglmnetPlot
-    fit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family = testType, grouped = True)
-    cvglmnetPlot.cvglmnetPlot(fit)
+# call glmnet
+fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = 'multinomial', mtype = 'grouped')
+                    
+glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True, ptype = '2norm')
 
-    # print fit
-    print('fit:')
-    pprint.pprint(fit)
+warnings.filterwarnings('ignore')
+cvfit=cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family='multinomial', mtype = 'grouped')
+warnings.filterwarnings('default')
 
+f = cvglmnetPredict.cvglmnetPredict(cvfit, newx = x[0:10, :], s = 'lambda_min', ptype = 'class')
+print(f)

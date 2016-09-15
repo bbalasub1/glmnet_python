@@ -1,11 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Sep 12 22:08:51 2016
+# Import relevant modules and setup for calling glmnet
 
-@author: bbalasub
-"""
-
-#%%
 import sys
 sys.path.append('../test')
 sys.path.append('../lib')
@@ -38,26 +32,32 @@ importlib.reload(cvglmnetPredict)
 
 # parameters
 baseDataDir= '../data/'
-#testTypeList = ['gaussian', 'binomial', 'multinomial', 'cox', 'mgaussian', 'poisson']
-testType = 'binomial'
-runType = 'cvglmnet'  # runType is cvglmnet or glmnet
 
-# call test functions
-if testType == 'binomial':
-    ##  binomial caller 
-    x = scipy.loadtxt(baseDataDir + 'BinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
-    y = scipy.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = scipy.float64)
+# load data
+x = scipy.loadtxt(baseDataDir + 'BinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
+y = scipy.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = scipy.float64)
 
-    # glmnet, glmnetPlot, glmnetPredict
-    fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = testType)
-    glmnetPlot.glmnetPlot(fit, label = True)
-    glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True)
-    f = glmnetPredict.glmnetPredict(fit, x[0:10,:])
-    
-    # cvglmnet, cvglmnetPlot
-    fit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family = testType, ptype='class')
-    cvglmnetPlot.cvglmnetPlot(fit)
-    # pprint
-    print('fit:')
-    pprint.pprint(fit)
+# call glmnet
+fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = 'binomial')
+                    
+glmnetPlot.glmnetPlot(fit, xvar = 'dev', label = True);
+
+glmnetPredict.glmnetPredict(fit, newx = x[0:5,], ptype='class', s = scipy.array([0.05, 0.01]))
+
+cvfit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family = 'binomial', ptype = 'class')
+
+cvglmnetPlot.cvglmnetPlot(cvfit)
+
+cvfit['lambda_min']
+
+cvfit['lambda_1se']
+
+cvglmnetCoef.cvglmnetCoef(cvfit, s = 'lambda_min')
+
+glmnetPredict.glmnetPredict(cvfit, newx = x[0:10, ], s = 'lambda_min', ptype = 'class')
+
+
+
+
+
 

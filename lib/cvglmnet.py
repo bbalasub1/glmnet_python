@@ -145,7 +145,7 @@ def cvglmnet(x, \
     idmin = options['lambdau'] == CVerr['lambda_min']
     semin = cvm[idmin] + cvsd[idmin]
     CVerr['lambda_1se'] = scipy.amax(options['lambdau'][cvm <= semin]).reshape([1])
-    CVerr['class'] = 'cv.glmnet'
+    CVerr['class'] = 'cvglmnet'
     
     return(CVerr)
         

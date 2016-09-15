@@ -89,7 +89,7 @@ def glmnetPredict(fit,\
             fit['grouped'] = True
         
         a0 = fit['a0']
-        nbeta = fit['beta']
+        nbeta = fit['beta'].copy()
         nclass = a0.shape[0]
         nlambda = s.size
         
@@ -125,7 +125,8 @@ def glmnetPredict(fit,\
         npred = newx.shape[0]
         dp = scipy.zeros([nclass, nlambda, npred], dtype = scipy.float64)
         for i in range(nclass):
-            fitk = scipy.dot( scipy.column_stack( (scipy.ones([newx.shape[0], 1]), newx) ), nbeta[i] )
+            qq = scipy.column_stack( (scipy.ones([newx.shape[0], 1]), newx) )
+            fitk = scipy.dot( qq, nbeta[i] )
             dp[i, :, :] = dp[i, :, :] + scipy.reshape(scipy.transpose(fitk), [1, nlambda, npred])
 
         if fit['offset']:
@@ -145,9 +146,10 @@ def glmnetPredict(fit,\
             result = scipy.transpose(dp, [2, 0, 1])
         if ptype == 'class':
             dp = scipy.transpose(dp, [2, 0, 1])
-            result = scipy.empty([0])
+            result = list()
             for i in range(dp.shape[2]):
-                result = scipy.append(result, fit['label'][softmax(dp[:, :, i])])
+                t = softmax(dp[:, :, i])
+                result = scipy.append(result, fit['label'][t['pclass']])
 
     # coxnet
     if fit['class'] == 'coxnet':
@@ -227,7 +229,7 @@ def lambda_interp(lambdau, s):
 def softmax(x, gap = False):
    d = x.shape
    maxdist = x[:, 0]
-   pclass = scipy.ones([d[0], 1], dtype = scipy.integer)
+   pclass = scipy.zeros([d[0], 1], dtype = scipy.integer)
    for i in range(1, d[1], 1):
        l = x[:, i] > maxdist
        pclass[l] = i

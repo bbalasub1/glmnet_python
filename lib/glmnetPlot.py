@@ -43,7 +43,7 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
         else:
             dfseq = scipy.round_(scipy.mean(x['dfmat'], axis = 0))
             coefnorm = beta[1]*0
-            for i in range(beta):
+            for i in range(len(beta)):
                 coefnorm = coefnorm + scipy.absolute(beta[i])**2
             coefnorm = scipy.sqrt(coefnorm)
             if x['class'] == 'multnet':
