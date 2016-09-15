@@ -7,7 +7,6 @@ sys.path.append('../lib')
 import scipy
 import importlib
 import matplotlib.pyplot as plt
-import warnings
 
 import glmnet 
 import glmnetPlot
@@ -35,16 +34,15 @@ importlib.reload(cvglmnetPredict)
 baseDataDir= '../data/'
 
 # load data
-x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
-y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
+x = scipy.loadtxt(baseDataDir + 'PoissonExampleX.dat', dtype = scipy.float64, delimiter = ',')
+y = scipy.loadtxt(baseDataDir + 'PoissonExampleY.dat', dtype = scipy.float64, delimiter = ',')
 
 # call glmnet
-fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = 'multinomial', mtype = 'grouped')
-                    
-glmnetPlot.glmnetPlot(fit, xvar = 'lambda', label = True, ptype = '2norm')
+fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = 'poisson')
 
-warnings.filterwarnings('ignore')
-cvfit=cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family='multinomial', mtype = 'grouped')
-warnings.filterwarnings('default')
+glmnetPlot.glmnetPlot(fit)
 
-f = cvglmnetPredict.cvglmnetPredict(cvfit, newx = x[0:10, :], s = 'lambda_min', ptype = 'class')
+glmnetCoef.glmnetCoef(fit, s = scipy.float64([1.0]))
+
+f = glmnetPredict.glmnetPredict(fit, x[0:5,:], ptype = 'response', s = scipy.float64([0.1, 0.01]))
+print(f)

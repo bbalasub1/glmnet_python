@@ -196,11 +196,8 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
             ja = ia[0:ninmax] - 1    # ia is 1-indexed in fortran
             oja = scipy.argsort(ja)
             ja1 = ja[oja]
-            print(ca.shape)
             df = scipy.any(scipy.absolute(ca) > 0, axis=1)
-            print(df.shape)
             df = scipy.sum(df, axis = 0)
-            print(df.shape)            
             df = scipy.reshape(df, (1, df.size))
             for k in range(0, nr):
                 ca1 = scipy.reshape(ca[:,k,:], (ninmax, lmu))
