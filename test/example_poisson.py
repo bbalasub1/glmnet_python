@@ -46,3 +46,7 @@ glmnetCoef.glmnetCoef(fit, s = scipy.float64([1.0]))
 
 f = glmnetPredict.glmnetPredict(fit, x[0:5,:], ptype = 'response', s = scipy.float64([0.1, 0.01]))
 print(f)
+
+cvfit = cvglmnet.cvglmnet(x.copy(), y.copy(), family = 'poisson')
+optlam = scipy.array([cvfit['lambda_min'], cvfit['lambda_1se']]).reshape(2,)
+cvglmnetCoef.cvglmnetCoef(cvfit, s = optlam)

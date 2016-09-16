@@ -14,6 +14,7 @@ from cvelnet import cvelnet
 from cvlognet import cvlognet
 from cvmultnet import cvmultnet
 from cvmrelnet import cvmrelnet
+from cvfishnet import cvfishnet
 
 def cvglmnet(x, \
              y, \
@@ -106,12 +107,12 @@ def cvglmnet(x, \
         cvstuff = cvmrelnet(cpredmat, options['lambdau'], x, y \
                           , options['weights'], options['offset'] \
                           , foldid, ptype, grouped, keep)
+    elif cpredmat[0]['class'] == 'fishnet':
+        cvstuff = cvfishnet(cpredmat, options['lambdau'], x, y \
+                           , options['weights'], options['offset'] \
+                           , foldid, ptype, grouped, keep)
 #    elif cpredmat[0]['class'] == 'coxnet':
 #        cvstuff = cvcoxnet(cpredmat, options['lambdau'], x, y \
-#                          , options['weights'], options['offset'] \
-#                          , foldid, ptype, grouped, keep)
-#    elif cpredmat[0]['class'] == 'fishnet':
-#        cvstuff = cvfishnet(cpredmat, options['lambdau'], x, y \
 #                          , options['weights'], options['offset'] \
 #                          , foldid, ptype, grouped, keep)
  
