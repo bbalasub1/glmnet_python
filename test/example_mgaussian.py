@@ -7,9 +7,10 @@ sys.path.append('../lib')
 import scipy
 import importlib
 import matplotlib.pyplot as plt
+import time
 
 import glmnet 
-import glmnetPlot
+from glmnetPlot import glmnetPlot
 import glmnetPrint
 import glmnetCoef
 import glmnetPredict
@@ -20,7 +21,7 @@ import cvglmnetPlot
 import cvglmnetPredict
 
 importlib.reload(glmnet)
-importlib.reload(glmnetPlot)    
+#importlib.reload(glmnetPlot)    
 importlib.reload(glmnetPrint)
 importlib.reload(glmnetCoef)    
 importlib.reload(glmnetPredict)
@@ -41,12 +42,16 @@ y = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = scipy.float
 mfit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = 'mgaussian')
 
 plt.figure()
-glmnetPlot.glmnetPlot(mfit, xvar = 'lambda', label = True, ptype = '2norm')
+glmnetPlot(mfit, xvar = 'lambda', label = True, ptype = '2norm')
 
 f = glmnetPredict.glmnetPredict(mfit, x[0:5,:], s = scipy.float64([0.1, 0.01]))
 print(f[:,:,0])
 print(f[:,:,1])
 
 plt.figure()
+t = time.time()
 cvmfit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family = "mgaussian", parallel = True)
+e = time.time() - t
+print('time elapsed = ', e)
+
 cvglmnetPlot.cvglmnetPlot(cvmfit)
