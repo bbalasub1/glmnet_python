@@ -1,16 +1,15 @@
-import matplotlib.pyplot as plt
+import sys
+sys.path.append('../../test')
+sys.path.append('../../lib')
 import scipy
+import glmnet
+import importlib
+importlib.reload(glmnet)
 
-N = 10
-a = list()
-s = list()
-ns = list()
-for i in range(10):
-    x = scipy.random.normal(size = N)
-    a.append(scipy.mean(x))
-    s.append(scipy.var(x))
-    ns.append(N)
-    N = 2*N
+x = scipy.random.normal(size = [1000,10])
+x[x < 1.0] = 0.0
+xs = scipy.sparse.csc_matrix(x, dtype = scipy.float64)
+y = scipy.random.binomial(1, 0.5, size =[1000,1])*1.0
+fit = glmnet.glmnet(x = xs, y = y, family = 'binomial')
 
-plt.plot(ns, s)    
 

@@ -2,13 +2,15 @@
 """
 def loadGlmLib():
 =======================
-PRE:
+INPUT ARGUMENTS:
 
-No input parameters
+                NONE
+
 =======================
-POST: 
+OUTPUT ARGUMENTS: 
 
-Returns a glmlib object with methods that are equivalent to the fortran functions in GLMnet.f
+glmlib          Returns a glmlib object with methods that are equivalent 
+                to the fortran functions in GLMnet.f
 =======================
 """
 import ctypes

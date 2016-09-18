@@ -48,3 +48,4 @@ cvfit=cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), family='multinomial', mtype 
 warnings.filterwarnings('default')
 
 f = cvglmnetPredict.cvglmnetPredict(cvfit, newx = x[0:10, :], s = 'lambda_min', ptype = 'class')
+
