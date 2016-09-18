@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 """
+internal function called by glmnet. see also glmnet, cvglmnet
 
-@author: bbalasub
 """
 # import packages/methods
 import scipy
 import ctypes
+from loadGlmLib import loadGlmLib
 
 def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm, 
           nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
           thresh, isd, intr, maxit, kopt, family):
 
     # load shared fortran library
-    glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
+    glmlib = loadGlmLib() 
     
     # 
     noo = y.shape[0]

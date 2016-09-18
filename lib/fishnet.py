@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-
-@author: bbalasub
+internal function called by glmnet. see also glmnet, cvglmnet
 """
 # import packages/methods
 import scipy
 import ctypes
+from loadGlmLib import loadGlmLib
 
 def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm, 
           nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
           thresh, isd, intr, maxit, family):
     
     # load shared fortran library
-    glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
+    glmlib = loadGlmLib() 
     
     if scipy.any( y < 0):
         raise ValueError('negative responses not permitted for Poisson family')

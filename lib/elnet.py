@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug 30 21:40:50 2016
+internal function called by glmnet. see also glmnet, cvglmnet
 
-@author: bbalasub
 """
 # import packages/methods
 import scipy
 import ctypes
+from loadGlmLib import loadGlmLib
     
 def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty, 
           nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, thresh, isd, intr, 
           maxit, family):
 
     # load shared fortran library
-    glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
+    glmlib = loadGlmLib() 
     
     # pre-process data     
     ybar = scipy.dot(scipy.transpose(y), weights)

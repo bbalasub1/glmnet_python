@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Sep 10 07:31:19 2016
+Internal glmnet function. See also cvglmnet.
 
-@author: bbalasub
+Compute the weighted mean and SD within folds, and hence the SE of the mean
 """
 import scipy
 from wtmean import wtmean

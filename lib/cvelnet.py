@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Sep 10 00:22:05 2016
-
-@author: bbalasub
+Internal glmnet function. See also cvglmnet.
 """
 import scipy
 from glmnetPredict import glmnetPredict

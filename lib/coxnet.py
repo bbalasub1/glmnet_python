@@ -4,18 +4,20 @@
 time -- column 0
 status -- column 1
 
-@author: bbalasub
+internal function called by glmnet. see also glmnet, cvglmnet
+
 """
 # import packages/methods
 import scipy
 import ctypes
+from loadGlmLib import loadGlmLib
     
 def coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
           nobs, nvars, jd, vp, cl, ne, nx, nlam, flmin, ulam, 
           thresh, isd, maxit, family):
     
     # load shared fortran library
-    glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
+    glmlib = loadGlmLib() 
     
     # pre-process data     
     ty = y[:, 0]
