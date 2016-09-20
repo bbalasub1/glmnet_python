@@ -39,8 +39,8 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # force inputs into fortran order and scipy float64
     copyFlag = False
     x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag) 
-    irs = irs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)
-    pcs = pcs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)    
+    irs = irs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)
+    pcs = pcs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)    
     y = y.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     weights = weights.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     jd = jd.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)        
@@ -96,8 +96,8 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
               ctypes.byref(ctypes.c_int(nvars)),
               ctypes.byref(ctypes.c_int(nr)),
               x.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
-              irs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               pcs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
+              irs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               weights.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               jd.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 

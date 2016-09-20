@@ -42,14 +42,14 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     #
     if (len(weights) != 0): 
         t = weights > 0
-        if scipy.any(t):
+        if ~scipy.all(t):
             t = scipy.reshape(t, (len(y), ))
             y = y[t, :]
             x = x[t, :]
             weights = weights[t]
             nobs = scipy.sum(t)
         else:
-            t = scipy.empty([1], type = scipy.integer)
+            t = scipy.empty([0], dtype = scipy.integer)
         #
         if len(y.shape) == 1:
             mv = len(y)
@@ -86,8 +86,8 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # force inputs into fortran order and scipy float64
     copyFlag = False
     x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag) 
-    irs = irs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)
-    pcs = pcs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)    
+    irs = irs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)
+    pcs = pcs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)    
     y = y.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     weights = weights.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     offset = offset.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
@@ -146,14 +146,14 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     #  ###################################  
     if is_sparse:
         # sparse lognet
-        glmlib.slognet_( 
+        glmlib.splognet_( 
               ctypes.byref(ctypes.c_double(parm)), 
               ctypes.byref(ctypes.c_int(nobs)),
               ctypes.byref(ctypes.c_int(nvars)),
               ctypes.byref(ctypes.c_int(nc)),
               x.ctypes.data_as(ctypes.POINTER(ctypes.c_double)),
-              irs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               pcs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)),  
+              irs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               offset.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               jd.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 

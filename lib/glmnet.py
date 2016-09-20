@@ -118,36 +118,25 @@ EXAMPLES:
       fit = glmnet(x = x.copy(), y = y.copy(), family = 'cox')
       glmnetPlot(fit)
       
-      # sparse
-      x = scipy.random.normal(size = [1000,10])
-      x[x < 1.0] = 0.0
+      # sparse example
+      N = 1000000;
+      x = scipy.random.normal(size = [N,10])
+      x[x < 3.0] = 0.0
       xs = scipy.sparse.csc_matrix(x, dtype = scipy.float64)
-      y = scipy.random.binomial(1, 0.5, size =[1000,1])
-      fit = glmnet(x = xs, y = y, family = 'binomial')
+      y = scipy.random.binomial(1, 0.5, size =[N,1])
+      y = y*1.0
+      st = time.time()
+      fit = glmnet.glmnet(x = xs, y = y, family = 'binomial')
+      en = time.time()
+      print("time elapsed (sparse) = ", en - st)
+      print("nbytes = ", xs.data.nbytes)
+      # non-sparse (same as sparse case)      
+      st = time.time()
+      fit = glmnet.glmnet(x = x, y = y, family = 'binomial')
+      en = time.time()
+      print("time elapsed (full) = ", en - st)
+      print("nbytes = ", x.data.nbytes)
 
-
-
-% % Sparse:
-    n=10000;p=200;
-    nzc=fix(p/10);
-    x=randn(n,p);
-    iz=randsample(n*p,n*p*0.85,false);
-    x(iz)=0;    
-    sx=sparse(x);
-    beta=randn(nzc,1);
-    fx=x(:,1:nzc)*beta;
-    eps=randn(n,1);
-    y=fx+eps;
-    px=exp(fx);
-    px=px./(1+px);
-    ly=binornd(1,px,length(px),1);
-    tic;
-    fit1=glmnet(sx,y);
-    toc;
-    tic;
-    fit2n=glmnet(x,y);
-    toc;      
-      
       
       
       
@@ -420,9 +409,11 @@ def glmnet(*, x, y, family='gaussian', **options):
     if scipy.sparse.issparse(x):
         is_sparse = True
         tx = scipy.sparse.csc_matrix(x, dtype = scipy.float64)
-        x = tx.data
-        irs = tx.indices
-        pcs = tx.indptr
+        x = tx.data; x = x.reshape([len(x), 1])
+        irs = tx.indices + 1
+        pcs = tx.indptr + 1
+        irs = scipy.reshape(irs, [len(irs),])
+        pcs = scipy.reshape(pcs, [len(pcs),])        
     else:
         irs = scipy.empty([0])
         pcs = scipy.empty([0])

@@ -38,8 +38,8 @@ def coxnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # force inputs into fortran order and scipy float64
     copyFlag = False
     x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag) 
-    irs = irs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)
-    pcs = pcs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)    
+    irs = irs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)
+    pcs = pcs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)    
     ty = ty.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     tevent = tevent.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     offset = offset.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    

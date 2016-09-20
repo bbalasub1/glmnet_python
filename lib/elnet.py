@@ -44,8 +44,8 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
     # force inputs into fortran order and into the correct scipy datatype
     copyFlag = False
     x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag) 
-    irs = irs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)
-    pcs = pcs.astype(dtype = scipy.integer, order = 'F', copy = copyFlag)    
+    irs = irs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)
+    pcs = pcs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)    
     y = y.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     weights = weights.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
     jd = jd.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)        
@@ -102,8 +102,8 @@ def elnet(x, is_sparse, irs, pcs, y, weights, offset, gtype, parm, lempty,
               ctypes.byref(ctypes.c_int(len(weights))), 
               ctypes.byref(ctypes.c_int(nvars)),
               x.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
-              irs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               pcs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
+              irs.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
               y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               weights.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
               jd.ctypes.data_as(ctypes.POINTER(ctypes.c_int)), 
