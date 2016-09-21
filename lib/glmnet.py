@@ -2,12 +2,13 @@
 """
 --------------------------------------------------------------------------
 glmnet.py: 
-    Fit an GLM with lasso or elasticnet regularization
-    glmnet.py provides a wrapper to call glmnet fortran routines. All
+    Fit a GLM with lasso or elastic-net regularization.
+    glmnet.py provides a wrapper to the glmnet fortran routines. All
     variables in the arguments are keyword-only. (see examples below). 
 --------------------------------------------------------------------------
 
 DESCRIPTION:
+-----------
     Fit a generalized linear model via penalized maximum likelihood. The 
     regularization path is computed for the lasso or elasticnet penalty 
     at a grid of values for the regularization parameter lambda. Can deal 
@@ -16,15 +17,16 @@ DESCRIPTION:
     models.
     
 EXTERNAL FUNCTIONS:
+------------------
     options = glmnetSet()   # provided with this (glmnet python) package    
     
 INPUT ARGUMENTS:
-
+---------------
   x        Input scipy 2D array of nobs x nvars (required). Each row is an 
            observation vector. Can be in sparse matrix format. Must be in 
            scipy csc_matrix format
            
-  y        Response variable (scipy 2D array). (required) 
+  y        Response variable (scipy 2D array of size nobs x 1, nobs x nc, etc). (required) 
            For family = 'gaussian', Quantitative column vector
            For family = 'poisson' (non-negative counts), Quantitative column vector
            For family = 'binomial', should be either a column vector with two
@@ -36,9 +38,11 @@ INPUT ARGUMENTS:
              with 1 indicating death and 0 indicating right censored. 
            For family = 'mgaussian', y is an array of quantitative responses.
            (see examples for illustrations)
+           
   family   Response type. Default is 'gaussian'. (optional)
            Currently, 'gaussian', 'poisson', 'binomial', 'multinomial', 'mgaussian'
            and 'cox' are supported
+
   options  optional parameters that can be set and altered by glmnetSet()
            Default values for some often used parameters:
              alpha = 1.0 (elastic-net mixing parameter)
@@ -49,27 +53,39 @@ INPUT ARGUMENTS:
            For more details see help for glmnetSet   
 
 OUTPUT ARGUMENTS: 
-
+----------------
 fit        glmnet(...) outputs a dict() of fit parameters with the following keys:
+
 a0         Intercept sequence of length len(fit['lambdau'])
+
 beta       For 'elnet' and 'lognet' models, nvars x len(lambdau) array of coefficients
            For 'multnet', a list of nc such matrices, one for each class
+
 lambdau    The actual sequence of lambdau values used
+
 dev        The fraction of (null) deviance explained (for 'elnet', this is the R-squared)
+
 nulldev    Null deviance (per observation)
+
 df         The number of nonzero coefficients for each value of lambdau.
            For 'multnet', this is the number of variables with a nonezero 
            coefficient for any class
+
 dfmat      For 'multnet' only: A 2D array consisting of the number of nonzero 
            coefficients per class
+
 dim        Dimension of coefficient matrix (ices)
+
 npasses    Total passes over the data summed over all lambdau values
+
 offset     A logical variable indicating whether an offset was included in the model
+
 jerr       Error flag, for warnings and errors (largely for internal debugging)
+
 class      Type of regression - internal usage
 
 EXAMPLES:
-
+--------
       # Gaussian
       x = scipy.random.rand(100, 10)
       y = scipy.random.rand(100, 1)
@@ -136,11 +152,9 @@ EXAMPLES:
       en = time.time()
       print("time elapsed (full) = ", en - st)
       print("nbytes = ", x.data.nbytes)
-
-      
-      
-      
+ 
 DETAILS:
+-------
    The sequence of models implied by lambda is fit by coordinate descent.
    For family='gaussian' this is the lasso sequence if alpha=1, else it
    is the elasticnet sequence. For the other families, this is a lasso or
@@ -183,9 +197,12 @@ DETAILS:
     When alpha=1 this is a group-lasso penalty, and otherwise it mixes
     with quadratic just like elasticnet. 
 
- LICENSE: GPL-2
+LICENSE:
+-------
+    GPL-2
 
- AUTHORS:
+AUTHORS:
+-------
     Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani
     Fortran code was written by Jerome Friedman
     R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hasite
@@ -193,7 +210,8 @@ DETAILS:
     This Python wrapper is written by Balakumar B.J., 
     Department of Statistics, Stanford University, Stanford, California, USA.
 
- REFERENCES:
+REFERENCES:
+---------- 
     Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, 
     http://www.jstatsoft.org/v33/i01/
     Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010
@@ -206,7 +224,8 @@ DETAILS:
     http://www-stat.stanford.edu/~tibs/ftp/strong.pdf
     Stanford Statistics Technical Report
 
- SEE ALSO:
+SEE ALSO:
+--------
     glmnetPrint, glmnetPlot, glmnetCoef, glmnetPredict,
     glmnetSet, glmnetControl and cvglmnet.
 
@@ -301,10 +320,10 @@ def glmnet(*, x, y, family='gaussian', **options):
     # TBD: test this
     if not (len(exclude) == 0):
         exclude = scipy.unique(exclude)
-        if scipy.any(exclude <= 0) or scipy.any(exclude > nvars):
+        if scipy.any(exclude < 0) or scipy.any(exclude >= nvars):
             raise ValueError('Error: Some excluded variables are out of range')
         else:    
-            jd = scipy.append(len(exclude), exclude)
+            jd = scipy.append(len(exclude), exclude + 1) # indices are 1-based in fortran
     else:
         jd = scipy.zeros([1,1], dtype = scipy.integer)
 

@@ -1,8 +1,75 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Sep  7 15:40:57 2016
+--------------------------------------------------------------------------
+ glmnetPlot.m: plot coefficients from a "glmnet" object
+--------------------------------------------------------------------------
 
-@author: bbalasub
+ DESCRIPTION:
+    Produces a coefficient profile plot fo the coefficient paths for a
+    fitted "glmnet" object.
+
+ USAGE:
+    glmnetPlot(fit);
+    glmnetPlot(fit, xvar = 'norm');
+    glmnetPlot(fit, xvar = 'norm', label = False);
+    glmnetPlot(fit, xvar = 'norm', label = False, ptype = 'coef');
+    glmnetPlot(fit, xvar = 'norm', label = False, ptype = 'coef', ...);
+
+ INPUT ARGUMENTS:
+ x           fitted "glmnet" model.
+ xvar        What is on the X-axis. 'norm' plots against the L1-norm of
+             the coefficients, 'lambda' against the log-lambda sequence,
+             and 'dev' against the percent deviance explained.
+ label       If true, label the curves with variable sequence numbers.
+ type        If type='2norm' then a single curve per variable, else
+             if type='coef', a coefficient plot per response.
+ varargin    Other graphical parameters to plot.
+
+ DETAILS:
+    A coefficient profile plot is produced. If x is a multinomial model, a
+    coefficient plot is produced for each class.
+
+ LICENSE: 
+    GPL-2
+
+ AUTHORS:
+    Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani
+    Fortran code was written by Jerome Friedman
+    R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hasite
+    The original MATLAB wrapper was written by Hui Jiang (14 Jul 2009),
+    and was updated and maintained by Junyang Qian (30 Aug 2013),
+    This Python wrapper was written by Balakumar B.J., bbalasub@stanford.edu
+    Department of Statistics, Stanford University, Stanford, California, USA.
+
+ REFERENCES:
+    Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, 
+    http://www.jstatsoft.org/v33/i01/
+    Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010
+    
+    Simon, N., Friedman, J., Hastie, T., Tibshirani, R. (2011) Regularization Paths for Cox's Proportional Hazards Model via Coordinate Descent,
+    http://www.jstatsoft.org/v39/i05/
+    Journal of Statistical Software, Vol. 39(5) 1-13
+
+    Tibshirani, Robert., Bien, J., Friedman, J.,Hastie, T.,Simon, N.,Taylor, J. and Tibshirani, Ryan. (2010) Strong Rules for Discarding Predictors in Lasso-type Problems,
+    http://www-stat.stanford.edu/~tibs/ftp/strong.pdf
+    Stanford Statistics Technical Report
+
+ SEE ALSO:
+    glmnet, glmnetSet, glmnetPrint, glmnetPredict and glmnetCoef.
+
+ EXAMPLES:
+     import matplotlib.pyplot as plt
+     scipy.random.seed(1)
+     x=scipy.random.normal(size = (100,20))
+     y=scipy.random.normal(size = (100,1))
+     g4=scipy.random.choice(4,size = (100,1))*1.0
+     fit1=glmnet.glmnet(x = x.copy(),y = y.copy())
+     glmnetPlot(fit1)
+     plt.figure()
+     glmnetPlot(fit1, 'lambda', True);
+     fit3=glmnet.glmnet(x = x.copy(),y = g4.copy(), family = 'multinomial')
+     plt.figure()
+     glmnetPlot(fit3)
 """
 import matplotlib.pyplot as plt
 import scipy
@@ -36,6 +103,8 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
                     str = 'Coefficients: Class %d' % (i) 
                     handle = plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
                              x['dev'], label, xvar, '', str, **options)
+                    if i < ncl - 1:         
+                        plt.figure()             
             else:
                     str = 'Coefficients: Response %d' % (i) 
                     handle = plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
@@ -50,6 +119,8 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
                 str = 'Coefficient 2Norms'
                 handle = plotCoef(coefnorm, norm, x['lambdau'], dfseq, x['dev'],
                          label, xvar, '',str, **options);
+                if i < ncl - 1:                         
+                    plt.figure()         
             else:
                 str = 'Coefficient 2Norms'
                 handle = plotCoef(coefnorm, norm, x['lambdau'], x['dfmat'][0,:], x['dev'],

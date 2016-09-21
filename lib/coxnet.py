@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
+Internal function called by glmnet. See also glmnet, cvglmnet
 
 time -- column 0
 status -- column 1
-
-internal function called by glmnet. see also glmnet, cvglmnet
-
 """
 # import packages/methods
 import scipy

@@ -19,7 +19,7 @@ def glmnetPredict(fit,\
     indl     = [i for i in range(len(indxtf)) if indxtf[i] == True]
     ptype = typebase[indl[0]]
     
-    if len(newx) == 0 and ptype != 'coefficients' and ptype != 'nonzero':
+    if newx.shape[0] == 0 and ptype != 'coefficients' and ptype != 'nonzero':
         raise ValueError('You need to supply a value for ''newx''')
     
     # python 1D arrays are not the same as matlab 1xn arrays
@@ -35,6 +35,11 @@ def glmnetPredict(fit,\
         # by calling glmnet again using the correct array of lambda values that
         # includes the lambda for which prediction is sought
         raise NotImplementedError('exact = True option is not implemented in python')
+
+    # we convert newx to full here since sparse and full operations do not seem to 
+    # be overloaded completely in scipy. 
+    if scipy.sparse.issparse(newx):
+        newx = newx.todense()
     
     # elnet
     if fit['class'] in ['elnet', 'fishnet', 'lognet']:
@@ -58,6 +63,7 @@ def glmnetPredict(fit,\
         if ptype == 'nonzero':
             result = nonzeroCoef(nbeta[1:nbeta.shape[0], :], True)
             return(result)
+        # use scipy.sparse.hstack instead of column_stack for sparse matrices        
         result = scipy.dot(scipy.column_stack( (scipy.ones([newx.shape[0], 1]) \
                               , newx) ) , nbeta)
         if fit['offset']:

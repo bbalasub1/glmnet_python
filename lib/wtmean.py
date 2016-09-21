@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-calculate nan-removed weighted mean
+Calculate nan-removed weighted mean. The mean is  
+computed in the axis=0 direction along each column.
 
-PRE:
-    mat:     must be n x k
-    weights: must be n x 1
+INPUT ARGUMENTS:
+---------------
+    mat:     must be a 2D scipy array of size N x K
+    weights: must be a 2D scipy array of size N x 1 or a 1-D array of size N
     
-POST:
+OUTPUT ARGUMENTS:
+----------------
+    returns nan-removed weighted mean as a 1D array of size K
 
 
 @author: bbalasub

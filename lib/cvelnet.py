@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Internal glmnet function. See also cvglmnet.
+Internal cvglmnet function. See also cvglmnet.
+
 """
 import scipy
 from glmnetPredict import glmnetPredict

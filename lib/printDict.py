@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-This is in pre-alpha stage... only for troubleshooting purposes.
+Prints some info about a dictionary object. Used for troubleshooting.
 
-@author: bbalasub
 """
 
 def printDict(s):

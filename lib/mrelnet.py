@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-internal function called by glmnet. see also glmnet, cvglmnet
+Internal function called by glmnet. See also glmnet, cvglmnet
+
 """
 # import packages/methods
 import scipy
