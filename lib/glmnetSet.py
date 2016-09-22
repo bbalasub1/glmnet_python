@@ -178,8 +178,9 @@ AUTHORS:
     Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani
     Fortran code was written by Jerome Friedman
     R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hasite
-    The MATLAB wrappers were written by Hui Jiang and Junyang Qian.
-    This Python wrapper was written by Balakumar B.J., 
+    The original MATLAB wrapper was written by Hui Jiang,
+    and is updated and maintained by Junyang Qian.
+    This Python wrapper (adapted from the Matlab and R wrappers) is written by Balakumar B.J., 
     Department of Statistics, Stanford University, Stanford, California, USA.
 
 """

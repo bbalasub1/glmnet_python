@@ -12,8 +12,6 @@ OUTPUT ARGUMENTS:
 ----------------
     returns nan-removed weighted mean as a 1D array of size K
 
-
-@author: bbalasub
 """
 import scipy
 

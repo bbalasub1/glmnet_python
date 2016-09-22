@@ -3,13 +3,17 @@ sys.path.append('../../test')
 sys.path.append('../../lib')
 import scipy
 import glmnet
-import cvglmnet
+from glmnetPlot import glmnetPlot
+from cvglmnet import cvglmnet
+from cvglmnetCoef import cvglmnetCoef
+from cvglmnetPlot import cvglmnetPlot
+from cvglmnetPredict import cvglmnetPredict
+
 import importlib
 import time
-from glmnetPlot import glmnetPlot
 importlib.reload(glmnet)
 
-section = 5;
+section = 6;
 
 if section == 1:
     # create x and y
@@ -97,6 +101,17 @@ elif section == 5:
      plt.figure()
      glmnetPlot(fit3)
 
-    
+elif section == 6:
+      x = scipy.random.rand(100, 10)
+      y = scipy.random.rand(100, 1)
+      cvfit = cvglmnet(x = x, y = y)
+      cvglmnetPlot(cvfit)
+      cvglmnetCoef(cvfit)
+      cvglmnetPredict(cvfit, x[0:5, :], 'lambda_min')
+      
+    #cvob1=cvglmnet(x,y);
+    #cvglmnetPlot(cvob1);
+    #cvglmnetCoef(cvob1)
+    #cvglmnetPredict(cvob1,x(1:5,:),'lambda_min')
     
     

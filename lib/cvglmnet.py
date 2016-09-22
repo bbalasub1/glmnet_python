@@ -6,31 +6,32 @@
 
  DESCRIPTION:
     Does k-fold cross-validation for glmnet, produces a plot, and returns
-    a value for lambda.
+    a value for lambdau.
 
  USAGE:
+
+    Note that like glmnet, all arguments are keyword-only:
+ 
     CVerr = cvglmnet(x, y, family, options, type, nfolds, foldid,
     parallel, keep, grouped);
 
-    Fewer input arguments(more often) are allowed in the call, but must
-    come in the order listed above. To set default values on the way, use
-    empty matrix []. 
-    For example, CVfit=cvglmnet(x,y,'multinomial',[],[],20).
-    
+    Fewer input arguments(more often) are allowed in the call. Default values
+    for the arguments are used unless specified by the user.
+        
 =======================
 INPUT ARGUMENTS
  x           nobs x nvar scipy 2D array of x parameters (as in glmnet).
  y           nobs x nc scipy Response y as in glmnet.
  family      Response type as family in glmnet.
  options     Options as in glmnet.
- type        loss to use for cross-validation. Currently five options, not
-             all available for all models. The default is type='deviance', which uses
-             squared-error for Gaussian models (a.k.a type='mse' there), deviance for
+ ptype       loss to use for cross-validation. Currently five options, not
+             all available for all models. The default is ptype='deviance', which uses
+             squared-error for Gaussian models (a.k.a ptype='mse' there), deviance for
              logistic and Poisson regression, and partial-likelihood for the Cox
-             model. type='class' applies to binomial and multinomial logistic
-             regression only, and gives misclassification error. type='auc' is for
+             model. ptype='class' applies to binomial and multinomial logistic
+             regression only, and gives misclassification error. ptype='auc' is for
              two-class logistic regression only, and gives area under the ROC curve.
-             type='mse' or type='mae' (mean absolute error) can be used by all models
+             ptype='mse' or ptype='mae' (mean absolute error) can be used by all models
              except the 'cox'; they measure the deviation from the fitted mean to the
              response.  
  nfolds      number of folds - default is 10. Although nfolds can be as
@@ -39,15 +40,12 @@ INPUT ARGUMENTS
  foldid      an optional vector of values between 1 and nfold identifying
              what fold each observation is in. If supplied, nfold can be
              missing.
- parallel    If true, use parallel computation to fit each fold. If a
-             worker pool is not open, it will open using the
-             default cluster profile and close after the computation is
-             over. 
- keep        If keep=true, a prevalidated array is returned containing
+ parallel    If True, use parallel computation to fit each fold. 
+ keep        If keep=True, a prevalidated array is returned containing
              fitted values for each observation and each value of lambda.
              This means these fits are computed with this observation and
              the rest of its fold omitted. The foldid vector is also
-             returned. Default is keep=false.   
+             returned. Default is keep=False.   
  grouped     This is an experimental argument, with default true, and can
              be ignored by most users. For all models except the 'cox',
              this refers to computing nfolds separate statistics, and then
@@ -65,10 +63,10 @@ INPUT ARGUMENTS
 
 =======================
 OUTPUT ARGUMENTS:
- A structure is returned with the following fields.
- lambda      the values of lambda used in the fits.
+ A dict() is returned with the following fields.
+ lambdau     the values of lambda used in the fits.
  cvm         the mean cross-validated error - a vector of length
-             length(lambda). 
+             length(lambdau). 
  cvsd        estimate of standard error of cvm.
  cvup        upper curve = cvm+cvsd.
  cvlo        lower curve = cvm-cvsd.
@@ -89,23 +87,22 @@ OUTPUT ARGUMENTS:
     The function runs glmnet nfolds+1 times; the first to get the lambda
     sequence, and then the remainder to compute the fit with each of the 
     folds omitted. The error is accumulated, and the average error and 
-    standard deviation over the folds is computed. Note that cv.glmnet 
+    standard deviation over the folds is computed. Note that cvglmnet 
     does NOT search for values for alpha. A specific value should be 
     supplied, else alpha=1 is assumed by default. If users would like to 
-    cross-validate alpha as well, they should call cv.glmnet with a 
+    cross-validate alpha as well, they should call cvglmnet with a 
     pre-computed vector foldid, and then use this same fold vector in 
-    separate calls to cv.glmnet with different values of alpha. 
+    separate calls to cvglmnet with different values of alpha. 
 
  LICENSE: GPL-2
-
- DATE: 30 Aug 2013
 
  AUTHORS:
     Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani
     Fortran code was written by Jerome Friedman
     R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hasite
-    The original MATLAB wrapper was written by Hui Jiang (14 Jul 2009),
-    and was updated and is maintained by Junyang Qian (30 Aug 2013) junyangq@stanford.edu,
+    The original MATLAB wrapper was written by Hui Jiang,
+    and is updated and maintained by Junyang Qian.
+    This Python wrapper (adapted from the Matlab and R wrappers) is written by Balakumar B.J., 
     Department of Statistics, Stanford University, Stanford, California, USA.
 
  REFERENCES:
@@ -125,49 +122,61 @@ OUTPUT ARGUMENTS:
     cvglmnetPlot, cvglmnetCoef, cvglmnetPredict, and glmnet.
 
  EXAMPLES:
-    n=1000; p=100;
-    nzc=fix(p/10);
-    x=randn(n,p);
-    beta=randn(nzc,1);
-    fx=x(:,1:nzc) * beta;
-    eps=randn(n,1)*5;
-    y=fx+eps;
-    px=exp(fx);
-    px=px./(1+px);
-    ly=binornd(1,px,length(px),1);   
-    cvob1=cvglmnet(x,y);
-    cvglmnetPlot(cvob1);
-    cvglmnetCoef(cvob1)
-    cvglmnetPredict(cvob1,x(1:5,:),'lambda_min')
  
-    cvobla=cvglmnet(x,y,[],[],'mae');
-    cvglmnetPlot(cvobla);
-    
-    cvob2=cvglmnet(x,ly,'binomial');
-    cvglmnetPlot(cvob2);
-    
-    figure;
-    cvob3=cvglmnet(x,ly,'binomial',[],'class');
-    cvglmnetPlot(cvob3);
- 
-    mu=exp(fx/10);
-    y=poissrnd(mu,n,1);
-    cvob4=cvglmnet(x,y,'poisson');
-    cvglmnetPlot(cvob4);
-    
- % Multinomial
-    n=500; p=30;
-    nzc=fix(p/10);
-    x=randn(n,p);
-    beta3=randn(10,3);
-    beta3=cat(1,beta3,zeros(p-10,3));
-    f3=x*beta3;
-    p3=exp(f3);
-    p3=bsxfun(@rdivide,p3,sum(p3,2));
-    g3=mnrnd(1,p3);
-    g3=g3*(1:size(p3,2))';
-    cvfit=cvglmnet(x,g3,'multinomial');
-    cvglmnetPlot(cvfit);
+      # Gaussian
+      x = scipy.random.rand(100, 10)
+      y = scipy.random.rand(100, 1)
+      cvfit = cvglmnet(x = x, y = y)
+      cvglmnetPlot(cvfit)
+      print( cvglmnetCoef(cvfit) )
+      print( cvglmnetPredict(cvfit, x[0:5, :], 'lambda_min') )
+      cvfit1 = cvglmnet(x = x, y = y, ptype = 'mae')
+      cvglmnetPlot(cvfit1)
+      
+      # Binomial
+      x = scipy.random.rand(100, 10)
+      y = scipy.random.rand(100,1)
+      y = (y > 0.5)*1.0
+      fit = cvglmnet(x = x, y = y, family = 'binomial', ptype = 'class')    
+      cvglmnetPlot(fit)
+      
+      # poisson
+      x = scipy.random.rand(100,10)
+      y = scipy.random.poisson(size = [100, 1])*1.0
+      cvfit = cvglmnet(x = x, y = y, family = 'poisson')
+      cvglmnetPlot(cvfit)
+      
+      # Multivariate Gaussian:
+      x = scipy.random.rand(100, 10)
+      y = scipy.random.rand(100,3)
+      cvfit = cvglmnet(x = x, y = y, family = 'mgaussian')      
+      cvglmnetPlot(cvfit)
+       
+      # Multinomial
+      x = scipy.random.rand(100,10)
+      y = scipy.random.rand(100,1)
+      y[y < 0.3] = 1.0
+      y[y < 0.6] = 2.0
+      y[y < 1.0] = 3.0
+      cvfit = cvglmnet(x = x, y = y, family = 'multinomial')
+      cvglmnetPlot(cvfit) 
+      
+      #cox
+      N = 1000; p = 30;
+      nzc = p/3;
+      x = scipy.random.normal(size = [N, p])
+      beta = scipy.random.normal(size = [nzc, 1])
+      fx = scipy.dot(x[:, 0:nzc], beta/3)
+      hx = scipy.exp(fx)
+      ty = scipy.random.exponential(scale = 1/hx, size = [N, 1])
+      tcens = scipy.random.binomial(1, 0.3, size = [N, 1])
+      tcens = 1 - tcens
+      y = scipy.column_stack((ty, tcens))
+      foldid = scipy.random.
+      cvfit = cvglmnet(x = x.copy(), y = y.copy(), family = 'cox')
+      glmnetPlot(cvfit)
+
+
     
  % Cox
     n=1000;p=30;
@@ -207,7 +216,7 @@ from cvmultnet import cvmultnet
 from cvmrelnet import cvmrelnet
 from cvfishnet import cvfishnet
 
-def cvglmnet(x, \
+def cvglmnet(*, x, \
              y, \
              family = 'gaussian', \
              ptype = 'default', \
