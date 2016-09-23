@@ -180,7 +180,8 @@ AUTHORS:
     R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hasite
     The original MATLAB wrapper was written by Hui Jiang,
     and is updated and maintained by Junyang Qian.
-    This Python wrapper (adapted from the Matlab and R wrappers) is written by Balakumar B.J., 
+    This Python wrapper (adapted from the Matlab and R wrappers) 
+    is written by Balakumar B.J., bbalasub@stanford.edu 
     Department of Statistics, Stanford University, Stanford, California, USA.
 
 """

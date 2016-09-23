@@ -1,10 +1,27 @@
-cvglmnetPlot.py------------------------     
-glmnetCoef.py--------------------------     
-glmnetPredict.py-----------------------  
-cvglmnetPredict.py---------------------  
-glmnetControl.py-----------------------  
+===========================================
+TO DO:
+
+[0] Setup for pip install 
+
+[1] cross-validation for cox
+
+[2] update glmnetControl options at the end of glmnet iterations
+
+[3] verify code results for systems other than centos 64-bit. 
+ 
+===========================================
+
+
+===========================================
+Help documents and examples for:
+===========================================
+cvglmnetPlot.py------------------------DONE     
+glmnetCoef.py--------------------------DONE     
+glmnetPredict.py-----------------------DONE  
+cvglmnetPredict.py---------------------DONE  
+glmnetControl.py-----------------------DONE  
 glmnetPrint.py-------------------------DONE    
-cvglmnet.py----------------------------         
+cvglmnet.py----------------------------DONE         
 cvglmnetCoef.py------------------------DONE  
 cvcompute.py---------------------------DONE     
 cvmrelnet.py---------------------------DONE  

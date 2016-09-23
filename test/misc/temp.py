@@ -4,6 +4,8 @@ sys.path.append('../../lib')
 import scipy
 import glmnet
 from glmnetPlot import glmnetPlot
+from glmnetPredict import glmnetPredict
+from glmnetCoef import glmnetCoef
 from cvglmnet import cvglmnet
 from cvglmnetCoef import cvglmnetCoef
 from cvglmnetPlot import cvglmnetPlot
@@ -13,7 +15,7 @@ import importlib
 import time
 importlib.reload(glmnet)
 
-section = 6;
+section = 9
 
 if section == 1:
     # create x and y
@@ -104,14 +106,53 @@ elif section == 5:
 elif section == 6:
       x = scipy.random.rand(100, 10)
       y = scipy.random.rand(100, 1)
-      cvfit = cvglmnet(x = x, y = y)
-      cvglmnetPlot(cvfit)
-      cvglmnetCoef(cvfit)
-      cvglmnetPredict(cvfit, x[0:5, :], 'lambda_min')
+      fit = glmnet.glmnet(x = x, y = y)
+      f = glmnetPredict(fit, x[0:5, :], scipy.array([0.0866, 0.2323]))
+      print(f)
       
-    #cvob1=cvglmnet(x,y);
-    #cvglmnetPlot(cvob1);
-    #cvglmnetCoef(cvob1)
-    #cvglmnetPredict(cvob1,x(1:5,:),'lambda_min')
+elif section == 7:
+    x = scipy.random.normal(size = [100,20])
+    y = scipy.random.normal(size = [100,1])
+    g2 = scipy.random.choice(2, size = [100, 1])*1.0
+    g4 = scipy.random.choice(4, size = [100, 1])*1.0
+    
+    fit1 = glmnet.glmnet(x = x.copy(),y = y.copy());
+    print( glmnetPredict(fit1,x[0:5,:],scipy.array([0.01,0.005])) )
+    print( glmnetPredict(fit1, scipy.empty([0]), scipy.empty([0]), 'coefficients') )
+    
+    fit2 = glmnet.glmnet(x = x.copy(), y = g2.copy(), family = 'binomial');
+    print(glmnetPredict(fit2, x[2:5,:],scipy.empty([0]), 'response'))
+    print(glmnetPredict(fit2, scipy.empty([0]), scipy.empty([0]), 'nonzero'))
+       
+    fit3 = glmnet.glmnet(x = x.copy(), y = g4.copy(), family = 'multinomial');
+    print(glmnetPredict(fit3, x[0:3,:], scipy.array([0.01]), 'response'))
+    print(glmnetPredict(fit3, x[0:3,:], scipy.array([0.01, 0.5]), 'response'))
+      
+elif section == 8:
+    x=scipy.random.rand(100,20);
+    y=scipy.random.rand(100,1);
+    fit=glmnet.glmnet(x = x.copy(),y = y.copy());
+    ncoef=glmnetCoef(fit,scipy.array([0.01, 0.001]));
+
+
+elif section == 9:
+    scipy.random.seed(1)
+    x=scipy.random.normal(size = (100,20))
+    y=scipy.random.normal(size = (100,1))
+    g2=scipy.random.choice(2,size = (100,1))*1.0
+    g4=scipy.random.choice(4,size = (100,1))*1.0
+
+    plt.figure()     
+    fit1=cvglmnet(x = x.copy(),y = y.copy())
+    cvglmnetPlot(fit1)
+
+    plt.figure()
+    fit2=cvglmnet(x = x.copy(),y = g2.copy(), family = 'binomial')
+    cvglmnetPlot(fit2)
+
+    plt.figure()
+    fit3=cvglmnet(x = x.copy(),y = g2.copy(), family = 'binomial', ptype = 'class')
+    cvglmnetPlot(fit3)
+    
     
     

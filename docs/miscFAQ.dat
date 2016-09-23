@@ -1,6 +1,6 @@
-Git installation
------------------
-
+==============================
+How to install Git on Centos?
+==============================
 Install newer git version for centos (2.8.1 has been tested to work on Centos 6.7). 
 
 Then, init and remote commit using instructions here:

@@ -1,23 +1,62 @@
 # -*- coding: utf-8 -*-
 """
 --------------------------------------------------------------------------
- glmnetPrint.m: print a glmnet object
+ glmnetPredict.m: make predictions from a "glmnet" object.
 --------------------------------------------------------------------------
 
  DESCRIPTION:
-    Print a summary of the glmnet path at each step along the path.
+    Similar to other predict methods, this functions predicts fitted
+    values, logits, coefficients and more from a fitted "glmnet" object.
 
- USAGE: 
-    glmnetPrint(fit)
+ USAGE:
+    glmnetPredict(object, newx, s, type, exact, offset)
+
+    Fewer input arguments(more often) are allowed in the call, but must
+    come in the order listed above. To set default values on the way, use
+    empty matrix []. 
+    For example, pred=glmnetPredict(fit,[],[],'coefficients').
+   
+    To make EXACT prediction, the input arguments originally passed to 
+    "glmnet" MUST be VARIABLES (instead of expressions, or fields
+    extracted from some struct objects). Alternatively, users should
+    manually revise the "call" field in "object" (expressions or variable
+    names) to match the original call to glmnet in the parent environment.
 
  INPUT ARGUMENTS:
-    fit         fitted glmnet object
-
+ object      Fitted "glmnet" model object.
+ s           Value(s) of the penalty parameter lambda at which predictions
+             are required. Default is the entire sequence used to create
+             the model.
+ newx        scipy 2D array of new values for x at which predictions are to be
+             made. Must be a 2D array; can be sparse. This argument is not 
+             used for type='coefficients' or type='nonzero'.
+ ptype       Type of prediction required. Type 'link' gives the linear
+             predictors for 'binomial', 'multinomial', 'poisson' or 'cox'
+             models; for 'gaussian' models it gives the fitted values.
+             Type 'response' gives the fitted probabilities for 'binomial'
+             or 'multinomial', fitted mean for 'poisson' and the fitted
+             relative-risk for 'cox'; for 'gaussian' type 'response' is
+             equivalent to type 'link'. Type 'coefficients' computes the
+             coefficients at the requested values for s. Note that for
+             'binomial' models, results are returned only for the class
+             corresponding to the second level of the factor response.
+             Type 'class' applies only to 'binomial' or 'multinomial'
+             models, and produces the class label corresponding to the
+             maximum probability. Type 'nonzero' returns a matrix of
+             logical values with each column for each value of s, 
+             indicating if the corresponding coefficient is nonzero or not.
+ exact       If exact=false (default), then the predict function
+             uses linear interpolation to make predictions for values of s
+             that do not coincide with those used in the fitting
+             algorithm. exact = True is not implemented.
+ offset      If an offset is used in the fit, then one must be supplied
+             for making predictions (except for type='coefficients' or
+             type='nonzero')
+ 
  DETAILS:
-    Three-column matrix with columns Df, %Dev and Lambda is printed. The Df
-    column is the number of nonzero coefficients (Df is a reasonable name
-    only for lasso fits). %Dev is the percent deviance explained (relative
-    to the null deviance).
+    The shape of the objects returned are different for "multinomial"
+    objects. glmnetCoef(fit, ...) is equivalent to 
+    glmnetPredict(fit,scipy.empty([]),scipy.empty([]),'coefficients").
 
  LICENSE: GPL-2
 
@@ -25,24 +64,44 @@
     Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani
     Fortran code was written by Jerome Friedman
     R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hasite
-    The original MATLAB wrapper was written by Hui Jiang,
-    and is updated and maintained by Junyang Qian.
-    This Python wrapper (adapted from the Matlab and R wrappers) is written by Balakumar B.J., 
+    The original MATLAB wrapper was written by Hui Jiang (14 Jul 2009),
+    and was updated and maintained by Junyang Qian (30 Aug 2013) junyangq@stanford.edu,
     Department of Statistics, Stanford University, Stanford, California, USA.
 
  REFERENCES:
     Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, 
     http://www.jstatsoft.org/v33/i01/
     Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010
+    
+    Simon, N., Friedman, J., Hastie, T., Tibshirani, R. (2011) Regularization Paths for Cox's Proportional Hazards Model via Coordinate Descent,
+    http://www.jstatsoft.org/v39/i05/
+    Journal of Statistical Software, Vol. 39(5) 1-13
+
+    Tibshirani, Robert., Bien, J., Friedman, J.,Hastie, T.,Simon, N.,Taylor, J. and Tibshirani, Ryan. (2010) Strong Rules for Discarding Predictors in Lasso-type Problems,
+    http://www-stat.stanford.edu/~tibs/ftp/strong.pdf
+    Stanford Statistics Technical Report
 
  SEE ALSO:
-    glmnet, glmnetSet, glmnetPredict and glmnetCoef methods.
- 
- EXAMPLES:
-    x=randn(100,20);
-    y=randn(100,1);
-    fit1=glmnet(x,y);
-    glmnetPrint(fit1);
+    glmnet, glmnetPrint, glmnetCoef, and cvglmnet.
+
+EXAMPLES:
+
+    x = scipy.random.normal(size = [100,20])
+    y = scipy.random.normal(size = [100,1])
+    g2 = scipy.random.choice(2, size = [100, 1])*1.0 # must be float64
+    g4 = scipy.random.choice(4, size = [100, 1])*1.0 # must be float64
+    
+    fit1 = glmnet(x = x.copy(),y = y.copy());
+    print( glmnetPredict(fit1,x[0:5,:],scipy.array([0.01,0.005])) )
+    print( glmnetPredict(fit1, scipy.empty([0]), scipy.empty([0]), 'coefficients') )
+    
+    fit2 = glmnet(x = x.copy(), y = g2.copy(), family = 'binomial');
+    print(glmnetPredict(fit2, x[2:5,:],scipy.empty([0]), 'response'))
+    print(glmnetPredict(fit2, scipy.empty([0]), scipy.empty([0]), 'nonzero'))
+       
+    fit3 = glmnet(x = x.copy(), y = g4.copy(), family = 'multinomial');
+    print(glmnetPredict(fit3, x[0:3,:], scipy.array([0.01, 0.5]), 'response'))
+    
 """
 import scipy
 import scipy.interpolate

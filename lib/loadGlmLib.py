@@ -18,7 +18,7 @@ import os
 
 def loadGlmLib():
     if os.name == 'posix':
-        glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
+        glmlib = ctypes.cdll.LoadLibrary('../../lib/GLMnet.so') 
         return(glmlib)
     else:
         raise ValueError('loadGlmLib not yet implemented for non-posix OS')

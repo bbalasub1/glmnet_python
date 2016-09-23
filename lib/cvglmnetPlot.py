@@ -1,8 +1,67 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Sep 11 12:31:37 2016
+--------------------------------------------------------------------------
+ cvglmnetPlot.m: plot the cross-validation curve produced by cvglmnet
+--------------------------------------------------------------------------
 
-@author: bbalasub
+ DESCRIPTION:
+    Plots the cross-validation curve, and upper and lower standard
+    deviation curves, as a function of the lambda values used. 
+
+ USAGE:
+    cvglmnetPlot(cvfit);
+    cvglmnetPlot(cvfit, sign_lambda)
+    cvglmnetPlot(cvfit, sign_lambda, options)
+
+ INPUT ARGUMENTS:
+ cvobject    fitted "cvglmnet" object
+ sign_lambda Either plot against log(lambda) (default) or its negative if
+             sign_lambda=-1. 
+ varargin    Other errorbar parameters.
+ 
+ DETAILS:
+    A plot is produced, and nothing is returned.
+
+ LICENSE: GPL-2
+
+ AUTHORS:
+    Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani
+    Fortran code was written by Jerome Friedman
+    R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hasite
+    The original MATLAB wrapper was written by Hui Jiang,
+    and is updated and maintained by Junyang Qian.
+    This Python wrapper (adapted from the Matlab and R wrappers) 
+    is written by Balakumar B.J., bbalasub@stanford.edu 
+    Department of Statistics, Stanford University, Stanford, California, USA.
+
+ REFERENCES:
+    Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, 
+    http://www.jstatsoft.org/v33/i01/
+    Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010
+
+ SEE ALSO:
+    cvglmnet and glmnet.
+
+ EXAMPLES:
+ 
+    scipy.random.seed(1)
+    x=scipy.random.normal(size = (100,20))
+    y=scipy.random.normal(size = (100,1))
+    g2=scipy.random.choice(2,size = (100,1))*1.0
+    g4=scipy.random.choice(4,size = (100,1))*1.0
+
+    plt.figure()     
+    fit1=cvglmnet(x = x.copy(),y = y.copy())
+    cvglmnetPlot(fit1)
+
+    plt.figure()
+    fit2=cvglmnet(x = x.copy(),y = g2.copy(), family = 'binomial')
+    cvglmnetPlot(fit2)
+
+    plt.figure()
+    fit3=cvglmnet(x = x.copy(),y = g2.copy(), family = 'binomial', ptype = 'class')
+    cvglmnetPlot(fit3)
+     
 """
 
 import scipy

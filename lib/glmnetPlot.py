@@ -63,11 +63,11 @@
      x=scipy.random.normal(size = (100,20))
      y=scipy.random.normal(size = (100,1))
      g4=scipy.random.choice(4,size = (100,1))*1.0
-     fit1=glmnet.glmnet(x = x.copy(),y = y.copy())
+     fit1=glmnet(x = x.copy(),y = y.copy())
      glmnetPlot(fit1)
      plt.figure()
      glmnetPlot(fit1, 'lambda', True);
-     fit3=glmnet.glmnet(x = x.copy(),y = g4.copy(), family = 'multinomial')
+     fit3=glmnet(x = x.copy(),y = g4.copy(), family = 'multinomial')
      plt.figure()
      glmnetPlot(fit3)
 """
