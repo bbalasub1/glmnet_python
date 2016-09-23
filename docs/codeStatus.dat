@@ -1,16 +1,20 @@
+This is a quick summary of the status of this glmnet for python library.
+
 ===========================================
 TO DO:
+===========================================
 
-[0] Setup for pip install 
+[0] Setup for pip install / release to python repo
 
 [1] cross-validation for cox
 
-[2] update glmnetControl options at the end of glmnet iterations
+[2] update glmnetControl options at the end of glmnet iterations (potential speed ups for 1st iteration of cross-validation; hotstart inside fortran routines are not affected)
 
-[3] verify code results for systems other than centos 64-bit. 
- 
-===========================================
+[3] verify results for systems other than centos 64-bit. 
 
+[4] Add data.ndim checks for input scipy arrays to assert shape requirements
+
+[5] Test, test, test... 
 
 ===========================================
 Help documents and examples for:
