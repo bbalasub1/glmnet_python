@@ -6,7 +6,7 @@
 
  DESCRIPTION:
     Does k-fold cross-validation for glmnet, produces a plot, and returns
-    a value for lambdau.
+    a value for lambdau. Cross-validation is not implemented for Cox model yet.
 
  USAGE:
 
@@ -28,7 +28,8 @@ INPUT ARGUMENTS
              all available for all models. The default is ptype='deviance', which uses
              squared-error for Gaussian models (a.k.a ptype='mse' there), deviance for
              logistic and Poisson regression, and partial-likelihood for the Cox
-             model. ptype='class' applies to binomial and multinomial logistic
+             model (Note that CV for cox model is not implemented yet). 
+             ptype='class' applies to binomial and multinomial logistic
              regression only, and gives misclassification error. ptype='auc' is for
              two-class logistic regression only, and gives area under the ROC curve.
              ptype='mse' or ptype='mae' (mean absolute error) can be used by all models
@@ -162,19 +163,7 @@ OUTPUT ARGUMENTS:
       cvglmnetPlot(cvfit) 
       
       #cox
-      N = 1000; p = 30;
-      nzc = p/3;
-      x = scipy.random.normal(size = [N, p])
-      beta = scipy.random.normal(size = [nzc, 1])
-      fx = scipy.dot(x[:, 0:nzc], beta/3)
-      hx = scipy.exp(fx)
-      ty = scipy.random.exponential(scale = 1/hx, size = [N, 1])
-      tcens = scipy.random.binomial(1, 0.3, size = [N, 1])
-      tcens = 1 - tcens
-      y = scipy.column_stack((ty, tcens))
-      foldid = scipy.random.
-      cvfit = cvglmnet(x = x.copy(), y = y.copy(), family = 'cox')
-      glmnetPlot(cvfit)
+      Not implemented for cvglmnet.py
 
 
     
@@ -311,10 +300,11 @@ def cvglmnet(*, x, \
         cvstuff = cvfishnet(cpredmat, options['lambdau'], x, y \
                            , options['weights'], options['offset'] \
                            , foldid, ptype, grouped, keep)
-#    elif cpredmat[0]['class'] == 'coxnet':
-#        cvstuff = cvcoxnet(cpredmat, options['lambdau'], x, y \
-#                          , options['weights'], options['offset'] \
-#                          , foldid, ptype, grouped, keep)
+    elif cpredmat[0]['class'] == 'coxnet':
+        raise NotImplementedError('Cross-validation for coxnet not implemented yet.')
+        #cvstuff = cvcoxnet(cpredmat, options['lambdau'], x, y \
+        #                  , options['weights'], options['offset'] \
+        #                  , foldid, ptype, grouped, keep)
  
     cvm = cvstuff['cvm']
     cvsd = cvstuff['cvsd']

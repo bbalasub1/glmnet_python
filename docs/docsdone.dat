@@ -5,7 +5,7 @@ cvglmnetPredict.py---------------------
 glmnetControl.py-----------------------  
 glmnetPrint.py-------------------------DONE    
 cvglmnet.py----------------------------         
-cvglmnetCoef.py------------------------  
+cvglmnetCoef.py------------------------DONE  
 cvcompute.py---------------------------DONE     
 cvmrelnet.py---------------------------DONE  
 printDict.py---------------------------DONE
