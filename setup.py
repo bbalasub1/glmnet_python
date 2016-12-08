@@ -8,5 +8,5 @@ setup(name='glmnet_python',
 	author_email = 'bbalasub@stanford.edu',
 	license = 'GPL-2',
 	packages=['lib'],
-	zip_safe = FALSE)
+	zip_safe = False)
 
