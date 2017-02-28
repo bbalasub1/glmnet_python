@@ -6,8 +6,11 @@ Han Fang
 hanfang.cshl@gmail.com
 
 ## Install
+    git clone https://github.com/hanfang/glmnet_python.git
+    cd glmnet_python
     python setup.py install
 
+    
 ## Introduction
 
 This is a python version of the popular `glmnet` library (beta release). Glmnet fits the entire lasso or elastic-net regularization path for `linear` regression, `logistic` and `multinomial` regression models, `poisson` regression and the `cox` model. 
