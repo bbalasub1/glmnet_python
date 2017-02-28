@@ -5,7 +5,7 @@ from codecs import open
 #from os import path
 #here = path.abspath(path.dirname(__file__))
 
-cmd = 'gfortran ./glmnet_python_hanfang/GLMnet.f -fPIC -fdefault-real-8 -shared -o ./glmnet_python_hanfang/GLMnet.so'
+cmd = 'gfortran ./glmnet_python/GLMnet.f -fPIC -fdefault-real-8 -shared -o ./glmnet_python/GLMnet.so'
 os.system(cmd)
 
 setup(name='glmnet_python_hanfang',
@@ -15,6 +15,6 @@ setup(name='glmnet_python_hanfang',
 	author = 'Han Fang',
 	author_email = 'hanfang.cshl@gmail.com',
 	license = 'GPL-2',
-	packages=['glmnet_python_hanfang'],
+	packages=['glmnet_python'],
 	zip_safe = False)
 
