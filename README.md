@@ -10,6 +10,11 @@ hanfang.cshl@gmail.com
     cd glmnet_python
     python setup.py install
 
+## Usage
+    import glmnet_python
+    from glmnet import glmnet
+
+For more examples, see https://github.com/hanfang/glmnet_python/tree/master/test
     
 ## Introduction
 
