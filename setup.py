@@ -13,6 +13,6 @@ setup(name='glmnet_python',
         author_email = 'hanfang.cshl@gmail.com',
         license = 'GPL-2',
         packages=['glmnet_python'],
-        package_data={'glmnet_python': ['*.so', 'glmnet_python/*.so']},
-        zip_safe = False)
+        package_data={'glmnet_python': ['*.so', 'glmnet_python/*.so']})
+
 

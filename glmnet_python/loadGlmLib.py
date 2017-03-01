@@ -26,7 +26,7 @@ def loadGlmLib():
     elif os.name == 'nt':
         # this does not currently work
         raise ValueError('loadGlmlib does not currently work for windows')
-        glmlib = ctypes.windll.LoadLibrary(glmnet_dll)
+        # glmlib = ctypes.windll.LoadLibrary(glmnet_dll)
     else:
         raise ValueError('loadGlmLib not yet implemented for non-posix OS')
         

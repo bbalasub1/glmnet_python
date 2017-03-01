@@ -29,8 +29,12 @@ from .elnet import elnet
 from .loadGlmLib import loadGlmLib
 from .mrelnet import mrelnet
 from .structtype import structtype
+from .dataprocess import dataprocess
 
-__all__ = ['glmnet', 'glmnetPlot', 'glmnetPrint', 'glmnetPrint', 'glmnetPredict', 'cvglmnet', 'cvglmnetCoef', 'cvglmnetPlot', 'cvglmnetPredict' , 'coxnet', 'cvelnet',  'cvlognet', 'cvmultnet', 'fishnet', 'glmnetControl', 'lognet', 'printDict', 'wtmean', 'cvcompute', 'cvfishnet', 'cvmrelnet', 'elnet', 'glmnetSet', 'loadGlmLib', 'mrelnet', 'structtype']
+__all__ = ['glmnet', 'glmnetPlot', 'glmnetPrint', 'glmnetPrint', 'glmnetPredict', 'cvglmnet', 'cvglmnetCoef',
+           'cvglmnetPlot', 'cvglmnetPredict' , 'coxnet', 'cvelnet',  'cvlognet', 'cvmultnet', 'fishnet',
+           'glmnetControl', 'lognet', 'printDict', 'wtmean', 'cvcompute', 'cvfishnet', 'cvmrelnet', 'elnet',
+           'glmnetSet', 'loadGlmLib', 'mrelnet', 'structtype', 'dataprocess']
 
 #__version__ = get_versions()['version']
 #del get_versions
