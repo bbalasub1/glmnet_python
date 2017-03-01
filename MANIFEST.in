@@ -1,0 +1,2 @@
+include glmnet_python/GLMnet.so
+recursive-include data *
