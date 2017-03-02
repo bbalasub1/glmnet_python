@@ -218,7 +218,7 @@ def cvglmnet(*, x, \
 
     options = glmnetSet(options)
 
-    if len(options['lambdau']) != 0 and len(options['lambda'] < 2):
+    if len(options['lambdau']) != 0 and len(options['lambdau'] < 2):
         raise ValueError('Need more than one value of lambda for cv.glmnet')
     
     nobs = x.shape[0]
