@@ -12,7 +12,7 @@ hanfang.cshl@gmail.com
 
 Using pip (recommended)
     
-    pip install glmnet_py
+    pip install glmnet_python
 
 Complied from source
 
