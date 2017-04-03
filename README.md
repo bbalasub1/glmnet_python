@@ -6,9 +6,17 @@ Han Fang
 hanfang.cshl@gmail.com
 
 ## Install
+
+Using pip (recommended)
+    
+    pip install glmnet_py
+
+Complied from source
+
     git clone https://github.com/hanfang/glmnet_python.git
     cd glmnet_python
     python setup.py install
+
 Requirement: Python3, Linux
 
 Currently, the checked-in version of GLMnet.so is compiled for the following config:
