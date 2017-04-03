@@ -2,6 +2,9 @@
 
 ## Contact
 
+B. J. Balakumar
+bbalasub@stanford.edu 
+
 Han Fang
 hanfang.cshl@gmail.com
 
