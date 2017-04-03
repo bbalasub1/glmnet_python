@@ -20,7 +20,7 @@ Complied from source
     cd glmnet_python
     python setup.py install
 
-Requirement: Python2/3, Linux
+Requirement: Python 2/3, Linux
 
 Currently, the checked-in version of GLMnet.so is compiled for the following config:
 
@@ -34,7 +34,7 @@ Currently, the checked-in version of GLMnet.so is compiled for the following con
     import glmnet_python
     from glmnet import glmnet
 
-For more examples, see [iPython Noteboo](https://github.com/bbalasub1/glmnet_python/blob/master/test/glmnet_examples.ipynb "iPython Notebook")
+For more examples, see [iPython notebook](https://github.com/bbalasub1/glmnet_python/blob/master/test/glmnet_examples.ipynb "iPython Notebook")
 
 
     
@@ -52,10 +52,7 @@ CV can be done in both serial and parallel manner. Parallellization is done usin
 
 During installation, the fortran code is compiled in the local machine using `gfortran`, and is called by the python code. 
 
-````diff
-+Getting started:
-````
-*The best starting point to use this library is to start with the Jupyter notebooks in the `test` directory (glmnet_examples.ipynb). Detailed explanations of function calls and parameter values along with plenty of examples are provided there to get you started.*
+*The best starting point to use this library is to start with the Jupyter notebooks in the `test` directory ([iPython notebook](https://github.com/bbalasub1/glmnet_python/blob/master/test/glmnet_examples.ipynb "iPython Notebook")). Detailed explanations of function calls and parameter values along with plenty of examples are provided there to get you started.*
 
 ## Authors:
 
@@ -65,7 +62,9 @@ The original MATLAB wrapper was written by Hui Jiang (14 Jul 2009), and was upda
 
 This python wrapper (which was adapted from the MATLAB and R wrappers) was originally written by B. J. Balakumar (5 Sep 2016), later modified by Han Fang.
 
-B. J. Balakumar, bbalasub@stanford.edu (5 Sep 2016). Department of Statistics, Stanford University, Stanford, California, USA.
+B. J. Balakumar, bbalasub@stanford.edu (Sep 5, 2016). Department of Statistics, Stanford University, Stanford, CA
+
+Han Fang, hanfang.cshl@gmail.com (Mar 1, 2017). Department of Applied Math & Statistics, Stony Brook University, Stony Brook, NY
 
 REFERENCES:
 * Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, 
