@@ -20,7 +20,7 @@ Complied from source
     cd glmnet_python
     python setup.py install
 
-Requirement: Python3, Linux
+Requirement: Python2/3, Linux
 
 Currently, the checked-in version of GLMnet.so is compiled for the following config:
 
@@ -34,7 +34,8 @@ Currently, the checked-in version of GLMnet.so is compiled for the following con
     import glmnet_python
     from glmnet import glmnet
 
-For more examples, see https://github.com/hanfang/glmnet_python/tree/master/test
+For more examples, see [iPython Noteboo](https://github.com/bbalasub1/glmnet_python/blob/master/test/glmnet_examples.ipynb "iPython Notebook")
+
 
     
 ## Introduction
