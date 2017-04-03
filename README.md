@@ -62,9 +62,9 @@ Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani. For
 
 The original MATLAB wrapper was written by Hui Jiang (14 Jul 2009), and was updated and is maintained by Junyang Qian (30 Aug 2013).
 
-This python wrapper (which was adapted from the MATLAB and R wrappers) was written by B. J. Balakumar, bbalasub@stanford.edu (5 Sep 2016).
+This python wrapper (which was adapted from the MATLAB and R wrappers) was originally written by B. J. Balakumar (5 Sep 2016), later modified by Han Fang.
 
-Department of Statistics, Stanford University, Stanford, California, USA. 
+B. J. Balakumar, bbalasub@stanford.edu (5 Sep 2016). Department of Statistics, Stanford University, Stanford, California, USA.
 
 REFERENCES:
 * Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, 
