@@ -167,7 +167,7 @@ def glmnetPredict(fit,\
                               , newx) ) , nbeta)
         if fit['offset']:
             if len(offset) == 0:
-                raise ValueError('No offset provided for prediction, yet used in fit of glmnet')                              
+                raise ValueError('No offset provided for prediction, yet used in fit of glmnet')
             if offset.shape[1] == 2:
                 offset = offset[:, 1]
                 

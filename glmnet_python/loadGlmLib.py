@@ -16,14 +16,17 @@ glmlib          Returns a glmlib object with methods that are equivalent
 import ctypes
 import os
 
+glmnet_so = os.path.dirname(__file__) + '/GLMnet.so'
+glmnet_dll = os.path.dirname(__file__) + '/GLMnet.dll'
+
 def loadGlmLib():
     if os.name == 'posix':
-        glmlib = ctypes.cdll.LoadLibrary('../lib/GLMnet.so') 
+        glmlib = ctypes.cdll.LoadLibrary(glmnet_so)
         return(glmlib)
     elif os.name == 'nt':
         # this does not currently work
         raise ValueError('loadGlmlib does not currently work for windows')
-        glmlib = ctypes.windll.LoadLibrary('../lib/GLMnet.dll')
+        # glmlib = ctypes.windll.LoadLibrary(glmnet_dll)
     else:
         raise ValueError('loadGlmLib not yet implemented for non-posix OS')
         

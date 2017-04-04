@@ -93,9 +93,19 @@ def glmnetControl(pars = None):
     if len(parsInIvals) > 0:          # assert 'opts' keys are subsets of 'options' keys
         raise ValueError('attempting to set glmnet controls that are not known to glmnetControl')
     else:        
-        ivals = {**ivals, **pars}   # update values
+        ivals = merge_dicts(ivals, pars)
     
     return ivals
+
+def merge_dicts(*dict_args):
+    """
+    Given any number of dicts, shallow copy and merge into a new dict,
+    precedence goes to key value pairs in latter dicts.
+    """
+    result = {}
+    for dictionary in dict_args:
+        result.update(dictionary)
+    return result
 
 # end of glmnetControl()
 

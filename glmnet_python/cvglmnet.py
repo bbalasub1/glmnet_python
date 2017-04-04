@@ -193,6 +193,7 @@ OUTPUT ARGUMENTS:
     toc;
 
 """
+import sys
 import joblib
 import multiprocessing
 from glmnetSet import glmnetSet
@@ -205,20 +206,20 @@ from cvmultnet import cvmultnet
 from cvmrelnet import cvmrelnet
 from cvfishnet import cvfishnet
 
-def cvglmnet(*, x, \
-             y, \
-             family = 'gaussian', \
-             ptype = 'default', \
-             nfolds = 10, \
-             foldid = scipy.empty([0]), \
-             parallel = False, \
-             keep = False, \
-             grouped = True, \
+def cvglmnet(*, x,
+             y,
+             family = 'gaussian',
+             ptype = 'default',
+             nfolds = 10,
+             foldid = scipy.empty([0]),
+             parallel = False,
+             keep = False,
+             grouped = True,
              **options):
 
     options = glmnetSet(options)
 
-    if len(options['lambdau']) != 0 and len(options['lambda'] < 2):
+    if 0 < len(options['lambdau']) < 2:
         raise ValueError('Need more than one value of lambda for cv.glmnet')
     
     nobs = x.shape[0]
@@ -274,6 +275,7 @@ def cvglmnet(*, x, \
     foldid = scipy.reshape(foldid, [foldid.size, ])
     if parallel == True:
         num_cores = multiprocessing.cpu_count()
+        sys.stderr.write("[status]\tParallel glmnet cv with " + str(num_cores) + " cores\n")
         cpredmat = joblib.Parallel(n_jobs=num_cores)(joblib.delayed(doCV)(i, x, y, family, foldid, nfolds, is_offset, **options) for i in range(nfolds))
     else:
         for i in range(nfolds):
