@@ -127,6 +127,3 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
     ax1.set_ylabel(cvobject['name'])
     
     #plt.show()
-
-    
-    
