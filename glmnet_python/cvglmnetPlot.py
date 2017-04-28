@@ -65,9 +65,10 @@
 """
 
 import scipy
-import matplotlib.pyplot as plt
+
 
 def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
+    import matplotlib.pyplot as plt
     
     sloglam = sign_lambda*scipy.log(cvobject['lambdau'])
 
@@ -126,6 +127,3 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
     ax1.set_ylabel(cvobject['name'])
     
     #plt.show()
-
-    
-    

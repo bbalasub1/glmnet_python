@@ -71,10 +71,11 @@
      plt.figure()
      glmnetPlot(fit3)
 """
-import matplotlib.pyplot as plt
 import scipy
 
+
 def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
+    import matplotlib.pyplot as plt
 
     # process inputs
     xvar = getFromList(xvar, ['norm', 'lambda', 'dev'], 'xvar should be one of ''norm'', ''lambda'', ''dev'' ')    
@@ -154,6 +155,8 @@ def nonzeroCoef(beta, bystep = False):
 # end of nonzeroCoef()
 # =========================================
 def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
+    import matplotlib.pyplot as plt
+
     which = nonzeroCoef(beta)
     idwhich = [i for i in range(len(which)) if which[i] == True]
     nwhich = len(idwhich)
