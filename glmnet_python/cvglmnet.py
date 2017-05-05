@@ -257,7 +257,7 @@ def cvglmnet(*, x,
         nz = scipy.transpose(scipy.sum(nz, axis = 0))
     
     if len(foldid) == 0:
-        ma = scipy.tile(scipy.arange(nfolds), [1, scipy.floor(nobs/nfolds)])
+        ma = scipy.tile(scipy.arange(nfolds), [1, int(scipy.floor(nobs/nfolds))])
         mb = scipy.arange(scipy.mod(nobs, nfolds))
         mb = scipy.reshape(mb, [1, mb.size])
         population = scipy.append(ma, mb, axis = 1)
