@@ -1,22 +1,14 @@
 # Glmnet for python 
 
-## Contact
-
-B. J. Balakumar
-bbalasub@stanford.edu 
-
-Han Fang
-hanfang.cshl@gmail.com
-
 ## Install
 
 Using pip (recommended)
     
-    pip install glmnet_python
+    pip install glmnet_py
 
 Complied from source
 
-    git clone https://github.com/hanfang/glmnet_python.git
+    git clone https://github.com/bbalasub1/glmnet_python.git
     cd glmnet_python
     python setup.py install
 
@@ -60,7 +52,9 @@ Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani. For
 
 The original MATLAB wrapper was written by Hui Jiang (14 Jul 2009), and was updated and is maintained by Junyang Qian (30 Aug 2013).
 
-This python wrapper (which was adapted from the MATLAB and R wrappers) was originally written by B. J. Balakumar (5 Sep 2016), later modified by Han Fang.
+This python wrapper (which was adapted from the MATLAB and R wrappers) was originally written by B. J. Balakumar (5 Sep 2016). 
+
+The pip installation for glmnet_py is maintained by Han Fang.
 
 B. J. Balakumar, bbalasub@stanford.edu (Sep 5, 2016). Department of Statistics, Stanford University, Stanford, CA
 
