@@ -12,7 +12,7 @@ Complied from source
     cd glmnet_python
     python setup.py install
 
-Requirement: Python 2/3, Linux
+Requirement: Python 3, Linux
 
 Currently, the checked-in version of GLMnet.so is compiled for the following config:
 
