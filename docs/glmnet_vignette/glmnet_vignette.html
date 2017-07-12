@@ -1,0 +1,2300 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Glmnet Vignette (for python) &mdash; glmnet vignette  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="glmnet vignette  documentation" href="index.html"/>
+        <link rel="prev" title="Welcome to glmnet python vignette" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> glmnet vignette
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Glmnet Vignette (for python)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Authors">Authors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Using-pip-(recommended)">Using pip (recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Complied-from-source">Complied from source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Requirement">Requirement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Linear-Regression">Linear Regression</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Linear-Regression---Gaussian-family">Linear Regression - Gaussian family</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Coefficient-upper-and-lower-bounds">Coefficient upper and lower bounds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Penalty-factors">Penalty factors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Customizing-plots">Customizing plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Linear-Regression---Multiresponse-Gaussian-Family">Linear Regression - Multiresponse Gaussian Family</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Logistic-Regression">Logistic Regression</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Logistic-Regression:-Binomial-Models">Logistic Regression: Binomial Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Logistic-Regression---Multinomial-Models">Logistic Regression - Multinomial Models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Poisson-Models">Poisson Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Cox-Models">Cox Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#References">References</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">glmnet vignette</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Glmnet Vignette (for python)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/glmnet_vignette.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="Glmnet-Vignette-(for-python)">
+<h1>Glmnet Vignette (for python)<a class="headerlink" href="#Glmnet-Vignette-(for-python)" title="Permalink to this headline">¶</a></h1>
+<p>July 12, 2017</p>
+<div class="section" id="Authors">
+<h2>Authors<a class="headerlink" href="#Authors" title="Permalink to this headline">¶</a></h2>
+<p>Trevor Hastie, Junyang Qian, B. J. Balakumar, Han Fang</p>
+</div>
+<div class="section" id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Glmnet</span></code> is a package that fits a generalized linear model via
+penalized maximum likelihood. The regularization path is computed for
+the lasso or elasticnet penalty at a grid of values for the
+regularization parameter lambda. The algorithm is extremely fast, and
+can exploit sparsity in the input matrix <code class="docutils literal"><span class="pre">x</span></code>. It fits linear, logistic
+and multinomial, poisson, and Cox regression models. A variety of
+predictions can be made from the fitted models. It can also fit
+multi-response linear regression.</p>
+<p>The authors of glmnet are Jerome Friedman, Trevor Hastie, Rob Tibshirani
+and Noah Simon. The Python package is maintained by B. J. Balakumar and
+Han Fang. The R package is maintained by Trevor Hastie. The matlab
+version of glmnet is maintained by Junyang Qian. This vignette describes
+the usage of glmnet in Python.</p>
+<p><code class="docutils literal"><span class="pre">glmnet</span></code> solves the following problem:</p>
+<div class="math">
+\[\min_{\beta_0, \beta}\frac{1}{N} \sum_{i=1}^N w_i l(y_i, \beta_0+ \beta^T x_i)^2+\lambda \left[ (1-\alpha)||\beta||_2^2/2 + \alpha||\beta||_1\right],\]</div>
+<p>over a grid of values of <span class="math">\(\lambda\)</span> covering the entire range. Here
+<span class="math">\(l(y, \eta)\)</span> is the negative log-likelihood contribution for
+observation <span class="math">\(i\)</span>; e.g. for the Gaussian case it is
+<span class="math">\(\frac{1}{2} l(y-\eta)^2\)</span>. The elastic-net penalty is controlled
+by <span class="math">\(\alpha\)</span>, and bridges the gap between lasso (<span class="math">\(\alpha=1\)</span>,
+the default) and ridge (<span class="math">\(\alpha=0\)</span>). The tuning parameter
+<span class="math">\(\lambda\)</span> controls the overall strength of the penalty.</p>
+<p>It is known that the ridge penalty shrinks the coefficients of
+correlated predictors towards each other while the lasso tends to pick
+one of them and discard the others. The elastic-net penalty mixes these
+two; if predictors are correlated in groups, an <span class="math">\(\alpha=0.5\)</span> tends
+to select the groups in or out together. This is a higher level
+parameter, and users might pick a value upfront, else experiment with a
+few different values. One use of <span class="math">\(\alpha\)</span> is for numerical
+stability; for example, the elastic net with
+<span class="math">\(\alpha = 1-\varepsilon\)</span> for some small <span class="math">\(\varepsilon&gt;0\)</span>
+performs much like the lasso, but removes any degeneracies and wild
+behavior caused by extreme correlations.</p>
+<p>The glmnet algorithms use cyclical coordinate descent, which
+successively optimizes the objective function over each parameter with
+others fixed, and cycles repeatedly until convergence. The package also
+makes use of the strong rules for efficient restriction of the active
+set. Due to highly efficient updates and techniques such as warm starts
+and active-set convergence, our algorithms can compute the solution path
+very fast.</p>
+<p>The code can handle sparse input-matrix formats, as well as range
+constraints on coefficients. The core of glmnet is a set of fortran
+subroutines, which make for very fast execution.</p>
+<p>The package also includes methods for prediction and plotting, and a
+function that performs K-fold cross-validation.</p>
+</div>
+<div class="section" id="Installation">
+<h2>Installation<a class="headerlink" href="#Installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Using-pip-(recommended)">
+<h3>Using pip (recommended)<a class="headerlink" href="#Using-pip-(recommended)" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">glmnet_py</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Complied-from-source">
+<h3>Complied from source<a class="headerlink" href="#Complied-from-source" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">bbalasub1</span><span class="o">/</span><span class="n">glmnet_python</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">glmnet_python</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Requirement">
+<h3>Requirement<a class="headerlink" href="#Requirement" title="Permalink to this headline">¶</a></h3>
+<p>Python 3, Linux</p>
+<p>Currently, the checked-in version of GLMnet.so is compiled for the
+following config:</p>
+<p><strong>Linux:</strong> Linux version 2.6.32-573.26.1.el6.x86_64 (gcc version 4.4.7
+20120313 (Red Hat 4.4.7-16) (GCC) ) <strong>OS:</strong> CentOS 6.7 (Final)
+<strong>Hardware:</strong> 8-core Intel(R) Core(TM) i7-2630QM <strong>gfortran:</strong> version
+4.4.7 20120313 (Red Hat 4.4.7-17) (GCC)</p>
+</div>
+</div>
+<div class="section" id="Usage">
+<h2>Usage<a class="headerlink" href="#Usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glmnet_python</span>
+<span class="kn">from</span> <span class="nn">glmnet</span> <span class="k">import</span> <span class="n">glmnet</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Linear-Regression">
+<h2>Linear Regression<a class="headerlink" href="#Linear-Regression" title="Permalink to this headline">¶</a></h2>
+<p>Linear regression here refers to two families of models. One is
+<code class="docutils literal"><span class="pre">gaussian</span></code>, the Gaussian family, and the other is <code class="docutils literal"><span class="pre">mgaussian</span></code>, the
+multiresponse Gaussian family. We first discuss the ordinary Gaussian
+and the multiresponse one after that.</p>
+<div class="section" id="Linear-Regression---Gaussian-family">
+<h3>Linear Regression - Gaussian family<a class="headerlink" href="#Linear-Regression---Gaussian-family" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">gaussian</span></code> is the default family option in the function <code class="docutils literal"><span class="pre">glmnet</span></code>.
+Suppose we have observations <span class="math">\(x_i \in \mathbb{R}^p\)</span> and the
+responses <span class="math">\(y_i \in \mathbb{R}, i = 1, \ldots, N\)</span>. The objective
+function for the Gaussian family is</p>
+<div class="math">
+\[\min_{(\beta_0, \beta) \in \mathbb{R}^{p+1}}\frac{1}{2N} \sum_{i=1}^N (y_i -\beta_0-x_i^T \beta)^2+\lambda \left[ (1-\alpha)||\beta||_2^2/2 + \alpha||\beta||_1\right],\]</div>
+<p>where</p>
+<p><span class="math">\(\lambda \geq 0\)</span> is a complexity parameter and
+<span class="math">\(0 \leq \alpha \leq 1\)</span> is a compromise between ridge
+(<span class="math">\(\alpha = 0\)</span>) and lasso (<span class="math">\(\alpha = 1\)</span>).</p>
+<p>Coordinate descent is applied to solve the problem. Specifically,
+suppose we have current estimates <span class="math">\(\tilde{\beta_0}\)</span> and
+<span class="math">\(\tilde{\beta}_\ell\)</span> <span class="math">\(\forall j\in 1,\ldots,p\)</span>. By computing
+the gradient at <span class="math">\(\beta_j = \tilde{\beta}_j\)</span> and simple calculus,
+the update is</p>
+<div class="math">
+\[\tilde{\beta}_j \leftarrow \frac{S(\frac{1}{N}\sum_{i=1}^N x_{ij}(y_i-\tilde{y}_i^{(j)}),\lambda \alpha)}{1+\lambda(1-\alpha)},\]</div>
+<p>where</p>
+<p><span class="math">\(\tilde{y}_i^{(j)} = \tilde{\beta}_0 + \sum_{\ell \neq j} x_{i\ell} \tilde{\beta}_\ell\)</span>,
+and <span class="math">\(S(z, \gamma)\)</span> is the soft-thresholding operator with value
+<span class="math">\(\text{sign}(z)(|z|-\gamma)_+\)</span>.</p>
+<p>This formula above applies when the <code class="docutils literal"><span class="pre">x</span></code> variables are standardized to
+have unit variance (the default); it is slightly more complicated when
+they are not. Note that for &#8220;family=gaussian&#8221;, <code class="docutils literal"><span class="pre">glmnet</span></code> standardizes
+<span class="math">\(y\)</span> to have unit variance before computing its lambda sequence
+(and then unstandardizes the resulting coefficients); if you wish to
+reproduce/compare results with other software, best to supply a
+standardized <span class="math">\(y\)</span> first (Using the &#8220;1/N&#8221; variance formula).</p>
+<p><code class="docutils literal"><span class="pre">glmnet</span></code> provides various options for users to customize the fit. We
+introduce some commonly used options here and they can be specified in
+the <code class="docutils literal"><span class="pre">glmnet</span></code> function.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">alpha</span></code> is for the elastic-net mixing parameter <span class="math">\(\alpha\)</span>,
+with range <span class="math">\(\alpha \in [0,1]\)</span>. <span class="math">\(\alpha = 1\)</span> is the lasso
+(default) and <span class="math">\(\alpha = 0\)</span> is the ridge.</li>
+<li><code class="docutils literal"><span class="pre">weights</span></code> is for the observation weights. Default is 1 for each
+observation. (Note: <code class="docutils literal"><span class="pre">glmnet</span></code> rescales the weights to sum to N, the
+sample size.)</li>
+<li><code class="docutils literal"><span class="pre">nlambda</span></code> is the number of <span class="math">\(\lambda\)</span> values in the sequence.
+Default is 100.</li>
+<li><code class="docutils literal"><span class="pre">lambda</span></code> can be provided, but is typically not and the program
+constructs a sequence. When automatically generated, the
+<span class="math">\(\lambda\)</span> sequence is determined by <code class="docutils literal"><span class="pre">lambda.max</span></code> and
+<code class="docutils literal"><span class="pre">lambda.min.ratio</span></code>. The latter is the ratio of smallest value of
+the generated <span class="math">\(\lambda\)</span> sequence (say <code class="docutils literal"><span class="pre">lambda.min</span></code>) to
+<code class="docutils literal"><span class="pre">lambda.max</span></code>. The program then generated <code class="docutils literal"><span class="pre">nlambda</span></code> values linear
+on the log scale from <code class="docutils literal"><span class="pre">lambda.max</span></code> down to <code class="docutils literal"><span class="pre">lambda.min</span></code>.
+<code class="docutils literal"><span class="pre">lambda.max</span></code> is not given, but easily computed from the input
+<span class="math">\(x\)</span> and <span class="math">\(y\)</span>; it is the smallest value for <code class="docutils literal"><span class="pre">lambda</span></code> such
+that all the coefficients are zero. For <code class="docutils literal"><span class="pre">alpha=0</span></code> (ridge)
+<code class="docutils literal"><span class="pre">lambda.max</span></code> would be <span class="math">\(\infty\)</span>; hence for this case we pick a
+value corresponding to a small value for <code class="docutils literal"><span class="pre">alpha</span></code> close to zero.)</li>
+<li><code class="docutils literal"><span class="pre">standardize</span></code> is a logical flag for <code class="docutils literal"><span class="pre">x</span></code> variable standardization,
+prior to fitting the model sequence. The coefficients are always
+returned on the original scale. Default is <code class="docutils literal"><span class="pre">standardize=TRUE</span></code>.</li>
+</ul>
+<p>For more information, type <code class="docutils literal"><span class="pre">help(glmnet)</span></code> or simply <code class="docutils literal"><span class="pre">?glmnet</span></code>. Let
+us start by loading the data:</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Jupyter setup to expand cell display to 100% width on your screen (optional)</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;style&gt;.container { width:100% !important; }&lt;/style&gt;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<style>.container { width:100% !important; }</style></div>
+</div>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Import relevant modules and setup for calling glmnet</span>
+<span class="o">%</span><span class="k">reset</span> -f
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../test&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../lib&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">scipy</span><span class="o">,</span> <span class="nn">importlib</span><span class="o">,</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">glmnet</span> <span class="k">import</span> <span class="n">glmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPlot</span> <span class="k">import</span> <span class="n">glmnetPlot</span>
+<span class="kn">from</span> <span class="nn">glmnetPrint</span> <span class="k">import</span> <span class="n">glmnetPrint</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetCoef</span> <span class="k">import</span> <span class="n">glmnetCoef</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPredict</span> <span class="k">import</span> <span class="n">glmnetPredict</span>
+<span class="kn">from</span> <span class="nn">cvglmnet</span> <span class="k">import</span> <span class="n">cvglmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetCoef</span> <span class="k">import</span> <span class="n">cvglmnetCoef</span>
+<span class="kn">from</span> <span class="nn">cvglmnetPlot</span> <span class="k">import</span> <span class="n">cvglmnetPlot</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetPredict</span> <span class="k">import</span> <span class="n">cvglmnetPredict</span>
+
+<span class="c1"># parameters</span>
+<span class="n">baseDataDir</span><span class="o">=</span> <span class="s1">&#39;../data/&#39;</span>
+
+<span class="c1"># load data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;QuickStartExampleX.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;QuickStartExampleY.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="c1"># create weights</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wts</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>As an example, we set <span class="math">\(\alpha = 0.2\)</span> (more like a ridge
+regression), and give double weights to the latter half of the
+observations. To avoid too long a display here, we set <code class="docutils literal"><span class="pre">nlambda</span></code> to
+20. In practice, however, the number of values of <span class="math">\(\lambda\)</span> is
+recommended to be 100 (default) or more. In most cases, it does not come
+with extra cost because of the warm-starts used in the algorithm, and
+for nonlinear models leads to better convergence properties.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># call glmnet</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> \
+                    <span class="n">weights</span> <span class="o">=</span> <span class="n">wts</span><span class="p">,</span> \
+                    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">nlambda</span> <span class="o">=</span> <span class="mi">20</span>
+                    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can then print the <code class="docutils literal"><span class="pre">glmnet</span></code> object.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPrint</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<div class="highlight"><pre>
+         df      %dev    lambdau
+
+0        0.000000        0.000000        7.939020
+1        4.000000        0.178852        4.889231
+2        7.000000        0.444488        3.011024
+3        7.000000        0.656716        1.854334
+4        8.000000        0.784984        1.141988
+5        9.000000        0.853935        0.703291
+6        10.000000       0.886693        0.433121
+7        11.000000       0.902462        0.266737
+8        14.000000       0.910135        0.164269
+9        17.000000       0.913833        0.101165
+10       17.000000       0.915417        0.062302
+11       17.000000       0.916037        0.038369
+12       19.000000       0.916299        0.023629
+13       20.000000       0.916405        0.014552
+14       20.000000       0.916447        0.008962
+15       20.000000       0.916463        0.005519
+16       20.000000       0.916469        0.003399
+</pre></div></div>
+</div>
+<p>This displays the call that produced the object <code class="docutils literal"><span class="pre">fit</span></code> and a
+three-column matrix with columns <code class="docutils literal"><span class="pre">Df</span></code> (the number of nonzero
+coefficients), <code class="docutils literal"><span class="pre">%dev</span></code> (the percent deviance explained) and <code class="docutils literal"><span class="pre">Lambda</span></code>
+(the corresponding value of <span class="math">\(\lambda\)</span>).</p>
+<p>(Note that the <code class="docutils literal"><span class="pre">digits</span></code> option can used to specify significant digits
+in the printout.)</p>
+<p>Here the actual number of <span class="math">\(\lambda\)</span>&#8216;s here is less than specified
+in the call. The reason lies in the stopping criteria of the algorithm.
+According to the default internal settings, the computations stop if
+either the fractional change in deviance down the path is less than
+<span class="math">\(10^{-5}\)</span> or the fraction of explained deviance reaches
+<span class="math">\(0.999\)</span>. From the last few lines , we see the fraction of deviance
+does not change much and therefore the computation ends when meeting the
+stopping criteria. We can change such internal parameters. For details,
+see the Appendix section or type <code class="docutils literal"><span class="pre">help(glmnet.control)</span></code>.</p>
+<p>We can plot the fitted object as in the previous section. There are more
+options in the <code class="docutils literal"><span class="pre">plot</span></code> function.</p>
+<p>Users can decide what is on the X-axis. <code class="docutils literal"><span class="pre">xvar</span></code> allows three measures:
+&#8220;norm&#8221; for the <span class="math">\(\ell_1\)</span>-norm of the coefficients (default),
+&#8220;lambda&#8221; for the log-lambda value and &#8220;dev&#8221; for %deviance explained.</p>
+<p>Users can also label the curves with variable sequence numbers simply by
+setting <code class="docutils literal"><span class="pre">label</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>. Let&#8217;s plot &#8220;fit&#8221; against the log-lambda value
+and with each curve labeled.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPlot</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xvar</span> <span class="o">=</span> <span class="s1">&#39;lambda&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_13_0.png" src="_images/glmnet_vignette_13_0.png" />
+</div>
+</div>
+<p>Now when we plot against %deviance we get a very different picture. This
+is percent deviance explained on the training data. What we see here is
+that toward the end of the path this value are not changing much, but
+the coefficients are &#8220;blowing up&#8221; a bit. This lets us focus attention on
+the parts of the fit that matter. This will especially be true for other
+models, such as logistic regression.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPlot</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xvar</span> <span class="o">=</span> <span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_15_0.png" src="_images/glmnet_vignette_15_0.png" />
+</div>
+</div>
+<p>We can extract the coefficients and make predictions at certain values
+of <span class="math">\(\lambda\)</span>. Two commonly used options are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">s</span></code> specifies the value(s) of <span class="math">\(\lambda\)</span> at which extraction
+is made.</li>
+<li><code class="docutils literal"><span class="pre">exact</span></code> indicates whether the exact values of coefficients are
+desired or not. That is, if <code class="docutils literal"><span class="pre">exact</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>, and predictions are to
+be made at values of s not included in the original fit, these values
+of s are merged with <code class="docutils literal"><span class="pre">object$lambda</span></code>, and the model is refit before
+predictions are made. If <code class="docutils literal"><span class="pre">exact=FALSE</span></code> (default), then the predict
+function uses linear interpolation to make predictions for values of
+s that do not coincide with lambdas used in the fitting algorithm.</li>
+</ul>
+<p>A simple example is:</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">any</span><span class="p">(</span><span class="n">fit</span><span class="p">[</span><span class="s1">&#39;lambdau&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>False
+</pre></div>
+</div>
+</div>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetCoef</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">([</span><span class="mf">0.5</span><span class="p">]),</span> <span class="n">exact</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.19909875],
+       [ 1.17465045],
+       [ 0.        ],
+       [ 0.53193465],
+       [ 0.        ],
+       [-0.76095948],
+       [ 0.46820941],
+       [ 0.06192676],
+       [ 0.38030149],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.14326099],
+       [ 0.        ],
+       [ 0.        ],
+       [-0.91120737],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.00919663],
+       [ 0.        ],
+       [-0.86311705]])
+</pre></div>
+</div>
+</div>
+<p>The output is for <code class="docutils literal"><span class="pre">False</span></code>.<em>(TBD) The exact = &#8216;True&#8217; option is not
+yet implemented</em>.</p>
+<p>Users can make predictions from the fitted object. In addition to the
+options in <code class="docutils literal"><span class="pre">coef</span></code>, the primary argument is <code class="docutils literal"><span class="pre">newx</span></code>, a matrix of new
+values for <code class="docutils literal"><span class="pre">x</span></code>. The <code class="docutils literal"><span class="pre">type</span></code> option allows users to choose the type of
+prediction: * &#8220;link&#8221; gives the fitted values</p>
+<ul class="simple">
+<li>&#8220;response&#8221; the sames as &#8220;link&#8221; for &#8220;gaussian&#8221; family.</li>
+<li>&#8220;coefficients&#8221; computes the coefficients at values of <code class="docutils literal"><span class="pre">s</span></code></li>
+<li>&#8220;nonzero&#8221; retuns a list of the indices of the nonzero coefficients
+for each value of <code class="docutils literal"><span class="pre">s</span></code>.</li>
+</ul>
+<p>For example,</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fc</span> <span class="o">=</span> <span class="n">glmnetPredict</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,:],</span> <span class="n">ptype</span> <span class="o">=</span> <span class="s1">&#39;response&#39;</span><span class="p">,</span> \
+                                <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">([</span><span class="mf">0.05</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<div class="highlight"><pre>
+[[-0.98025907]
+ [ 2.29924528]
+ [ 0.60108862]
+ [ 2.35726679]
+ [ 1.75204208]]
+</pre></div></div>
+</div>
+<p>gives the fitted values for the first 5 observations at
+<span class="math">\(\lambda = 0.05\)</span>. If multiple values of <code class="docutils literal"><span class="pre">s</span></code> are supplied, a
+matrix of predictions is produced.</p>
+<p>Users can customize K-fold cross-validation. In addition to all the
+<code class="docutils literal"><span class="pre">glmnet</span></code> parameters, <code class="docutils literal"><span class="pre">cvglmnet</span></code> has its special parameters including
+<code class="docutils literal"><span class="pre">nfolds</span></code> (the number of folds), <code class="docutils literal"><span class="pre">foldid</span></code> (user-supplied folds),
+<code class="docutils literal"><span class="pre">ptype</span></code>(the loss used for cross-validation):</p>
+<ul class="simple">
+<li>&#8220;deviance&#8221; or &#8220;mse&#8221; uses squared loss</li>
+<li>&#8220;mae&#8221; uses mean absolute error</li>
+</ul>
+<p>As an example,</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">cvfit</span> <span class="o">=</span> <span class="n">cvglmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">ptype</span> <span class="o">=</span> <span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="n">nfolds</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>does 20-fold cross-validation, based on mean squared error criterion
+(default though).</p>
+<p>Parallel computing is also supported by <code class="docutils literal"><span class="pre">cvglmnet</span></code>. Parallel
+processing is turned off by default. It can be turned on using
+<code class="docutils literal"><span class="pre">parallel=True</span></code> in the <code class="docutils literal"><span class="pre">cvglmnet</span></code> call.</p>
+<p>Parallel computing can significantly speed up the computation process,
+especially for large-scale problems. But for smaller problems, it could
+result in a reduction in speed due to the additional overhead. User
+discretion is advised.</p>
+<p>Functions <code class="docutils literal"><span class="pre">coef</span></code> and <code class="docutils literal"><span class="pre">predict</span></code> on cv.glmnet object are similar to
+those for a <code class="docutils literal"><span class="pre">glmnet</span></code> object, except that two special strings are also
+supported by <code class="docutils literal"><span class="pre">s</span></code> (the values of <span class="math">\(\lambda\)</span> requested):</p>
+<ul class="simple">
+<li>&#8220;lambda.1se&#8221;: the largest <span class="math">\(\lambda\)</span> at which the MSE is within
+one standard error of the minimal MSE.</li>
+<li>&#8220;lambda.min&#8221;: the <span class="math">\(\lambda\)</span> at which the minimal MSE is
+achieved.</li>
+</ul>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvfit</span><span class="p">[</span><span class="s1">&#39;lambda_min&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.07569327])
+</pre></div>
+</div>
+</div>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvglmnetCoef</span><span class="p">(</span><span class="n">cvfit</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;lambda_min&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.14867414],
+       [ 1.33377821],
+       [ 0.        ],
+       [ 0.69787701],
+       [ 0.        ],
+       [-0.83726751],
+       [ 0.54334327],
+       [ 0.02668633],
+       [ 0.33741131],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.17105029],
+       [ 0.        ],
+       [ 0.        ],
+       [-1.0755268 ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [-1.05278699]])
+</pre></div>
+</div>
+</div>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvglmnetPredict</span><span class="p">(</span><span class="n">cvfit</span><span class="p">,</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,],</span> <span class="n">s</span><span class="o">=</span><span class="s1">&#39;lambda_min&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[-1.36388479],
+       [ 2.57134278],
+       [ 0.57297855],
+       [ 1.98814222],
+       [ 1.51798822]])
+</pre></div>
+</div>
+</div>
+<p>Users can control the folds used. Here we use the same folds so we can
+also select a value for <span class="math">\(\alpha\)</span>.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foldid</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">cv1</span><span class="o">=</span><span class="n">cvglmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">foldid</span><span class="o">=</span><span class="n">foldid</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cv0p5</span><span class="o">=</span><span class="n">cvglmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">foldid</span><span class="o">=</span><span class="n">foldid</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">cv0</span><span class="o">=</span><span class="n">cvglmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">foldid</span><span class="o">=</span><span class="n">foldid</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>There are no built-in plot functions to put them all on the same plot,
+so we are on our own here:</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cvglmnetPlot</span><span class="p">(</span><span class="n">cv1</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">cvglmnetPlot</span><span class="p">(</span><span class="n">cv0p5</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">cvglmnetPlot</span><span class="p">(</span><span class="n">cv0</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">scipy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cv1</span><span class="p">[</span><span class="s1">&#39;lambdau&#39;</span><span class="p">]),</span> <span class="n">cv1</span><span class="p">[</span><span class="s1">&#39;cvm&#39;</span><span class="p">],</span> <span class="s1">&#39;r.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">scipy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cv0p5</span><span class="p">[</span><span class="s1">&#39;lambdau&#39;</span><span class="p">]),</span> <span class="n">cv0p5</span><span class="p">[</span><span class="s1">&#39;cvm&#39;</span><span class="p">],</span> <span class="s1">&#39;g.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">scipy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cv0</span><span class="p">[</span><span class="s1">&#39;lambdau&#39;</span><span class="p">]),</span> <span class="n">cv0</span><span class="p">[</span><span class="s1">&#39;cvm&#39;</span><span class="p">],</span> <span class="s1">&#39;b.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;log(Lambda)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">cv1</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;alpha = 1&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha = 0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha = 0&#39;</span><span class="p">),</span> <span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_31_0.png" src="_images/glmnet_vignette_31_0.png" />
+</div>
+</div>
+<p>We see that lasso (<code class="docutils literal"><span class="pre">alpha=1</span></code>) does about the best here. We also see
+that the range of lambdas used differs with alpha.</p>
+</div>
+<div class="section" id="Coefficient-upper-and-lower-bounds">
+<h3>Coefficient upper and lower bounds<a class="headerlink" href="#Coefficient-upper-and-lower-bounds" title="Permalink to this headline">¶</a></h3>
+<p>These are recently added features that enhance the scope of the models.
+Suppose we want to fit our model, but limit the coefficients to be
+bigger than -0.7 and less than 0.5. This is easily achieved via the
+<code class="docutils literal"><span class="pre">upper.limits</span></code> and <code class="docutils literal"><span class="pre">lower.limits</span></code> arguments:</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cl</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.7</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">]],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">tfit</span><span class="o">=</span><span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">y</span><span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">cl</span><span class="p">)</span>
+<span class="n">glmnetPlot</span><span class="p">(</span><span class="n">tfit</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_33_0.png" src="_images/glmnet_vignette_33_0.png" />
+</div>
+</div>
+<p>These are rather arbitrary limits; often we want the coefficients to be
+positive, so we can set only <code class="docutils literal"><span class="pre">lower.limit</span></code> to be 0. (Note, the lower
+limit must be no bigger than zero, and the upper limit no smaller than
+zero.) These bounds can be a vector, with different values for each
+coefficient. If given as a scalar, the same number gets recycled for
+all.</p>
+</div>
+<div class="section" id="Penalty-factors">
+<h3>Penalty factors<a class="headerlink" href="#Penalty-factors" title="Permalink to this headline">¶</a></h3>
+<p>This argument allows users to apply separate penalty factors to each
+coefficient. Its default is 1 for each parameter, but other values can
+be specified. In particular, any variable with <code class="docutils literal"><span class="pre">penalty.factor</span></code> equal
+to zero is not penalized at all! Let <span class="math">\(v_j\)</span> denote the penalty
+factor for <span class="math">\(j\)</span> th variable. The penalty term becomes</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}  \lambda \sum_{j=1}^p \boldsymbol{v_j} P_\alpha(\beta_j) = \lambda \sum_{j=1}^p \boldsymbol{v_j} \left[ (1-\alpha)\frac{1}{2} \beta_j^2 + \alpha |\beta_j| \right].\\Note the penalty factors are internally rescaled to sum to nvars.\end{aligned}\end{align} \]</div>
+<p>This is very useful when people have prior knowledge or preference over
+the variables. In many cases, some variables may be so important that
+one wants to keep them all the time, which can be achieved by setting
+corresponding penalty factors to 0:</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">pfac</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+<span class="n">pfac</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">pfac</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">pfac</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">pfit</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">penalty_factor</span> <span class="o">=</span> <span class="n">pfac</span><span class="p">)</span>
+<span class="n">glmnetPlot</span><span class="p">(</span><span class="n">pfit</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_36_0.png" src="_images/glmnet_vignette_36_0.png" />
+</div>
+</div>
+<p>We see from the labels that the three variables with 0 penalty factors
+always stay in the model, while the others follow typical regularization
+paths and shrunken to 0 eventually.</p>
+<p>Some other useful arguments. <code class="docutils literal"><span class="pre">exclude</span></code> allows one to block certain
+variables from being the model at all. Of course, one could simply
+subset these out of <code class="docutils literal"><span class="pre">x</span></code>, but sometimes <code class="docutils literal"><span class="pre">exclude</span></code> is more useful,
+since it returns a full vector of coefficients, just with the excluded
+ones set to zero. There is also an <code class="docutils literal"><span class="pre">intercept</span></code> argument which defaults
+to <code class="docutils literal"><span class="pre">True</span></code>; if <code class="docutils literal"><span class="pre">False</span></code> the intercept is forced to be zero.</p>
+</div>
+<div class="section" id="Customizing-plots">
+<h3>Customizing plots<a class="headerlink" href="#Customizing-plots" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes, especially when the number of variables is small, we want to
+add variable labels to a plot. Since <code class="docutils literal"><span class="pre">glmnet</span></code> is intended primarily
+for wide data, this is not supprted in <code class="docutils literal"><span class="pre">plot.glmnet</span></code>. However, it is
+easy to do, as the following little toy example shows.</p>
+<p>We first generate some data, with 10 variables, and for lack of
+imagination and ease we give them simple character names. We then fit a
+glmnet model, and make the standard plot.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">scipy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">glmnetPlot</span><span class="p">(</span><span class="n">fit</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_38_0.png" src="_images/glmnet_vignette_38_0.png" />
+</div>
+</div>
+<p>We wish to label the curves with the variable names. Here&#8217;s a simple way
+to do this, using the <code class="docutils literal"><span class="pre">matplotlib</span></code> library in python (and a little
+research into how to customize it). We need to have the positions of the
+coefficients at the end of the path.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">capture</span>
+# Output from this sample code has been suppressed due to (possible) Jupyter limitations
+# The code works just fine from ipython (tested on spyder)
+c = glmnetCoef(fit)
+c = c[1:, -1] # remove intercept and get the coefficients at the end of the path
+h = glmnetPlot(fit)
+ax1 = h[&#39;ax1&#39;]
+xloc = plt.xlim()
+xloc = xloc[1]
+for i in range(len(c)):
+    ax1.text(xloc, c[i], &#39;var&#39; + str(i));
+</pre></div>
+</div>
+</div>
+<p>We have done nothing here to avoid overwriting of labels, in the event
+that they are close together. This would be a bit more work, but perhaps
+best left alone, anyway.</p>
+</div>
+<div class="section" id="Linear-Regression---Multiresponse-Gaussian-Family">
+<h3>Linear Regression - Multiresponse Gaussian Family<a class="headerlink" href="#Linear-Regression---Multiresponse-Gaussian-Family" title="Permalink to this headline">¶</a></h3>
+<p>The multiresponse Gaussian family is obtained using
+<code class="docutils literal"><span class="pre">family</span> <span class="pre">=</span> <span class="pre">&quot;mgaussian&quot;</span></code> option in <code class="docutils literal"><span class="pre">glmnet</span></code>. It is very similar to the
+single-response case above. This is useful when there are a number of
+(correlated) responses - the so-called &#8220;multi-task learning&#8221; problem.
+Here the sharing involves which variables are selected, since when a
+variable is selected, a coefficient is fit for each response. Most of
+the options are the same, so we focus here on the differences with the
+single response model.</p>
+<p>Obviously, as the name suggests, <span class="math">\(y\)</span> is not a vector, but a matrix
+of quantitative responses in this section. The coefficients at each
+value of lambda are also a matrix as a result.</p>
+<p>Here we solve the following problem:</p>
+<div class="math">
+\[\min_{(\beta_0, \beta) \in \mathbb{R}^{(p+1)\times K}}\frac{1}{2N} \sum_{i=1}^N ||y_i -\beta_0-\beta^T x_i||^2_F+\lambda \left[ (1-\alpha)||\beta||_F^2/2 + \alpha\sum_{j=1}^p||\beta_j||_2\right].\]</div>
+<p>Here, <span class="math">\(\beta_j\)</span> is the jth row of the <span class="math">\(p\times K\)</span>
+coefficient matrix <span class="math">\(\beta\)</span>, and we replace the absolute penalty on
+each single coefficient by a group-lasso penalty on each coefficient
+K-vector <span class="math">\(\beta_j\)</span> for a single predictor <span class="math">\(x_j\)</span>.</p>
+<p>We use a set of data generated beforehand for illustration.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Import relevant modules and setup for calling glmnet</span>
+<span class="o">%</span><span class="k">reset</span> -f
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../test&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../lib&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">scipy</span><span class="o">,</span> <span class="nn">importlib</span><span class="o">,</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">glmnet</span> <span class="k">import</span> <span class="n">glmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPlot</span> <span class="k">import</span> <span class="n">glmnetPlot</span>
+<span class="kn">from</span> <span class="nn">glmnetPrint</span> <span class="k">import</span> <span class="n">glmnetPrint</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetCoef</span> <span class="k">import</span> <span class="n">glmnetCoef</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPredict</span> <span class="k">import</span> <span class="n">glmnetPredict</span>
+<span class="kn">from</span> <span class="nn">cvglmnet</span> <span class="k">import</span> <span class="n">cvglmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetCoef</span> <span class="k">import</span> <span class="n">cvglmnetCoef</span>
+<span class="kn">from</span> <span class="nn">cvglmnetPlot</span> <span class="k">import</span> <span class="n">cvglmnetPlot</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetPredict</span> <span class="k">import</span> <span class="n">cvglmnetPredict</span>
+
+<span class="c1"># parameters</span>
+<span class="n">baseDataDir</span><span class="o">=</span> <span class="s1">&#39;../data/&#39;</span>
+
+<span class="c1"># load data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;MultiGaussianExampleX.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;MultiGaussianExampleY.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We fit the data, with an object &#8220;mfit&#8221; returned.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">mfit</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;mgaussian&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>For multiresponse Gaussian, the options in <code class="docutils literal"><span class="pre">glmnet</span></code> are almost the
+same as the single-response case, such as <code class="docutils literal"><span class="pre">alpha</span></code>, <code class="docutils literal"><span class="pre">weights</span></code>,
+<code class="docutils literal"><span class="pre">nlambda</span></code>, <code class="docutils literal"><span class="pre">standardize</span></code>. A exception to be noticed is that
+<code class="docutils literal"><span class="pre">standardize.response</span></code> is only for <code class="docutils literal"><span class="pre">mgaussian</span></code> family. The default
+value is <code class="docutils literal"><span class="pre">FALSE</span></code>. If <code class="docutils literal"><span class="pre">standardize.response</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>, it standardizes
+the response variables.</p>
+<p>To visualize the coefficients, we use the <code class="docutils literal"><span class="pre">plot</span></code> function.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPlot</span><span class="p">(</span><span class="n">mfit</span><span class="p">,</span> <span class="n">xvar</span> <span class="o">=</span> <span class="s1">&#39;lambda&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="s1">&#39;2norm&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_48_0.png" src="_images/glmnet_vignette_48_0.png" />
+</div>
+</div>
+<p>Note that we set <code class="docutils literal"><span class="pre">type.coef</span> <span class="pre">=</span> <span class="pre">&quot;2norm&quot;</span></code>. Under this setting, a single
+curve is plotted per variable, with value equal to the <span class="math">\(\ell_2\)</span>
+norm. The default setting is <code class="docutils literal"><span class="pre">type.coef</span> <span class="pre">=</span> <span class="pre">&quot;coef&quot;</span></code>, where a coefficient
+plot is created for each response (multiple figures).</p>
+<p><code class="docutils literal"><span class="pre">xvar</span></code> and <code class="docutils literal"><span class="pre">label</span></code> are two other options besides ordinary graphical
+parameters. They are the same as the single-response case.</p>
+<p>We can extract the coefficients at requested values of <span class="math">\(\lambda\)</span>
+by using the function <code class="docutils literal"><span class="pre">coef</span></code> and make predictions by <code class="docutils literal"><span class="pre">predict</span></code>. The
+usage is similar and we only provide an example of <code class="docutils literal"><span class="pre">predict</span></code> here.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">glmnetPredict</span><span class="p">(</span><span class="n">mfit</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,:],</span> <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<div class="highlight"><pre>
+[[-4.71062632 -1.16345744  0.60276341  3.74098912]
+ [ 4.13017346 -3.05079679 -1.21226299  4.97014084]
+ [ 3.15952287 -0.57596208  0.2607981   2.05397555]
+ [ 0.64592424  2.12056049 -0.22520497  3.14628582]
+ [-1.17918903  0.10562619 -7.33529649  3.24836992]]
+
+[[-4.6415158  -1.22902821  0.61182888  3.77952124]
+ [ 4.47128428 -3.25296583 -1.25725829  5.2660386 ]
+ [ 3.47352281 -0.69292309  0.46840369  2.05557354]
+ [ 0.73533106  2.29650827 -0.21902966  2.98937089]
+ [-1.27599301  0.28925358 -7.82592058  3.20521075]]
+</pre></div></div>
+</div>
+<p>The prediction result is saved in a three-dimensional array with the
+first two dimensions being the prediction matrix for each response
+variable and the third indicating the response variables.</p>
+<p>We can also do k-fold cross-validation. The options are almost the same
+as the ordinary Gaussian family and we do not expand here.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">cvmfit</span> <span class="o">=</span> <span class="n">cvglmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s2">&quot;mgaussian&quot;</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We plot the resulting <code class="docutils literal"><span class="pre">cv.glmnet</span></code> object &#8220;cvmfit&#8221;.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvglmnetPlot</span><span class="p">(</span><span class="n">cvmfit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_54_0.png" src="_images/glmnet_vignette_54_0.png" />
+</div>
+</div>
+<p>To show explicitly the selected optimal values of <span class="math">\(\lambda\)</span>, type</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvmfit</span><span class="p">[</span><span class="s1">&#39;lambda_min&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[26]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.04731812])
+</pre></div>
+</div>
+</div>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvmfit</span><span class="p">[</span><span class="s1">&#39;lambda_1se&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[27]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.1445027])
+</pre></div>
+</div>
+</div>
+<p>As before, the first one is the value at which the minimal mean squared
+error is achieved and the second is for the most regularized model whose
+mean squared error is within one standard error of the minimal.</p>
+<p>Prediction for <code class="docutils literal"><span class="pre">cvglmnet</span></code> object works almost the same as for
+<code class="docutils literal"><span class="pre">glmnet</span></code> object. We omit the details here.</p>
+</div>
+</div>
+<div class="section" id="Logistic-Regression">
+<h2>Logistic Regression<a class="headerlink" href="#Logistic-Regression" title="Permalink to this headline">¶</a></h2>
+<p>Logistic regression is another widely-used model when the response is
+categorical. If there are two possible outcomes, we use the binomial
+distribution, else we use the multinomial.</p>
+<div class="section" id="Logistic-Regression:-Binomial-Models">
+<h3>Logistic Regression: Binomial Models<a class="headerlink" href="#Logistic-Regression:-Binomial-Models" title="Permalink to this headline">¶</a></h3>
+<p>For the binomial model, suppose the response variable takes value in
+<span class="math">\(\mathcal{G}=\{1,2\}\)</span>. Denote <span class="math">\(y_i = I(g_i=1)\)</span>. We model</p>
+<div class="math">
+\[\mbox{Pr}(G=2|X=x)+\frac{e^{\beta_0+\beta^Tx}}{1+e^{\beta_0+\beta^Tx}},\]</div>
+<p>which can be written in the following form</p>
+<div class="math">
+\[\log\frac{\mbox{Pr}(G=2|X=x)}{\mbox{Pr}(G=1|X=x)}=\beta_0+\beta^Tx,\]</div>
+<p>the so-called &#8220;logistic&#8221; or log-odds transformation.</p>
+<p>The objective function for the penalized logistic regression uses the
+negative binomial log-likelihood, and is</p>
+<div class="math">
+\[\min_{(\beta_0, \beta) \in \mathbb{R}^{p+1}} -\left[\frac{1}{N} \sum_{i=1}^N y_i \cdot (\beta_0 + x_i^T \beta) - \log (1+e^{(\beta_0+x_i^T \beta)})\right] + \lambda \big[ (1-\alpha)||\beta||_2^2/2 + \alpha||\beta||_1\big].\]</div>
+<p>Logistic regression is often plagued with degeneracies when
+<span class="math">\(p &gt; N\)</span> and exhibits wild behavior even when <span class="math">\(N\)</span> is close to
+<span class="math">\(p\)</span>; the elastic-net penalty alleviates these issues, and
+regularizes and selects variables as well.</p>
+<p>Our algorithm uses a quadratic approximation to the log-likelihood, and
+then coordinate descent on the resulting penalized weighted
+least-squares problem. These constitute an outer and inner loop.</p>
+<p>For illustration purpose, we load pre-generated input matrix <code class="docutils literal"><span class="pre">x</span></code> and
+the response vector <code class="docutils literal"><span class="pre">y</span></code> from the data file.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Import relevant modules and setup for calling glmnet</span>
+<span class="o">%</span><span class="k">reset</span> -f
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../test&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../lib&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">scipy</span><span class="o">,</span> <span class="nn">importlib</span><span class="o">,</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">glmnet</span> <span class="k">import</span> <span class="n">glmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPlot</span> <span class="k">import</span> <span class="n">glmnetPlot</span>
+<span class="kn">from</span> <span class="nn">glmnetPrint</span> <span class="k">import</span> <span class="n">glmnetPrint</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetCoef</span> <span class="k">import</span> <span class="n">glmnetCoef</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPredict</span> <span class="k">import</span> <span class="n">glmnetPredict</span>
+<span class="kn">from</span> <span class="nn">cvglmnet</span> <span class="k">import</span> <span class="n">cvglmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetCoef</span> <span class="k">import</span> <span class="n">cvglmnetCoef</span>
+<span class="kn">from</span> <span class="nn">cvglmnetPlot</span> <span class="k">import</span> <span class="n">cvglmnetPlot</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetPredict</span> <span class="k">import</span> <span class="n">cvglmnetPredict</span>
+
+<span class="c1"># parameters</span>
+<span class="n">baseDataDir</span><span class="o">=</span> <span class="s1">&#39;../data/&#39;</span>
+
+<span class="c1"># load data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;BinomialExampleX.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;BinomialExampleY.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The input matrix <span class="math">\(x\)</span> is the same as other families. For binomial
+logistic regression, the response variable <span class="math">\(y\)</span> should be either a
+factor with two levels, or a two-column matrix of counts or proportions.</p>
+<p>Other optional arguments of <code class="docutils literal"><span class="pre">glmnet</span></code> for binomial regression are
+almost same as those for Gaussian family. Don&#8217;t forget to set <code class="docutils literal"><span class="pre">family</span></code>
+option to &#8220;binomial&#8221;.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;binomial&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Like before, we can print and plot the fitted object, extract the
+coefficients at specific <span class="math">\(\lambda\)</span>&#8216;s and also make predictions.
+For plotting, the optional arguments such as <code class="docutils literal"><span class="pre">xvar</span></code> and <code class="docutils literal"><span class="pre">label</span></code> are
+similar to the Gaussian. We plot against the deviance explained and show
+the labels.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPlot</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xvar</span> <span class="o">=</span> <span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_64_0.png" src="_images/glmnet_vignette_64_0.png" />
+</div>
+</div>
+<p>Prediction is a little different for logistic from Gaussian, mainly in
+the option <code class="docutils literal"><span class="pre">type</span></code>. &#8220;link&#8221; and &#8220;response&#8221; are never equivalent and
+&#8220;class&#8221; is only available for logistic regression. In summary, * &#8220;link&#8221;
+gives the linear predictors</p>
+<ul class="simple">
+<li>&#8220;response&#8221; gives the fitted probabilities</li>
+<li>&#8220;class&#8221; produces the class label corresponding to the maximum
+probability.</li>
+<li>&#8220;coefficients&#8221; computes the coefficients at values of <code class="docutils literal"><span class="pre">s</span></code></li>
+<li>&#8220;nonzero&#8221; retuns a list of the indices of the nonzero coefficients
+for each value of <code class="docutils literal"><span class="pre">s</span></code>.</li>
+</ul>
+<p>For &#8220;binomial&#8221; models, results (&#8220;link&#8221;, &#8220;response&#8221;, &#8220;coefficients&#8221;,
+&#8220;nonzero&#8221;) are returned only for the class corresponding to the second
+level of the factor response.</p>
+<p>In the following example, we make prediction of the class labels at
+<span class="math">\(\lambda = 0.05, 0.01\)</span>.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPredict</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,],</span> <span class="n">ptype</span><span class="o">=</span><span class="s1">&#39;class&#39;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[31]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.,  0.],
+       [ 1.,  1.],
+       [ 1.,  1.],
+       [ 0.,  0.],
+       [ 1.,  1.]])
+</pre></div>
+</div>
+</div>
+<p>For logistic regression, <code class="docutils literal"><span class="pre">cvglmnet</span></code> has similar arguments and usage as
+Gaussian. <code class="docutils literal"><span class="pre">nfolds</span></code>, <code class="docutils literal"><span class="pre">weights</span></code>, <code class="docutils literal"><span class="pre">lambda</span></code>, <code class="docutils literal"><span class="pre">parallel</span></code> are all
+available to users. There are some differences in <code class="docutils literal"><span class="pre">ptype</span></code>: &#8220;deviance&#8221;
+and &#8220;mse&#8221; do not both mean squared loss and &#8220;class&#8221; is enabled. Hence,
+* &#8220;mse&#8221; uses squared loss.</p>
+<ul class="simple">
+<li>&#8220;deviance&#8221; uses actual deviance.</li>
+<li>&#8220;mae&#8221; uses mean absolute error.</li>
+<li>&#8220;class&#8221; gives misclassification error.</li>
+<li>&#8220;auc&#8221; (for two-class logistic regression ONLY) gives area under the
+ROC curve.</li>
+</ul>
+<p>For example,</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">cvfit</span> <span class="o">=</span> <span class="n">cvglmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;binomial&#39;</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="s1">&#39;class&#39;</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>It uses misclassification error as the criterion for 10-fold
+cross-validation.</p>
+<p>We plot the object and show the optimal values of <span class="math">\(\lambda\)</span>.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvglmnetPlot</span><span class="p">(</span><span class="n">cvfit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_70_0.png" src="_images/glmnet_vignette_70_0.png" />
+</div>
+</div>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvfit</span><span class="p">[</span><span class="s1">&#39;lambda_min&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[34]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.00333032])
+</pre></div>
+</div>
+</div>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvfit</span><span class="p">[</span><span class="s1">&#39;lambda_1se&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[35]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.00638726])
+</pre></div>
+</div>
+</div>
+<p><code class="docutils literal"><span class="pre">coef</span></code> and <code class="docutils literal"><span class="pre">predict</span></code> are simliar to the Gaussian case and we omit
+the details. We review by some examples.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvglmnetCoef</span><span class="p">(</span><span class="n">cvfit</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;lambda_min&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[36]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.1834094 ],
+       [ 0.63979413],
+       [ 1.75552224],
+       [-1.01816297],
+       [-2.04021446],
+       [-0.3708456 ],
+       [-2.17833787],
+       [ 0.37214969],
+       [-1.11649964],
+       [ 1.59942098],
+       [-3.00907083],
+       [-0.3709413 ],
+       [-0.50788757],
+       [-0.54759695],
+       [ 0.37853469],
+       [ 0.        ],
+       [ 1.22026778],
+       [-0.00760482],
+       [-0.8171956 ],
+       [-0.4683986 ],
+       [-0.44077522],
+       [ 0.        ],
+       [ 0.51053862],
+       [ 1.06639664],
+       [-0.57196411],
+       [ 1.10470005],
+       [-0.529917  ],
+       [-0.67932357],
+       [ 1.02441643],
+       [-0.49368737],
+       [ 0.41948873]])
+</pre></div>
+</div>
+</div>
+<p>As mentioned previously, the results returned here are only for the
+second level of the factor response.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvglmnetPredict</span><span class="p">(</span><span class="n">cvfit</span><span class="p">,</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;lambda_min&#39;</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="s1">&#39;class&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[37]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.],
+       [ 1.],
+       [ 1.],
+       [ 0.],
+       [ 1.],
+       [ 0.],
+       [ 0.],
+       [ 0.],
+       [ 1.],
+       [ 1.]])
+</pre></div>
+</div>
+</div>
+<p>Like other GLMs, glmnet allows for an &#8220;offset&#8221;. This is a fixed vector
+of N numbers that is added into the linear predictor. For example, you
+may have fitted some other logistic regression using other variables
+(and data), and now you want to see if the present variables can add
+anything. So you use the predicted logit from the other model as an
+offset in.</p>
+<p>Like other GLMs, glmnet allows for an &#8220;offset&#8221;. This is a fixed vector
+of N numbers that is added into the linear predictor. For example, you
+may have fitted some other logistic regression using other variables
+(and data), and now you want to see if the present variables can add
+anything. So you use the predicted logit from the other model as an
+offset in.</p>
+</div>
+<div class="section" id="Logistic-Regression---Multinomial-Models">
+<h3>Logistic Regression - Multinomial Models<a class="headerlink" href="#Logistic-Regression---Multinomial-Models" title="Permalink to this headline">¶</a></h3>
+<p>For the multinomial model, suppose the response variable has <span class="math">\(K\)</span>
+levels <span class="math">\({\cal G}=\{1,2,\ldots,K\}\)</span>. Here we model</p>
+<div class="math">
+\[\mbox{Pr}(G=k|X=x)=\frac{e^{\beta_{0k}+\beta_k^Tx}}{\sum_{\ell=1}^Ke^{\beta_{0\ell}+\beta_\ell^Tx}}.\]</div>
+<p>Let <span class="math">\({Y}\)</span> be the <span class="math">\(N \times K\)</span> indicator response matrix,
+with elements <span class="math">\(y_{i\ell} = I(g_i=\ell)\)</span>. Then the elastic-net
+penalized negative log-likelihood function becomes</p>
+<div class="math">
+\[\ell(\{\beta_{0k},\beta_{k}\}_1^K) = -\left[\frac{1}{N} \sum_{i=1}^N \Big(\sum_{k=1}^Ky_{il} (\beta_{0k} + x_i^T \beta_k)- \log \big(\sum_{k=1}^K e^{\beta_{0k}+x_i^T \beta_k}\big)\Big)\right] +\lambda \left[ (1-\alpha)||\beta||_F^2/2 + \alpha\sum_{j=1}^p||\beta_j||_q\right].\]</div>
+<p>Here we really abuse notation! <span class="math">\(\beta\)</span> is a <span class="math">\(p\times K\)</span>
+matrix of coefficients. <span class="math">\(\beta_k\)</span> refers to the kth column (for
+outcome category k), and <span class="math">\(\beta_j\)</span> the jth row (vector of K
+coefficients for variable j). The last penalty term is
+<span class="math">\(||\beta_j||_q\)</span>, we have two options for q: <span class="math">\(q\in \{1,2\}\)</span>.
+When q=1, this is a lasso penalty on each of the parameters. When q=2,
+this is a grouped-lasso penalty on all the K coefficients for a
+particular variables, which makes them all be zero or nonzero together.</p>
+<p>The standard Newton algorithm can be tedious here. Instead, we use a
+so-called partial Newton algorithm by making a partial quadratic
+approximation to the log-likelihood, allowing only
+<span class="math">\((\beta_{0k}, \beta_k)\)</span> to vary for a single class at a time. For
+each value of <span class="math">\(\lambda\)</span>, we first cycle over all classes indexed
+by <span class="math">\(k\)</span>, computing each time a partial quadratic approximation
+about the parameters of the current class. Then the inner procedure is
+almost the same as for the binomial case. This is the case for lasso
+(q=1). When q=2, we use a different approach, which we wont dwell on
+here.</p>
+<p>For the multinomial case, the usage is similar to logistic regression,
+and we mainly illustrate by examples and address any differences. We
+load a set of generated data.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Import relevant modules and setup for calling glmnet</span>
+<span class="o">%</span><span class="k">reset</span> -f
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../test&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../lib&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">scipy</span><span class="o">,</span> <span class="nn">importlib</span><span class="o">,</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">glmnet</span> <span class="k">import</span> <span class="n">glmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPlot</span> <span class="k">import</span> <span class="n">glmnetPlot</span>
+<span class="kn">from</span> <span class="nn">glmnetPrint</span> <span class="k">import</span> <span class="n">glmnetPrint</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetCoef</span> <span class="k">import</span> <span class="n">glmnetCoef</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPredict</span> <span class="k">import</span> <span class="n">glmnetPredict</span>
+<span class="kn">from</span> <span class="nn">cvglmnet</span> <span class="k">import</span> <span class="n">cvglmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetCoef</span> <span class="k">import</span> <span class="n">cvglmnetCoef</span>
+<span class="kn">from</span> <span class="nn">cvglmnetPlot</span> <span class="k">import</span> <span class="n">cvglmnetPlot</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetPredict</span> <span class="k">import</span> <span class="n">cvglmnetPredict</span>
+
+<span class="c1"># parameters</span>
+<span class="n">baseDataDir</span><span class="o">=</span> <span class="s1">&#39;../data/&#39;</span>
+
+<span class="c1"># load data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;MultinomialExampleX.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;MultinomialExampleY.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The optional arguments in <code class="docutils literal"><span class="pre">glmnet</span></code> for multinomial logistic regression
+are mostly similar to binomial regression except for a few cases.</p>
+<p>The response variable can be a <code class="docutils literal"><span class="pre">nc</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code> level factor, or a
+<code class="docutils literal"><span class="pre">nc</span></code>-column matrix of counts or proportions. Internally glmnet will
+make the rows of this matrix sum to 1, and absorb the total mass into
+the weight for that observation.</p>
+<p><code class="docutils literal"><span class="pre">offset</span></code> should be a <code class="docutils literal"><span class="pre">nobs</span> <span class="pre">x</span> <span class="pre">nc</span></code> matrix if there is one.</p>
+<p>A special option for multinomial regression is <code class="docutils literal"><span class="pre">mtype</span></code>, which allows
+the usage of a grouped lasso penalty if <code class="docutils literal"><span class="pre">mtype</span> <span class="pre">=</span> <span class="pre">'grouped'</span></code>. This will
+ensure that the multinomial coefficients for a variable are all in or
+out together, just like for the multi-response Gaussian.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;multinomial&#39;</span><span class="p">,</span> <span class="n">mtype</span> <span class="o">=</span> <span class="s1">&#39;grouped&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We plot the resulting object &#8220;fit&#8221;.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPlot</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xvar</span> <span class="o">=</span> <span class="s1">&#39;lambda&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="s1">&#39;2norm&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_85_0.png" src="_images/glmnet_vignette_85_0.png" />
+</div>
+</div>
+<p>The options are <code class="docutils literal"><span class="pre">xvar</span></code>, <code class="docutils literal"><span class="pre">label</span></code> and <code class="docutils literal"><span class="pre">ptype</span></code>, in addition to other
+ordinary graphical parameters.</p>
+<p><code class="docutils literal"><span class="pre">xvar</span></code> and <code class="docutils literal"><span class="pre">label</span></code> are the same as other families while <code class="docutils literal"><span class="pre">ptype</span></code> is
+only for multinomial regression and multiresponse Gaussian model. It can
+produce a figure of coefficients for each response variable if
+<code class="docutils literal"><span class="pre">ptype</span> <span class="pre">=</span> <span class="pre">&quot;coef&quot;</span></code> or a figure showing the <span class="math">\(\ell_2\)</span>-norm in one
+figure if <code class="docutils literal"><span class="pre">ptype</span> <span class="pre">=</span> <span class="pre">&quot;2norm&quot;</span></code></p>
+<p>We can also do cross-validation and plot the returned object.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">cvfit</span><span class="o">=</span><span class="n">cvglmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span><span class="o">=</span><span class="s1">&#39;multinomial&#39;</span><span class="p">,</span> <span class="n">mtype</span> <span class="o">=</span> <span class="s1">&#39;grouped&#39;</span><span class="p">);</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+<span class="n">cvglmnetPlot</span><span class="p">(</span><span class="n">cvfit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_87_0.png" src="_images/glmnet_vignette_87_0.png" />
+</div>
+</div>
+<p>Note that although <code class="docutils literal"><span class="pre">mtype</span></code> is not a typical argument in <code class="docutils literal"><span class="pre">cvglmnet</span></code>,
+in fact any argument that can be passed to <code class="docutils literal"><span class="pre">glmnet</span></code> is valid in the
+argument list of <code class="docutils literal"><span class="pre">cvglmnet</span></code>. We also use parallel computing to
+accelerate the calculation.</p>
+<p>Users may wish to predict at the optimally selected <span class="math">\(\lambda\)</span>:</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvglmnetPredict</span><span class="p">(</span><span class="n">cvfit</span><span class="p">,</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:],</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;lambda_min&#39;</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="s1">&#39;class&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[42]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 3.,  2.,  2.,  1.,  1.,  3.,  3.,  1.,  1.,  2.])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Poisson-Models">
+<h2>Poisson Models<a class="headerlink" href="#Poisson-Models" title="Permalink to this headline">¶</a></h2>
+<p>Poisson regression is used to model count data under the assumption of
+Poisson error, or otherwise non-negative data where the mean and
+variance are proportional. Like the Gaussian and binomial model, the
+Poisson is a member of the exponential family of distributions. We
+usually model its positive mean on the log scale:
+<span class="math">\(\log \mu(x) = \beta_0+\beta' x\)</span>. The log-likelihood for
+observations <span class="math">\(\{x_i,y_i\}_1^N\)</span> is given my</p>
+<div class="math">
+\[l(\beta|X, Y) = \sum_{i=1}^N (y_i (\beta_0+\beta' x_i) - e^{\beta_0+\beta^Tx_i}.\]</div>
+<p>As before, we optimize the penalized log-likelihood:</p>
+<div class="math">
+\[\min_{\beta_0,\beta} -\frac1N l(\beta|X, Y)  + \lambda \left((1-\alpha) \sum_{i=1}^N \beta_i^2/2) +\alpha \sum_{i=1}^N |\beta_i|\right).\]</div>
+<p>Glmnet uses an outer Newton loop, and an inner weighted least-squares
+loop (as in logistic regression) to optimize this criterion.</p>
+<p>First, we load a pre-generated set of Poisson data.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Import relevant modules and setup for calling glmnet</span>
+<span class="o">%</span><span class="k">reset</span> -f
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../test&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../lib&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">scipy</span><span class="o">,</span> <span class="nn">importlib</span><span class="o">,</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">glmnet</span> <span class="k">import</span> <span class="n">glmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPlot</span> <span class="k">import</span> <span class="n">glmnetPlot</span>
+<span class="kn">from</span> <span class="nn">glmnetPrint</span> <span class="k">import</span> <span class="n">glmnetPrint</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetCoef</span> <span class="k">import</span> <span class="n">glmnetCoef</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPredict</span> <span class="k">import</span> <span class="n">glmnetPredict</span>
+<span class="kn">from</span> <span class="nn">cvglmnet</span> <span class="k">import</span> <span class="n">cvglmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetCoef</span> <span class="k">import</span> <span class="n">cvglmnetCoef</span>
+<span class="kn">from</span> <span class="nn">cvglmnetPlot</span> <span class="k">import</span> <span class="n">cvglmnetPlot</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetPredict</span> <span class="k">import</span> <span class="n">cvglmnetPredict</span>
+
+<span class="c1"># parameters</span>
+<span class="n">baseDataDir</span><span class="o">=</span> <span class="s1">&#39;../data/&#39;</span>
+
+<span class="c1"># load data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;PoissonExampleX.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;PoissonExampleY.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We apply the function <code class="docutils literal"><span class="pre">glmnet</span></code> with the <code class="docutils literal"><span class="pre">&quot;poisson&quot;</span></code> option.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;poisson&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The optional input arguments of <code class="docutils literal"><span class="pre">glmnet</span></code> for <code class="docutils literal"><span class="pre">&quot;poisson&quot;</span></code> family are
+similar to those for others.</p>
+<p><code class="docutils literal"><span class="pre">offset</span></code> is a useful argument particularly in Poisson models.</p>
+<p>When dealing with rate data in Poisson models, the counts collected are
+often based on different exposures, such as length of time observed,
+area and years. A poisson rate <span class="math">\(\mu(x)\)</span> is relative to a unit
+exposure time, so if an observation <span class="math">\(y_i\)</span> was exposed for
+<span class="math">\(E_i\)</span> units of time, then the expected count would be
+<span class="math">\(E_i\mu(x)\)</span>, and the log mean would be
+<span class="math">\(\log(E_i)+\log(\mu(x)\)</span>. In a case like this, we would supply an
+<em>offset</em> <span class="math">\(\log(E_i)\)</span> for each observation. Hence <code class="docutils literal"><span class="pre">offset</span></code> is a
+vector of length <code class="docutils literal"><span class="pre">nobs</span></code> that is included in the linear predictor.
+Other families can also use options, typically for different reasons.</p>
+<p>(Warning: if <code class="docutils literal"><span class="pre">offset</span></code> is supplied in <code class="docutils literal"><span class="pre">glmnet</span></code>, offsets must also
+also be supplied to <code class="docutils literal"><span class="pre">predict</span></code> to make reasonable predictions.)</p>
+<p>Again, we plot the coefficients to have a first sense of the result.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPlot</span><span class="p">(</span><span class="n">fit</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_96_0.png" src="_images/glmnet_vignette_96_0.png" />
+</div>
+</div>
+<p>Like before, we can extract the coefficients and make predictions at
+certain <span class="math">\(\lambda\)</span>&#8216;s by using <code class="docutils literal"><span class="pre">coef</span></code> and <code class="docutils literal"><span class="pre">predict</span></code>
+respectively. The optional input arguments are similar to those for
+other families. In function <code class="docutils literal"><span class="pre">predict</span></code>, the option <code class="docutils literal"><span class="pre">type</span></code>, which is
+the type of prediction required, has its own specialties for Poisson
+family. That is, * &#8220;link&#8221; (default) gives the linear predictors like
+others * &#8220;response&#8221; gives the fitted mean * &#8220;coefficients&#8221; computes
+the coefficients at the requested values for <code class="docutils literal"><span class="pre">s</span></code>, which can also be
+realized by <code class="docutils literal"><span class="pre">coef</span></code> function * &#8220;nonzero&#8221; returns a a list of the
+indices of the nonzero coefficients for each value of <code class="docutils literal"><span class="pre">s</span></code>.</p>
+<p>For example, we can do as follows:</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetCoef</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[46]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.61123371],
+       [ 0.45819758],
+       [-0.77060709],
+       [ 1.34015128],
+       [ 0.043505  ],
+       [-0.20325967],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.01816309],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ]])
+</pre></div>
+</div>
+</div>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPredict</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,:],</span> <span class="n">ptype</span> <span class="o">=</span> <span class="s1">&#39;response&#39;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[47]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[  2.49442322,   2.54623385],
+       [ 10.35131198,  10.33773624],
+       [  0.11797039,   0.10639897],
+       [  0.97134115,   0.92329512],
+       [  1.11334721,   1.07256799]])
+</pre></div>
+</div>
+</div>
+<p>We may also use cross-validation to find the optimal <span class="math">\(\lambda\)</span>&#8216;s
+and thus make inferences.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">cvfit</span> <span class="o">=</span> <span class="n">cvglmnet</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;poisson&#39;</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Options are almost the same as the Gaussian family except that for
+<code class="docutils literal"><span class="pre">type.measure</span></code>, * &#8220;deviance&#8221; (default) gives the deviance * &#8220;mse&#8221;
+stands for mean squared error * &#8220;mae&#8221; is for mean absolute error.</p>
+<p>We can plot the <code class="docutils literal"><span class="pre">cvglmnet</span></code> object.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">cvglmnetPlot</span><span class="p">(</span><span class="n">cvfit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_103_0.png" src="_images/glmnet_vignette_103_0.png" />
+</div>
+</div>
+<p>We can also show the optimal <span class="math">\(\lambda\)</span>&#8216;s and the corresponding
+coefficients.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">optlam</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cvfit</span><span class="p">[</span><span class="s1">&#39;lambda_min&#39;</span><span class="p">],</span> <span class="n">cvfit</span><span class="p">[</span><span class="s1">&#39;lambda_1se&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">2</span><span class="p">,])</span>
+<span class="n">cvglmnetCoef</span><span class="p">(</span><span class="n">cvfit</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">optlam</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[50]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[  2.72128916e-02,   1.85696196e-01],
+       [  6.20006263e-01,   5.75373801e-01],
+       [ -9.85744959e-01,  -9.32121975e-01],
+       [  1.52693390e+00,   1.47056730e+00],
+       [  2.32156777e-01,   1.96923579e-01],
+       [ -3.37405607e-01,  -3.04694503e-01],
+       [  1.22308275e-03,   0.00000000e+00],
+       [ -1.35769399e-02,   0.00000000e+00],
+       [  0.00000000e+00,   0.00000000e+00],
+       [  0.00000000e+00,   0.00000000e+00],
+       [  1.69722836e-02,   0.00000000e+00],
+       [  0.00000000e+00,   0.00000000e+00],
+       [  3.10187944e-02,   2.58501705e-02],
+       [ -2.92817638e-02,   0.00000000e+00],
+       [  3.38822516e-02,   0.00000000e+00],
+       [ -6.66067519e-03,   0.00000000e+00],
+       [  1.83937264e-02,   0.00000000e+00],
+       [  0.00000000e+00,   0.00000000e+00],
+       [  4.54888769e-03,   0.00000000e+00],
+       [ -3.45423073e-02,   0.00000000e+00],
+       [  1.20550886e-02,   9.92954798e-03]])
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">predict</span></code> method is similar and we do not repeat it here.</p>
+</div>
+<div class="section" id="Cox-Models">
+<h2>Cox Models<a class="headerlink" href="#Cox-Models" title="Permalink to this headline">¶</a></h2>
+<p>The Cox proportional hazards model is commonly used for the study of the
+relationship beteween predictor variables and survival time. In the
+usual survival analysis framework, we have data of the form
+<span class="math">\((y_1, x_1, \delta_1), \ldots, (y_n, x_n, \delta_n)\)</span> where
+<span class="math">\(y_i\)</span>, the observed time, is a time of failure if <span class="math">\(\delta_i\)</span>
+is 1 or right-censoring if <span class="math">\(\delta_i\)</span> is 0. We also let
+<span class="math">\(t_1 &lt; t_2 &lt; \ldots &lt; t_m\)</span> be the increasing list of unique
+failure times, and <span class="math">\(j(i)\)</span> denote the index of the observation
+failing at time <span class="math">\(t_i\)</span>.</p>
+<p>The Cox model assumes a semi-parametric form for the hazard</p>
+<div class="math">
+\[h_i(t) = h_0(t) e^{x_i^T \beta},\]</div>
+<p>where <span class="math">\(h_i(t)\)</span> is the hazard for patient <span class="math">\(i\)</span> at time
+<span class="math">\(t\)</span>, <span class="math">\(h_0(t)\)</span> is a shared baseline hazard, and <span class="math">\(\beta\)</span>
+is a fixed, length <span class="math">\(p\)</span> vector. In the classic setting
+<span class="math">\(n \geq p\)</span>, inference is made via the partial likelihood</p>
+<div class="math">
+\[L(\beta) = \prod_{i=1}^m \frac{e^{x_{j(i)}^T \beta}}{\sum_{j \in R_i} e^{x_j^T \beta}},\]</div>
+<p>where <span class="math">\(R_i\)</span> is the set of indices <span class="math">\(j\)</span> with
+<span class="math">\(y_j \geq t_i\)</span> (those at risk at time <span class="math">\(t_i\)</span>).</p>
+<p>Note there is no intercept in the Cox mode (its built into the baseline
+hazard, and like it, would cancel in the partial likelihood.)</p>
+<p>We penalize the negative log of the partial likelihood, just like the
+other models, with an elastic-net penalty.</p>
+<p>We use a pre-generated set of sample data and response. Users can load
+their own data and follow a similar procedure. In this case <span class="math">\(x\)</span>
+must be an <span class="math">\(n\times p\)</span> matrix of covariate values — each row
+corresponds to a patient and each column a covariate. <span class="math">\(y\)</span> is an
+<span class="math">\(n \times 2\)</span> matrix, with a column &#8220;time&#8221; of failure/censoring
+times, and &#8220;status&#8221; a 0/1 indicator, with 1 meaning the time is a
+failure time, and zero a censoring time.</p>
+<div class="nbinput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Import relevant modules and setup for calling glmnet</span>
+<span class="o">%</span><span class="k">reset</span> -f
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../test&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../lib&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">scipy</span><span class="o">,</span> <span class="nn">importlib</span><span class="o">,</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">glmnet</span> <span class="k">import</span> <span class="n">glmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPlot</span> <span class="k">import</span> <span class="n">glmnetPlot</span>
+<span class="kn">from</span> <span class="nn">glmnetPrint</span> <span class="k">import</span> <span class="n">glmnetPrint</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetCoef</span> <span class="k">import</span> <span class="n">glmnetCoef</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">glmnetPredict</span> <span class="k">import</span> <span class="n">glmnetPredict</span>
+<span class="kn">from</span> <span class="nn">cvglmnet</span> <span class="k">import</span> <span class="n">cvglmnet</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetCoef</span> <span class="k">import</span> <span class="n">cvglmnetCoef</span>
+<span class="kn">from</span> <span class="nn">cvglmnetPlot</span> <span class="k">import</span> <span class="n">cvglmnetPlot</span><span class="p">;</span> <span class="kn">from</span> <span class="nn">cvglmnetPredict</span> <span class="k">import</span> <span class="n">cvglmnetPredict</span>
+
+<span class="c1"># parameters</span>
+<span class="n">baseDataDir</span><span class="o">=</span> <span class="s1">&#39;../data/&#39;</span>
+
+<span class="c1"># load data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;CoxExampleX.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">baseDataDir</span> <span class="o">+</span> <span class="s1">&#39;CoxExampleY.dat&#39;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">Surv</span></code> function in the package <code class="docutils literal"><span class="pre">survival</span></code> can create such a
+matrix. Note, however, that the <code class="docutils literal"><span class="pre">coxph</span></code> and related linear models can
+handle interval and other fors of censoring, while glmnet can only
+handle right censoring in its present form.</p>
+<p>We apply the <code class="docutils literal"><span class="pre">glmnet</span></code> function to compute the solution path under
+default settings.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;cox&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<div class="highlight"><pre>
+Warning: Cox model has no intercept!
+</pre></div></div>
+</div>
+<p>All the standard options are available such as <code class="docutils literal"><span class="pre">alpha</span></code>, <code class="docutils literal"><span class="pre">weights</span></code>,
+<code class="docutils literal"><span class="pre">nlambda</span></code> and <code class="docutils literal"><span class="pre">standardize</span></code>. Their usage is similar as in the
+Gaussian case and we omit the details here. Users can also refer to the
+help file <code class="docutils literal"><span class="pre">help(glmnet)</span></code>.</p>
+<p>We can plot the coefficients.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [53]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetPlot</span><span class="p">(</span><span class="n">fit</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt empty container">
+</div>
+<div class="output_area container">
+<img alt="_images/glmnet_vignette_113_0.png" src="_images/glmnet_vignette_113_0.png" />
+</div>
+</div>
+<p>As before, we can extract the coefficients at certain values of
+<span class="math">\(\lambda\)</span>.</p>
+<div class="nbinput container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [54]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">glmnetCoef</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">float64</span><span class="p">([</span><span class="mf">0.05</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[54]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.37693638],
+       [-0.09547797],
+       [-0.13595972],
+       [ 0.09814146],
+       [-0.11437545],
+       [-0.38898545],
+       [ 0.242914  ],
+       [ 0.03647596],
+       [ 0.34739813],
+       [ 0.03865115],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ]])
+</pre></div>
+</div>
+</div>
+<p>Since the Cox Model is not commonly used for prediction, we do not give
+an illustrative example on prediction. If needed, users can refer to the
+help file by typing <code class="docutils literal"><span class="pre">help(predict.glmnet)</span></code>.</p>
+<p>Currently, cross-validation is not implemented for cox case. But this is
+not difficult to do using the existing <code class="docutils literal"><span class="pre">glmnet</span></code> calls that work
+perfectly well for this case. (TBD: <code class="docutils literal"><span class="pre">cvglmnet</span></code> to be implemented for
+cox).</p>
+</div>
+<div class="section" id="References">
+<h2>References<a class="headerlink" href="#References" title="Permalink to this headline">¶</a></h2>
+<p><p>Jerome Friedman, Trevor Hastie and Rob Tibshirani. (2008).
+Regularization Paths for Generalized Linear Models via Coordinate
+Descent Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010.</p>
+</p><p><p>Noah Simon, Jerome Friedman, Trevor Hastie and Rob Tibshirani. (2011).
+Regularization Paths for Cox&#8217;s Proportional Hazards Model via Coordinate
+Descent Journal of Statistical Software, Vol. 39(5) 1-13.</p>
+</p><p><p>Robert Tibshirani, Jacob Bien, Jerome Friedman, Trevor Hastie, Noah
+Simon, Jonathan Taylor, Ryan J. Tibshirani. (2010). Strong Rules for
+Discarding Predictors in Lasso-type Problems Journal of the Royal
+Statistical Society: Series B (Statistical Methodology), 74(2), 245-266.</p>
+</p><p><p>Noah Simon, Jerome Friedman and Trevor Hastie (2013). A Blockwise
+Descent Algorithm for Group-penalized Multiresponse and Multinomial
+Regression</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to glmnet python vignette" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Trevor Hastie, Junyang Qian, B. J. Balakumar, Han Fang.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
