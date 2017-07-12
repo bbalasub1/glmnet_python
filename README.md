@@ -1,5 +1,9 @@
 # Glmnet for python 
 
+[![PyPI version](https://badge.fury.io/py/glmnet-py.svg)](https://badge.fury.io/py/glmnet-py)
+[![GPL Licence](https://badges.frapsoft.com/os/gpl/gpl.svg?v=103)](https://opensource.org/licenses/GPL-2.0/)
+[![Documentation Status](https://readthedocs.org/projects/glmnet-python/badge/?version=latest)](http://glmnet-python.readthedocs.io/en/latest/?badge=latest)
+
 ## Install
 
 Using pip (recommended)
@@ -20,6 +24,10 @@ Currently, the checked-in version of GLMnet.so is compiled for the following con
  **OS:** CentOS 6.7 (Final) 
  **Hardware:** 8-core Intel(R) Core(TM) i7-2630QM 
  **gfortran:** version 4.4.7 20120313 (Red Hat 4.4.7-17) (GCC)
+
+
+## Documentation
+   Read the Docs: [![Documentation Status](https://readthedocs.org/projects/glmnet-python/badge/?version=latest)](http://glmnet-python.readthedocs.io/en/latest/?badge=latest) or click [me](http://glmnet-python.readthedocs.io/en/latest/glmnet_vignette.html)
 
 
 ## Usage
