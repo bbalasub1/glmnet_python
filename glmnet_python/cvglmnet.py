@@ -41,7 +41,8 @@ INPUT ARGUMENTS
  foldid      an optional vector of values between 1 and nfold identifying
              what fold each observation is in. If supplied, nfold can be
              missing.
- parallel    If True, use parallel computation to fit each fold. 
+ parallel    Number of CPU cores used to fit each fold . If given a value of -1,
+             all cores are used.
  keep        If keep=True, a prevalidated array is returned containing
              fitted values for each observation and each value of lambda.
              This means these fits are computed with this observation and
@@ -212,7 +213,7 @@ def cvglmnet(*, x,
              ptype = 'default',
              nfolds = 10,
              foldid = scipy.empty([0]),
-             parallel = False,
+             parallel = 1,
              keep = False,
              grouped = True,
              **options):
@@ -273,8 +274,11 @@ def cvglmnet(*, x,
         
     cpredmat = list()
     foldid = scipy.reshape(foldid, [foldid.size, ])
-    if parallel == True:
-        num_cores = multiprocessing.cpu_count()
+    if parallel != 1:
+        if parallel == -1:
+            num_cores = multiprocessing.cpu_count()
+        else
+            num_cores = parallel
         sys.stderr.write("[status]\tParallel glmnet cv with " + str(num_cores) + " cores\n")
         cpredmat = joblib.Parallel(n_jobs=num_cores)(joblib.delayed(doCV)(i, x, y, family, foldid, nfolds, is_offset, **options) for i in range(nfolds))
     else:
