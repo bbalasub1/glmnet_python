@@ -163,7 +163,8 @@ def glmnetPredict(fit,\
             result = nonzeroCoef(nbeta[1:nbeta.shape[0], :], True)
             return(result)
         # use scipy.sparse.hstack instead of column_stack for sparse matrices        
-        result = scipy.dot(scipy.column_stack( (scipy.ones([newx.shape[0], 1]) \
+        result = 
+        (scipy.column_stack( (scipy.ones([newx.shape[0], 1]) \
                               , newx) ) , nbeta)
         if fit['offset']:
             if len(offset) == 0:
@@ -273,7 +274,7 @@ def glmnetPredict(fit,\
             result = nonzeroCoef(nbeta, True)
             return(result)
         
-        result = scipy.dot(newx * nbeta)
+        result = scipy.dot(newx, nbeta)
         
         if fit['offset']:
             if len(offset) == 0:
