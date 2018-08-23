@@ -277,7 +277,7 @@ def cvglmnet(*, x,
     if parallel != 1:
         if parallel == -1:
             num_cores = multiprocessing.cpu_count()
-        else
+        else:
             num_cores = parallel
         sys.stderr.write("[status]\tParallel glmnet cv with " + str(num_cores) + " cores\n")
         cpredmat = joblib.Parallel(n_jobs=num_cores)(joblib.delayed(doCV)(i, x, y, family, foldid, nfolds, is_offset, **options) for i in range(nfolds))
