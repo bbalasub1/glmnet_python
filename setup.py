@@ -1,9 +1,13 @@
 import os, sys
 from setuptools import setup, find_packages
-# from numpy.distutils.core import setup, Extension
+from setuptools.command.install import install
+import subprocess
 
-cmd = 'gfortran ./glmnet_python/GLMnet.f -fPIC -fdefault-real-8 -shared -o ./glmnet_python/GLMnet.so'
-os.system(cmd)
+class CustomInstallCommand(install):
+    """Compile shared fortran library"""
+    def run(self):
+      command = ['gfortran ./glmnet_python/GLMnet.f -fPIC -fdefault-real-8 -shared -o ./glmnet_python/GLMnet.so']
+      subprocess.check_call(command, shell=True)
 
 setup(name='glmnet_python',
       version = '0.2.0',
@@ -15,7 +19,9 @@ setup(name='glmnet_python',
       license = 'GPL-2',
       packages=['glmnet_python'],
       install_requires=['joblib>=0.10.3'],
-      package_data={'glmnet_python': ['*.so', 'glmnet_python/*.so']},
+      cmdclass={
+        'install': CustomInstallCommand,
+      },
       classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
