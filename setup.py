@@ -9,15 +9,15 @@ class CustomInstallCommand(install):
       command = ['gfortran ./glmnet_python/GLMnet.f -fPIC -fdefault-real-8 -shared -o ./glmnet_python/GLMnet.so']
       subprocess.check_call(command, shell=True)
 
-setup(name='glmnet_python',
+setup(name='glmnet_python_pyseer',
       version = '0.2.0',
       description = 'Python version of glmnet, from Stanford University',
       long_description=open('README.md').read(),
-      url="https://github.com/bbalasub1/glmnet_python",
-      author = 'Han Fang',
-      author_email = 'hanfang.cshl@gmail.com',
+      url="https://github.com/johnlees/glmnet_python",
+      author = 'Han Fang (modified by John Lees)',
+      author_email = 'hanfang.cshl@gmail.com (john@johnlees.me)',
       license = 'GPL-2',
-      packages=['glmnet_python'],
+      packages=['glmnet_python_pyseer'],
       install_requires=['joblib>=0.10.3'],
       cmdclass={
         'install': CustomInstallCommand,
