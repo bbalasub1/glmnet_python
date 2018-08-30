@@ -10,14 +10,14 @@ class CustomInstallCommand(install):
       subprocess.check_call(command, shell=True)
 
 setup(name='glmnet_python_pyseer',
-      version = '0.2.0',
+      version = '0.2.1',
       description = 'Python version of glmnet, from Stanford University',
       long_description=open('README.md').read(),
       url="https://github.com/johnlees/glmnet_python",
       author = 'Han Fang (modified by John Lees)',
       author_email = 'hanfang.cshl@gmail.com (john@johnlees.me)',
       license = 'GPL-2',
-      packages=['glmnet_python_pyseer'],
+      packages=['glmnet_python'],
       install_requires=['joblib>=0.10.3'],
       cmdclass={
         'install': CustomInstallCommand,
@@ -31,5 +31,5 @@ setup(name='glmnet_python_pyseer',
         'Programming Language :: Python :: 3.4',
         'Operating System :: Unix',
         ],
-      keywords='glm glmnet ridge lasso elasticnet',
+      keywords='glm glmnet ridge lasso elasticnet'
       )
