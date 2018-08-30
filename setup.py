@@ -6,11 +6,13 @@ import subprocess
 class CustomInstallCommand(install):
     """Compile shared fortran library"""
     def run(self):
-      command = ['gfortran ./glmnet_python/GLMnet.f -fPIC -fdefault-real-8 -shared -o ./glmnet_python/GLMnet.so']
+      dir_path = os.path.dirname(os.path.realpath(__file__))
+      command = ['gfortran ' + dir_path + '/glmnet_python/GLMnet.f -fPIC -fdefault-real-8 '
+                 '-shared -o ' + dir_path + '/glmnet_python/GLMnet.so']
       subprocess.check_call(command, shell=True)
 
 setup(name='glmnet_python_pyseer',
-      version = '0.2.1',
+      version = '0.2.2',
       description = 'Python version of glmnet, from Stanford University',
       long_description=open('README.md').read(),
       url="https://github.com/johnlees/glmnet_python",
