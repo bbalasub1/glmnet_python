@@ -12,9 +12,6 @@ setup(name='glmnet_python_pyseer',
       license = 'GPL-2',
       packages=['glmnet_python'],
       install_requires=['joblib>=0.10.3'],
-      cmdclass={
-        'install': CustomInstallCommand,
-      },
       classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
