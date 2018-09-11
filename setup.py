@@ -1,15 +1,6 @@
 import os, sys
 from setuptools import setup, find_packages
-from setuptools.command.install import install
 import subprocess
-
-class CustomInstallCommand(install):
-    """Compile shared fortran library"""
-    def run(self):
-      dir_path = os.path.dirname(os.path.realpath(__file__))
-      command = ['gfortran ' + dir_path + '/glmnet_python/GLMnet.f -fPIC -fdefault-real-8 '
-                 '-shared -o ' + dir_path + '/glmnet_python/GLMnet.so']
-      subprocess.check_call(command, shell=True)
 
 setup(name='glmnet_python_pyseer',
       version = '0.2.2',
