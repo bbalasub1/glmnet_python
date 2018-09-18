@@ -62,11 +62,9 @@ The original MATLAB wrapper was written by Hui Jiang (14 Jul 2009), and was upda
 
 This python wrapper (which was adapted from the MATLAB and R wrappers) was originally written by B. J. Balakumar (5 Sep 2016). 
 
-The pip installation for glmnet_py is maintained by Han Fang.
+List of other contributors along with a summary of their contributions is included in the contributors.dat file.
 
 B. J. Balakumar, bbalasub@stanford.edu (Sep 5, 2016). Department of Statistics, Stanford University, Stanford, CA
-
-Han Fang, hanfang.cshl@gmail.com (Mar 1, 2017). Department of Applied Math & Statistics, Stony Brook University, Stony Brook, NY
 
 REFERENCES:
 * Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, 
