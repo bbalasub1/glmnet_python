@@ -64,7 +64,7 @@ This python wrapper (which was adapted from the MATLAB and R wrappers) was origi
 
 List of other contributors along with a summary of their contributions is included in the contributors.dat file.
 
-B. J. Balakumar, bbalasub@stanford.edu (Sep 5, 2016). Department of Statistics, Stanford University, Stanford, CA
+B. J. Balakumar, bbalasub@gmail.com (Sep 5, 2016). Department of Statistics, Stanford University, Stanford, CA
 
 REFERENCES:
 * Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, 
