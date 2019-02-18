@@ -15,6 +15,7 @@ Complied from source
     git clone https://github.com/bbalasub1/glmnet_python.git
     cd glmnet_python
     python setup.py install
+    (use python setup.py install --user if you get a permission denied message. This does a local install for the user)
 
 Requirement: Python 3, Linux
 
