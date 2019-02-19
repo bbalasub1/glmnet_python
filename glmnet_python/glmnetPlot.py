@@ -101,15 +101,18 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
             ncl = x['dfmat'].shape[0]
             if x['class'] == 'multnet':
                 for i in range(ncl):
-                    str = 'Coefficients: Class %d' % (i) 
+                    mstr = 'Coefficients: Class %d' % (i) 
                     handle = plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
-                             x['dev'], label, xvar, '', str, **options)
+                             x['dev'], label, xvar, '', mstr, **options)
                     if i < ncl - 1:         
                         plt.figure()             
             else:
-                    str = 'Coefficients: Response %d' % (i) 
+                for i in range(ncl):
+                    mstr = 'Coefficients: Response %d' % (i) 
                     handle = plotCoef(beta[i], norm, x['lambdau'], x['dfmat'][i,:], 
-                             x['dev'], label, xvar, '', str, **options)
+                             x['dev'], label, xvar, '', mstr, **options)
+                    if i < ncl - 1:
+                        plt.figure()
         else:
             dfseq = scipy.round_(scipy.mean(x['dfmat'], axis = 0))
             coefnorm = beta[1]*0
@@ -117,15 +120,13 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
                 coefnorm = coefnorm + scipy.absolute(beta[i])**2
             coefnorm = scipy.sqrt(coefnorm)
             if x['class'] == 'multnet':
-                str = 'Coefficient 2Norms'
+                mstr = 'Coefficient 2Norms'
                 handle = plotCoef(coefnorm, norm, x['lambdau'], dfseq, x['dev'],
-                         label, xvar, '',str, **options);
-                if i < ncl - 1:                         
-                    plt.figure()         
+                         label, xvar, '',mstr, **options);        
             else:
-                str = 'Coefficient 2Norms'
+                mstr = 'Coefficient 2Norms'
                 handle = plotCoef(coefnorm, norm, x['lambdau'], x['dfmat'][0,:], x['dev'],
-                         label, xvar, '', str, **options);                
+                         label, xvar, '', mstr, **options);                
 
     return(handle)
 # end of glmnetplot
