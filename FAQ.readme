@@ -1,0 +1,7 @@
+1. Installation on MacOSX:
+ 
+ Error: "No suitable image found" on Mac OS X 
+ 
+ Please see: 
+ https://github.com/bbalasub1/glmnet_python/issues/17 for solutions and workarounds.
+ 
