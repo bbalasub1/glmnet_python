@@ -38,7 +38,7 @@ INPUT ARGUMENTS
  nfolds      number of folds - default is 10. Although nfolds can be as
              large as the sample size (leave-one-out CV), it is not recommended for
              large datasets. Smallest value allowable is nfolds=3.
- foldid      an optional vector of values between 1 and nfold identifying
+ foldid      an optional vector of values between 0 and nfold-1 identifying
              what fold each observation is in. If supplied, nfold can be
              missing.
  parallel    Number of CPU cores used to fit each fold . If given a value of -1,
