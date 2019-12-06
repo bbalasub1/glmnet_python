@@ -1,5 +1,10 @@
-Han Fang: pip installation for glmnet_py
+* Han Fang: pip installation for glmnet_py
 
-Other contributions listed here:
+* Kaushik Putta kputta: 
+Found a bug with the cvglmnet error bars causing incorrect cross-validation error bars (biased larger than they should be). 
+This was caused by an overwrite of weights during pass by reference in the fortran solver.
+Fixed with a patch to glmnet.py on Dec 5, 2019.
+
+* Other contributions listed here:
 
 https://github.com/bbalasub1/glmnet_python/commits/master
