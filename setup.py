@@ -35,7 +35,7 @@ class GfortranBuild(build_ext):
         subprocess.check_call(['gfortran', ext.input] + gfortran_args, cwd=self.build_temp, env=env)
 
 setup(name='glmnet_python',
-      version = '1.0.0',
+      version = '1.0.1',
       description = 'Python version of glmnet, from Stanford University',
       long_description=open('README.md').read(),
       url="https://github.com/johnlees/glmnet_python",
