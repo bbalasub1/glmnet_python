@@ -80,7 +80,7 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
                  ecolor = (0.5, 0.5, 0.5), \
                  **options
                  )
-    plt.hold(True)         
+    #plt.hold(True)         
     plt.plot(sloglam, cvobject['cvm'], linestyle = 'dashed',\
              marker = 'o', markerfacecolor = 'r')             
     

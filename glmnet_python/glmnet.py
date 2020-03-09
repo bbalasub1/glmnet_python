@@ -293,7 +293,7 @@ def glmnet(*, x, y, family='gaussian', **options):
     nobs, nvars  = x.shape
     
     # check weights length
-    weights = options['weights']
+    weights = options['weights'].copy()
     if len(weights) == 0:
         weights = scipy.ones([nobs, 1], dtype = scipy.float64)
     elif len(weights) != nobs:

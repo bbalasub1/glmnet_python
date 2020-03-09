@@ -1,0 +1,20 @@
+1. Installation on MacOSX:
+ 
+ Error: "No suitable image found" on Mac OS X 
+ 
+ Please see: 
+ https://github.com/bbalasub1/glmnet_python/issues/17 for solutions and workarounds.
+ 
+2. cvglmnet.py fails on some newer versions of numpy on line 260 
+
+contributed by Rachael Mansbach:
+
+I've been using the glmnet python package (great code by the way!) and I've discovered that when trying to run this code with more up-to-date versions of numpy it errors out on line 260 of cvglmnet.py:
+
+ ma = scipy.tile(scipy.arange(nfolds), [1, int(scipy.floor(nobs/nfolds))])
+
+Due to computation of nobs/nfolds as float division rather than int division.  This is easily solved by changing the line to
+
+ ma = scipy.tile(scipy.arange(nfolds), [1, int(scipy.floor(int(nobs/nfolds)))])
+
+but I did have to install from source to get it to work.  It might be worth a note in the installation section or a code update?
