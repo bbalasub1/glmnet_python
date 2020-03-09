@@ -13,25 +13,25 @@ OUTPUT ARGUMENTS:
     returns nan-removed weighted mean as a 1D array of size K
 
 """
-import scipy
+import numpy 
 
 def wtmean(mat,weights):
     if len(weights.shape) == 1:
-        weights = scipy.reshape(weights, [scipy.size(weights), 1])
+        weights = numpy.reshape(weights, [numpy.size(weights), 1])
     wmat = isfinite(mat)*weights
     mat[isnan(mat)] = 0
     swmat = mat*wmat
     tf = weights != 0
     tf = tf[:,0]    
-    y = scipy.sum(swmat[tf, :], axis = 0)/scipy.sum(wmat, axis = 0)        
+    y = numpy.sum(swmat[tf, :], axis = 0)/numpy.sum(wmat, axis = 0)        
     return y
 # end of wtmean
 
 def isnan(x):
-    return ~scipy.isfinite(x)    
+    return ~numpy.isfinite(x)    
 # end of isnan
 
 def isfinite(x):
-    return scipy.isfinite(x)        
+    return numpy.isfinite(x)        
 # end of isfinite    
     

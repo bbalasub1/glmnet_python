@@ -44,11 +44,11 @@
 
  EXAMPLES:
  
-    scipy.random.seed(1)
-    x=scipy.random.normal(size = (100,20))
-    y=scipy.random.normal(size = (100,1))
-    g2=scipy.random.choice(2,size = (100,1))*1.0
-    g4=scipy.random.choice(4,size = (100,1))*1.0
+    numpy.random.seed(1)
+    x=numpy.random.normal(size = (100,20))
+    y=numpy.random.normal(size = (100,1))
+    g2=numpy.random.choice(2,size = (100,1))*1.0
+    g4=numpy.random.choice(4,size = (100,1))*1.0
 
     plt.figure()     
     fit1=cvglmnet(x = x.copy(),y = y.copy())
@@ -64,13 +64,13 @@
      
 """
 
-import scipy
+import numpy 
 
 
 def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
     import matplotlib.pyplot as plt
     
-    sloglam = sign_lambda*scipy.log(cvobject['lambdau'])
+    sloglam = sign_lambda*numpy.log(cvobject['lambdau'])
 
     fig = plt.gcf()
     ax1 = plt.gca()
@@ -87,12 +87,12 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
     xlim1 = ax1.get_xlim()
     ylim1 = ax1.get_ylim()
     
-    xval = sign_lambda*scipy.log(scipy.array([cvobject['lambda_min'], cvobject['lambda_min']]))
+    xval = sign_lambda*numpy.log(numpy.array([cvobject['lambda_min'], cvobject['lambda_min']]))
     plt.plot(xval, ylim1, color = 'b', linestyle = 'dashed', \
              linewidth = 1)
         
     if cvobject['lambda_min'] != cvobject['lambda_1se']:
-        xval = sign_lambda*scipy.log([cvobject['lambda_1se'], cvobject['lambda_1se']])
+        xval = sign_lambda*numpy.log([cvobject['lambda_1se'], cvobject['lambda_1se']])
         plt.plot(xval, ylim1, color = 'b', linestyle = 'dashed', \
              linewidth = 1)
 
@@ -100,7 +100,7 @@ def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
     ax2.xaxis.tick_top()
 
     atdf = ax1.get_xticks()
-    indat = scipy.ones(atdf.shape, dtype = scipy.integer)
+    indat = numpy.ones(atdf.shape, dtype = numpy.integer)
     if sloglam[-1] >= sloglam[1]:
         for j in range(len(sloglam)-1, -1, -1):
             indat[atdf <= sloglam[j]] = j

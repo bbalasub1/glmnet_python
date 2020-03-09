@@ -3,7 +3,7 @@
 Internal cvglmnet function. See also cvglmnet.
 
 """
-import scipy
+import numpy 
 from glmnetPredict import glmnetPredict
 from wtmean import wtmean
 from cvcompute import cvcompute
@@ -31,29 +31,29 @@ def cvelnet(fit, \
     if len(offset) > 0:
         y = y - offset
 
-    predmat = scipy.ones([y.size, lambdau.size])*scipy.NAN               
-    nfolds = scipy.amax(foldid) + 1
+    predmat = numpy.ones([y.size, lambdau.size])*numpy.NAN               
+    nfolds = numpy.amax(foldid) + 1
     nlams = [] 
     for i in range(nfolds):
         which = foldid == i
         fitobj = fit[i].copy()
         fitobj['offset'] = False
         preds = glmnetPredict(fitobj, x[which, ])
-        nlami = scipy.size(fit[i]['lambdau'])
+        nlami = numpy.size(fit[i]['lambdau'])
         predmat[which, 0:nlami] = preds
         nlams.append(nlami)
     # convert nlams to scipy array
-    nlams = scipy.array(nlams, dtype = scipy.integer)
+    nlams = numpy.array(nlams, dtype = numpy.integer)
 
-    N = y.shape[0] - scipy.sum(scipy.isnan(predmat), axis = 0)
-    yy = scipy.tile(y, [1, lambdau.size])
+    N = y.shape[0] - numpy.sum(numpy.isnan(predmat), axis = 0)
+    yy = numpy.tile(y, [1, lambdau.size])
 
     if ptype == 'mse':
         cvraw = (yy - predmat)**2
     elif ptype == 'deviance':
         cvraw = (yy - predmat)**2
     elif ptype == 'mae':
-        cvraw = scipy.absolute(yy - predmat)
+        cvraw = numpy.absolute(yy - predmat)
         
     if y.size/nfolds < 3 and grouped == True:
         print('Option grouped=false enforced in cv.glmnet, since < 3 observations per fold')
@@ -67,7 +67,7 @@ def cvelnet(fit, \
         
     cvm = wtmean(cvraw, weights)
     sqccv = (cvraw - cvm)**2
-    cvsd = scipy.sqrt(wtmean(sqccv, weights)/(N-1))
+    cvsd = numpy.sqrt(wtmean(sqccv, weights)/(N-1))
 
     result = dict()
     result['cvm'] = cvm
