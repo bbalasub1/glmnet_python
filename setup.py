@@ -34,8 +34,12 @@ class GfortranBuild(build_ext):
         env = os.environ.copy()
         subprocess.check_call(['gfortran', ext.input] + gfortran_args, cwd=self.build_temp, env=env)
 
+        extdir = os.path.join(os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name))),
+                                              os.path.basename(ext.sourcedir))
+        subprocess.check_call(['install', ext.output, extdir], cwd=self.build_temp, env=env)
+
 setup(name='glmnet_python',
-      version = '1.0.1',
+      version = '1.0.2',
       description = 'Python version of glmnet, from Stanford University',
       long_description=open('README.md').read(),
       url="https://github.com/johnlees/glmnet_python",
@@ -44,7 +48,6 @@ setup(name='glmnet_python',
       license = 'GPL-2',
       packages=['glmnet_python'],
       install_requires=['joblib>=0.10.3'],
-      package_data={'glmnet_python': ['*.so', 'glmnet_python/*.so']},
       classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
@@ -58,4 +61,6 @@ setup(name='glmnet_python',
       ext_modules=[GfortranExtension('GLMnet', 'glmnet_python',
                                      'GLMnet.f', 'GLMnet.so')],
       cmdclass={'build_ext': GfortranBuild},
+      package_data={'glmnet_python': ['*.so', 'glmnet_python/*.so']},
+      zip_safe=False
 )
