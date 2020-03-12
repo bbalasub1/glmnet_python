@@ -181,7 +181,7 @@ def glmnetPredict(fit,\
     # lognet
     if fit['class'] == 'lognet':
         if ptype == 'response':
-            pp = numpy.exp([-x for x in result])
+            pp = numpy.exp(-result)
             result = 1/(1 + pp)
         elif ptype == 'class':
             result = (result > 0)*1 + (result <= 0)*0
