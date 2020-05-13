@@ -9,7 +9,7 @@ import sys
 sys.path.append('../test')
 sys.path.append('../lib')
 
-import scipy
+import numpy as np
 import glmnet 
 import importlib
 import pprint
@@ -28,8 +28,8 @@ testType = testTypeList[0]
 # call test functions
 if testType == 'gaussian':
     ##  elnet caller 
-    y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
-    x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
+    y = np.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = np.float64)
+    x = np.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = np.float64)
     fit = glmnet.glmnet(x = x, y = y, family = 'gaussian')
     #fit = glmnet.glmnet(x = x, y = y, family = 'gaussian', alpha = 0.5)
     print('fit:')
@@ -37,40 +37,40 @@ if testType == 'gaussian':
 
 if testType == 'binomial':
     # lognet caller
-    x = scipy.loadtxt(baseDataDir + 'BinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
-    y = scipy.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = scipy.float64)
+    x = np.loadtxt(baseDataDir + 'BinomialExampleX.dat', dtype = np.float64, delimiter = ',')
+    y = np.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = np.float64)
     fit = glmnet.glmnet(x = x, y = y, family = 'binomial')
     print('fit:')
     pprint.pprint(fit)
 
 if testType == 'multinomial':
     # multinomial caller
-    x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
-    y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
+    x = np.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = np.float64, delimiter = ',')
+    y = np.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = np.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'multinomial')
     print('fit:')
     pprint.pprint(fit)    
 
 if testType == 'cox':
     # coxnet caller
-    x = scipy.loadtxt(baseDataDir + 'CoxExampleX.dat', dtype = scipy.float64, delimiter = ',')
-    y = scipy.loadtxt(baseDataDir + 'CoxExampleY.dat', dtype = scipy.float64, delimiter = ',')
+    x = np.loadtxt(baseDataDir + 'CoxExampleX.dat', dtype = np.float64, delimiter = ',')
+    y = np.loadtxt(baseDataDir + 'CoxExampleY.dat', dtype = np.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'cox')
     print('fit:')
     pprint.pprint(fit)
 
 if testType == 'mgaussian':
     # mgaussian caller
-    x = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleX.dat', dtype = scipy.float64, delimiter = ',')
-    y = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = scipy.float64, delimiter = ',')
+    x = np.loadtxt(baseDataDir + 'MultiGaussianExampleX.dat', dtype = np.float64, delimiter = ',')
+    y = np.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = np.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'mgaussian')
     print('fit:')
     pprint.pprint(fit)    
     
 if testType == 'poisson':
     # poisson caller
-    x = scipy.loadtxt(baseDataDir + 'PoissonExampleX.dat', dtype = scipy.float64, delimiter = ',')
-    y = scipy.loadtxt(baseDataDir + 'PoissonExampleY.dat', dtype = scipy.float64, delimiter = ',')
+    x = np.loadtxt(baseDataDir + 'PoissonExampleX.dat', dtype = np.float64, delimiter = ',')
+    y = np.loadtxt(baseDataDir + 'PoissonExampleY.dat', dtype = np.float64, delimiter = ',')
     fit = glmnet.glmnet(x = x, y = y, family = 'poisson')
     print('fit:')
     pprint.pprint(fit)

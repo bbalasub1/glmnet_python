@@ -176,12 +176,12 @@
     "baseDataDir= '../data/'\n",
     "\n",
     "# load data\n",
-    "x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)\n",
-    "y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)\n",
+    "x = np.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = np.float64)\n",
+    "y = np.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = np.float64)\n",
     "\n",
     "# create weights\n",
-    "t = scipy.ones((50, 1), dtype = scipy.float64)\n",
-    "wts = scipy.row_stack((t, 2*t))"
+    "t = np.ones((50, 1), dtype = np.float64)\n",
+    "wts = np.row_stack((t, 2*t))"
    ]
   },
   {
@@ -394,7 +394,7 @@
     }
    ],
    "source": [
-    "glmnetCoef(fit, s = scipy.float64([0.5]), exact = False)"
+    "glmnetCoef(fit, s = np.float64([0.5]), exact = False)"
    ]
   },
   {
@@ -436,7 +436,7 @@
    ],
    "source": [
     "fc = glmnetPredict(fit, x[0:5,:], ptype = 'response', \\\n",
-    "                                s = scipy.float64([0.05]))\n",
+    "                                s = np.float64([0.05]))\n",
     "print(fc)"
    ]
   },
@@ -595,7 +595,7 @@
    },
    "outputs": [],
    "source": [
-    "foldid = scipy.random.choice(10, size = y.shape[0], replace = True)\n",
+    "foldid = np.random.choice(10, size = y.shape[0], replace = True)\n",
     "cv1=cvglmnet(x = x.copy(),y = y.copy(),foldid=foldid,alpha=1)\n",
     "cv0p5=cvglmnet(x = x.copy(),y = y.copy(),foldid=foldid,alpha=0.5)\n",
     "cv0=cvglmnet(x = x.copy(),y = y.copy(),foldid=foldid,alpha=0)"
@@ -635,10 +635,10 @@
     "f.add_subplot(2,2,3)\n",
     "cvglmnetPlot(cv0)\n",
     "f.add_subplot(2,2,4)\n",
-    "plt.plot( scipy.log(cv1['lambdau']), cv1['cvm'], 'r.')\n",
+    "plt.plot( np.log(cv1['lambdau']), cv1['cvm'], 'r.')\n",
     "plt.hold(True)\n",
-    "plt.plot( scipy.log(cv0p5['lambdau']), cv0p5['cvm'], 'g.')\n",
-    "plt.plot( scipy.log(cv0['lambdau']), cv0['cvm'], 'b.')\n",
+    "plt.plot( np.log(cv0p5['lambdau']), cv0p5['cvm'], 'g.')\n",
+    "plt.plot( np.log(cv0['lambdau']), cv0['cvm'], 'b.')\n",
     "plt.xlabel('log(Lambda)')\n",
     "plt.ylabel(cv1['name'])\n",
     "plt.xlim(-6, 4)\n",
@@ -676,7 +676,7 @@
     }
    ],
    "source": [
-    "cl = scipy.array([[-0.7], [0.5]], dtype = scipy.float64)\n",
+    "cl = np.array([[-0.7], [0.5]], dtype = np.float64)\n",
     "tfit=glmnet(x = x.copy(),y= y.copy(), cl = cl)\n",
     "glmnetPlot(tfit);"
    ]
@@ -724,7 +724,7 @@
     }
    ],
    "source": [
-    "pfac = scipy.ones([1, 20])\n",
+    "pfac = np.ones([1, 20])\n",
     "pfac[0, 4] = 0; pfac[0, 9] = 0; pfac[0, 14] = 0\n",
     "pfit = glmnet(x = x.copy(), y = y.copy(), penalty_factor = pfac)\n",
     "glmnetPlot(pfit, label = True);"
@@ -764,9 +764,9 @@
     }
    ],
    "source": [
-    "scipy.random.seed(101)\n",
-    "x = scipy.random.rand(100,10)\n",
-    "y = scipy.random.rand(100,1)\n",
+    "np.random.seed(101)\n",
+    "x = np.random.rand(100,10)\n",
+    "y = np.random.rand(100,1)\n",
     "fit = glmnet(x = x, y = y)\n",
     "glmnetPlot(fit);"
    ]
@@ -857,8 +857,8 @@
     "baseDataDir= '../data/'\n",
     "\n",
     "# load data\n",
-    "x = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleX.dat', dtype = scipy.float64, delimiter = ',')\n",
-    "y = scipy.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = scipy.float64, delimiter = ',')"
+    "x = np.loadtxt(baseDataDir + 'MultiGaussianExampleX.dat', dtype = np.float64, delimiter = ',')\n",
+    "y = np.loadtxt(baseDataDir + 'MultiGaussianExampleY.dat', dtype = np.float64, delimiter = ',')"
    ]
   },
   {
@@ -947,7 +947,7 @@
     }
    ],
    "source": [
-    "f = glmnetPredict(mfit, x[0:5,:], s = scipy.float64([0.1, 0.01]))\n",
+    "f = glmnetPredict(mfit, x[0:5,:], s = np.float64([0.1, 0.01]))\n",
     "print(f[:,:,0], '\\n')\n",
     "print(f[:,:,1])"
    ]
@@ -1126,8 +1126,8 @@
     "baseDataDir= '../data/'\n",
     "\n",
     "# load data\n",
-    "x = scipy.loadtxt(baseDataDir + 'BinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')\n",
-    "y = scipy.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = scipy.float64)"
+    "x = np.loadtxt(baseDataDir + 'BinomialExampleX.dat', dtype = np.float64, delimiter = ',')\n",
+    "y = np.loadtxt(baseDataDir + 'BinomialExampleY.dat', dtype = np.float64)"
    ]
   },
   {
@@ -1222,7 +1222,7 @@
     }
    ],
    "source": [
-    "glmnetPredict(fit, newx = x[0:5,], ptype='class', s = scipy.array([0.05, 0.01]))"
+    "glmnetPredict(fit, newx = x[0:5,], ptype='class', s = np.array([0.05, 0.01]))"
    ]
   },
   {
@@ -1500,8 +1500,8 @@
     "baseDataDir= '../data/'\n",
     "\n",
     "# load data\n",
-    "x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')\n",
-    "y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64)"
+    "x = np.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = np.float64, delimiter = ',')\n",
+    "y = np.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = np.float64)"
    ]
   },
   {
@@ -1681,8 +1681,8 @@
     "baseDataDir= '../data/'\n",
     "\n",
     "# load data\n",
-    "x = scipy.loadtxt(baseDataDir + 'PoissonExampleX.dat', dtype = scipy.float64, delimiter = ',')\n",
-    "y = scipy.loadtxt(baseDataDir + 'PoissonExampleY.dat', dtype = scipy.float64, delimiter = ',')"
+    "x = np.loadtxt(baseDataDir + 'PoissonExampleX.dat', dtype = np.float64, delimiter = ',')\n",
+    "y = np.loadtxt(baseDataDir + 'PoissonExampleY.dat', dtype = np.float64, delimiter = ',')"
    ]
   },
   {
@@ -1799,7 +1799,7 @@
     }
    ],
    "source": [
-    "glmnetCoef(fit, s = scipy.float64([1.0]))"
+    "glmnetCoef(fit, s = np.float64([1.0]))"
    ]
   },
   {
@@ -1825,7 +1825,7 @@
     }
    ],
    "source": [
-    "glmnetPredict(fit, x[0:5,:], ptype = 'response', s = scipy.float64([0.1, 0.01]))"
+    "glmnetPredict(fit, x[0:5,:], ptype = 'response', s = np.float64([0.1, 0.01]))"
    ]
   },
   {
@@ -1930,7 +1930,7 @@
     }
    ],
    "source": [
-    "optlam = scipy.array([cvfit['lambda_min'], cvfit['lambda_1se']]).reshape([2,])\n",
+    "optlam = np.array([cvfit['lambda_min'], cvfit['lambda_1se']]).reshape([2,])\n",
     "cvglmnetCoef(cvfit, s = optlam)"
    ]
   },
@@ -2008,8 +2008,8 @@
     "baseDataDir= '../data/'\n",
     "\n",
     "# load data\n",
-    "x = scipy.loadtxt(baseDataDir + 'CoxExampleX.dat', dtype = scipy.float64, delimiter = ',')\n",
-    "y = scipy.loadtxt(baseDataDir + 'CoxExampleY.dat', dtype = scipy.float64, delimiter = ',')"
+    "x = np.loadtxt(baseDataDir + 'CoxExampleX.dat', dtype = np.float64, delimiter = ',')\n",
+    "y = np.loadtxt(baseDataDir + 'CoxExampleY.dat', dtype = np.float64, delimiter = ',')"
    ]
   },
   {
@@ -2126,7 +2126,7 @@
     }
    ],
    "source": [
-    "glmnetCoef(fit, s = scipy.float64([0.05]))"
+    "glmnetCoef(fit, s = np.float64([0.05]))"
    ]
   },
   {

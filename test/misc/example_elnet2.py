@@ -4,7 +4,7 @@ Created on Tue Aug 30 20:27:07 2016
 
 @author: bbalasub
 """
-import scipy
+import numpy as np
 import ctypes 
 import glmnet 
 import importlib
@@ -15,7 +15,7 @@ glmlib = ctypes.cdll.LoadLibrary('../../lib/GLMnet.so') # this is a bit of a pai
                                                 # unless a new python console is started
   
 baseDataDir= '/home/bbalasub/Desktop/Summer2016/glmnet/glmnet_R/'
-y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
-x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
+y = np.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = np.float64)
+x = np.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = np.float64)
 
 fit = glmnet.glmnet(x = x, y = y)

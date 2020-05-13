@@ -4,7 +4,7 @@ import sys
 sys.path.append('../test')
 sys.path.append('../lib')
 
-import scipy
+import numpy as np
 import importlib
 import matplotlib.pyplot as plt
 
@@ -34,12 +34,12 @@ importlib.reload(cvglmnetPredict)
 baseDataDir= '../data/'
 
 # load data
-x = scipy.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = scipy.float64)
-y = scipy.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = scipy.float64)
+x = np.loadtxt(baseDataDir + 'QuickStartExampleX.dat', dtype = np.float64)
+y = np.loadtxt(baseDataDir + 'QuickStartExampleY.dat', dtype = np.float64)
 
 # create weights
-t = scipy.ones((50, 1), dtype = scipy.float64)
-wts = scipy.row_stack((t, 2*t))
+t = np.ones((50, 1), dtype = np.float64)
+wts = np.row_stack((t, 2*t))
 
 # call glmnet
 fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = 'gaussian', \
@@ -53,11 +53,11 @@ glmnetPlot.glmnetPlot(fit, xvar = 'dev', label = True)
 #
 any(fit['lambdau'] == 0.5)
 #
-coefApprx = glmnetCoef.glmnetCoef(fit, s = scipy.float64([0.5]), exact = False)
+coefApprx = glmnetCoef.glmnetCoef(fit, s = np.float64([0.5]), exact = False)
 print(coefApprx)
 #
 fc = glmnetPredict.glmnetPredict(fit, x[0:5,:], ptype = 'response', \
-                                s = scipy.float64([0.05]))
+                                s = np.float64([0.05]))
 print(fc)
 #
 cvfit = cvglmnet.cvglmnet(x = x.copy(), y = y.copy(), ptype = 'mse', nfolds = 20) 
@@ -67,7 +67,7 @@ cvglmnetCoef.cvglmnetCoef(cvfit, s = 'lambda_min')
 cvglmnetPredict.cvglmnetPredict(cvfit, newx = x[0:5,], s='lambda_min')
 
 #%%
-foldid = scipy.random.choice(10, size = y.shape[0], replace = True)
+foldid = np.random.choice(10, size = y.shape[0], replace = True)
 
 cv1=cvglmnet.cvglmnet(x = x.copy(),y = y.copy(),foldid=foldid,alpha=1)
 cv0p5=cvglmnet.cvglmnet(x = x.copy(),y = y.copy(),foldid=foldid,alpha=0.5)
@@ -82,10 +82,10 @@ cvglmnetPlot.cvglmnetPlot(cv0p5)
 f.add_subplot(2,2,3)
 cvglmnetPlot.cvglmnetPlot(cv0)
 f.add_subplot(2,2,4)
-plt.plot( scipy.log(cv1['lambdau']), cv1['cvm'], 'r.')
+plt.plot( np.log(cv1['lambdau']), cv1['cvm'], 'r.')
 #plt.hold(True)
-plt.plot( scipy.log(cv0p5['lambdau']), cv0p5['cvm'], 'g.')
-plt.plot( scipy.log(cv0['lambdau']), cv0['cvm'], 'b.')
+plt.plot( np.log(cv0p5['lambdau']), cv0p5['cvm'], 'g.')
+plt.plot( np.log(cv0['lambdau']), cv0['cvm'], 'b.')
 plt.xlabel('log(Lambda)')
 plt.ylabel(cv1['name'])
 plt.xlim(-6, 4)
@@ -94,22 +94,22 @@ plt.legend( ('alpha = 1', 'alpha = 0.5', 'alpha = 0'), loc = 'upper left', prop=
 
 #%%
 plt.figure()
-cl = scipy.array([[-0.7], [0.5]], dtype = scipy.float64)
+cl = np.array([[-0.7], [0.5]], dtype = np.float64)
 tfit=glmnet.glmnet(x = x.copy(),y= y.copy(), cl = cl)
 glmnetPlot.glmnetPlot(tfit)
 
 #%%
 plt.figure()
-pfac = scipy.ones([1, 20])
+pfac = np.ones([1, 20])
 pfac[0, 4] = 0; pfac[0, 9] = 0; pfac[0, 14] = 0
 pfit = glmnet.glmnet(x = x.copy(), y = y.copy(), penalty_factor = pfac)
 glmnetPlot.glmnetPlot(pfit, label = True)
 
 #%%
 plt.figure()
-scipy.random.seed(101)
-x = scipy.random.rand(100,10)
-y = scipy.random.rand(100,1)
+np.random.seed(101)
+x = np.random.rand(100,10)
+y = np.random.rand(100,1)
 fit = glmnet.glmnet(x = x, y = y)
 glmnetPlot.glmnetPlot(fit)
 

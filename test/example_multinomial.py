@@ -4,7 +4,7 @@ import sys
 sys.path.append('../test')
 sys.path.append('../lib')
 
-import scipy
+import numpy as np
 import importlib
 import matplotlib.pyplot as plt
 import warnings
@@ -35,8 +35,8 @@ importlib.reload(cvglmnetPredict)
 baseDataDir= '../data/'
 
 # load data
-x = scipy.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = scipy.float64, delimiter = ',')
-y = scipy.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = scipy.float64, delimiter = ',')
+x = np.loadtxt(baseDataDir + 'MultinomialExampleX.dat', dtype = np.float64, delimiter = ',')
+y = np.loadtxt(baseDataDir + 'MultinomialExampleY.dat', dtype = np.float64, delimiter = ',')
 
 # call glmnet
 fit = glmnet.glmnet(x = x.copy(), y = y.copy(), family = 'multinomial', mtype = 'grouped')
