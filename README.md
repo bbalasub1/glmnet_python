@@ -80,3 +80,6 @@ http://www.jstatsoft.org/v39/i05/
 http://www-stat.stanford.edu/~tibs/ftp/strong.pdf
 *Stanford Statistics Technical Report*
 
+## License:
+
+This software is released under GNU General Public License v3.0 or later. 
