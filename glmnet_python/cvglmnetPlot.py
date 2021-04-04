@@ -44,11 +44,11 @@
 
  EXAMPLES:
  
-    scipy.random.seed(1)
-    x=scipy.random.normal(size = (100,20))
-    y=scipy.random.normal(size = (100,1))
-    g2=scipy.random.choice(2,size = (100,1))*1.0
-    g4=scipy.random.choice(4,size = (100,1))*1.0
+    np.random.seed(1)
+    x=np.random.normal(size = (100,20))
+    y=np.random.normal(size = (100,1))
+    g2=np.random.choice(2,size = (100,1))*1.0
+    g4=np.random.choice(4,size = (100,1))*1.0
 
     plt.figure()     
     fit1=cvglmnet(x = x.copy(),y = y.copy())
@@ -64,43 +64,43 @@
      
 """
 
-import scipy
+import numpy as np
 
 
 def cvglmnetPlot(cvobject, sign_lambda = 1.0, **options):
     import matplotlib.pyplot as plt
     
-    sloglam = sign_lambda*scipy.log(cvobject['lambdau'])
+    sloglam = sign_lambda*np.log(cvobject['lambdau'])
 
     fig = plt.gcf()
     ax1 = plt.gca()
     #fig, ax1 = plt.subplots()    
     
     plt.errorbar(sloglam, cvobject['cvm'], cvobject['cvsd'], \
-                 ecolor = (0.5, 0.5, 0.5), \
+                 ecolor = (0.5, 0.5, 0.5),zorder=10, \
                  **options
                  )
     #plt.hold(True)         
     plt.plot(sloglam, cvobject['cvm'], linestyle = 'dashed',\
-             marker = 'o', markerfacecolor = 'r')             
+             marker = 'o',zorder=5, markerfacecolor = 'r')             
     
     xlim1 = ax1.get_xlim()
     ylim1 = ax1.get_ylim()
     
-    xval = sign_lambda*scipy.log(scipy.array([cvobject['lambda_min'], cvobject['lambda_min']]))
-    plt.plot(xval, ylim1, color = 'b', linestyle = 'dashed', \
-             linewidth = 1)
+    xval = sign_lambda*np.log(np.array([cvobject['lambda_min'], cvobject['lambda_min']]))
+    plt.plot(xval, ylim1, color = 'k', linestyle = 'dashed', \
+             linewidth = 1,zorder=2)
         
     if cvobject['lambda_min'] != cvobject['lambda_1se']:
-        xval = sign_lambda*scipy.log([cvobject['lambda_1se'], cvobject['lambda_1se']])
-        plt.plot(xval, ylim1, color = 'b', linestyle = 'dashed', \
-             linewidth = 1)
+        xval = sign_lambda*np.log([cvobject['lambda_1se'], cvobject['lambda_1se']])
+        plt.plot(xval, ylim1, color = 'k', linestyle = 'dashed', \
+             linewidth = 1,zorder=2)
 
     ax2 = ax1.twiny()
     ax2.xaxis.tick_top()
 
     atdf = ax1.get_xticks()
-    indat = scipy.ones(atdf.shape, dtype = scipy.integer)
+    indat = np.ones(atdf.shape, dtype = np.integer)
     if sloglam[-1] >= sloglam[1]:
         for j in range(len(sloglam)-1, -1, -1):
             indat[atdf <= sloglam[j]] = j
