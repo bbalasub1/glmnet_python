@@ -71,7 +71,7 @@ def lognet(x, is_sparse, irs, pcs, y, weights, offset, parm,
             raise ValueError('offset should have the same number of values as observations in binominal/multinomial call to glmnet')
         if nc == 1:
             if do[1] == 1:
-                offset = scipy.column_stack((offset, -offset), 1)
+                offset = scipy.column_stack((offset, -offset))
             if do[1] > 2:
                 raise ValueError('offset should have 1 or 2 columns in binomial call to glmnet')
         if (family == 'multinomial') and (do[1] != nc):
