@@ -26,6 +26,7 @@ Currently, the checked-in version of GLMnet.so is compiled for the following con
  **Hardware:** 8-core Intel(R) Core(TM) i7-2630QM 
  **gfortran:** version 4.4.7 20120313 (Red Hat 4.4.7-17) (GCC)
 
+** For MacOS ** installation, here are some solutions that have worked for others: https://github.com/bbalasub1/glmnet_python/issues/13#issuecomment-813000987 **
 
 ## Documentation
    Read the Docs: [![Documentation Status](https://readthedocs.org/projects/glmnet-python/badge/?version=latest)](http://glmnet-python.readthedocs.io/en/latest/?badge=latest) or click [me](http://glmnet-python.readthedocs.io/en/latest/glmnet_vignette.html)
