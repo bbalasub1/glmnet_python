@@ -3,7 +3,7 @@
 Internal function called by cvglmnet. See also cvglmnet
 
 """
-import scipy
+import numpy 
 from glmnetPredict import glmnetPredict
 from wtmean import wtmean
 from cvcompute import cvcompute
@@ -33,16 +33,16 @@ def cvmultnet(fit, \
     prob_max = 1 - prob_min
     nc = y.shape        
     if nc[1] == 1:
-        classes, sy = scipy.unique(y, return_inverse = True)
+        classes, sy = numpy.unique(y, return_inverse = True)
         nc = len(classes)
-        indexes = scipy.eye(nc, nc)
+        indexes = numpy.eye(nc, nc)
         y = indexes[sy, :]
     else:
         nc = nc[1]
         
     is_offset = not(len(offset) == 0)
-    predmat = scipy.ones([y.shape[0], nc, lambdau.size])*scipy.NAN               
-    nfolds = scipy.amax(foldid) + 1
+    predmat = numpy.ones([y.shape[0], nc, lambdau.size])*numpy.NAN               
+    nfolds = numpy.amax(foldid) + 1
     nlams = []    
     for i in range(nfolds):
         which = foldid == i
@@ -50,39 +50,39 @@ def cvmultnet(fit, \
         if is_offset:
             off_sub = offset[which, ]
         else:
-            off_sub = scipy.empty([0])
-        preds = glmnetPredict(fitobj, x[which, ], scipy.empty([0]), 'response', False, off_sub)
-        nlami = scipy.size(fit[i]['lambdau'])
+            off_sub = numpy.empty([0])
+        preds = glmnetPredict(fitobj, x[which, ], numpy.empty([0]), 'response', False, off_sub)
+        nlami = numpy.size(fit[i]['lambdau'])
         predmat[which, 0:nlami] = preds
         nlams.append(nlami)
     # convert nlams to scipy array
-    nlams = scipy.array(nlams, dtype = scipy.integer)
+    nlams = numpy.array(nlams, dtype = numpy.integer)
 
-    ywt = scipy.sum(y, axis = 1, keepdims = True)
-    y = y/scipy.tile(ywt, [1, y.shape[1]])
+    ywt = numpy.sum(y, axis = 1, keepdims = True)
+    y = y/numpy.tile(ywt, [1, y.shape[1]])
     weights = weights*ywt
-    N = y.shape[0] - scipy.sum(scipy.isnan(predmat[:,1,:]), axis = 0, keepdims = True)
-    bigY = scipy.tile(y[:, :, None], [1, 1, lambdau.size])
+    N = y.shape[0] - numpy.sum(numpy.isnan(predmat[:,1,:]), axis = 0, keepdims = True)
+    bigY = numpy.tile(y[:, :, None], [1, 1, lambdau.size])
 
     if ptype == 'mse':
-        cvraw = scipy.sum((bigY - predmat)**2, axis = 1).squeeze()
+        cvraw = numpy.sum((bigY - predmat)**2, axis = 1).squeeze()
     elif ptype == 'deviance':
-        predmat = scipy.minimum(scipy.maximum(predmat, prob_min), prob_max)
-        lp = bigY*scipy.log(predmat)
-        ly = bigY*scipy.log(bigY)
+        predmat = numpy.minimum(numpy.maximum(predmat, prob_min), prob_max)
+        lp = bigY*numpy.log(predmat)
+        ly = bigY*numpy.log(bigY)
         ly[y == 0] = 0
-        cvraw = scipy.sum(2*(ly - lp), axis = 1).squeeze()
+        cvraw = numpy.sum(2*(ly - lp), axis = 1).squeeze()
     elif ptype == 'mae':
-        cvraw = scipy.sum(scipy.absolute(bigY - predmat), axis = 1).squeeze()
+        cvraw = numpy.sum(numpy.absolute(bigY - predmat), axis = 1).squeeze()
     elif ptype == 'class':
-        classid = scipy.zeros([y.shape[0], lambdau.size])*scipy.NaN
+        classid = numpy.zeros([y.shape[0], lambdau.size])*numpy.NaN
         for i in range(lambdau.size):
             classid[:, i] = glmnet_softmax(predmat[:,:,i])
         classid = classid.reshape([classid.size,1])    
         yperm = bigY.transpose((0,2,1))
         yperm = yperm.reshape([yperm.size, 1])
         idx =  sub2ind(yperm.shape, range(len(classid)), classid.transpose())
-        cvraw = scipy.reshape(1 - yperm[idx], [-1, lambdau.size]);
+        cvraw = numpy.reshape(1 - yperm[idx], [-1, lambdau.size])
         
     if grouped == True:
         cvob = cvcompute(cvraw, weights, foldid, nlams)
@@ -92,7 +92,7 @@ def cvmultnet(fit, \
         
     cvm = wtmean(cvraw, weights)
     sqccv = (cvraw - cvm)**2
-    cvsd = scipy.sqrt(wtmean(sqccv, weights)/(N-1))
+    cvsd = numpy.sqrt(wtmean(sqccv, weights)/(N-1))
 
     result = dict()
     result['cvm'] = cvm
@@ -115,16 +115,16 @@ def sub2ind(array_shape, rows, cols):
 #=========================    
 def glmnet_softmax(x):
     d = x.shape
-    nas = scipy.any(scipy.isnan(x), axis = 1)
-    if scipy.any(nas):
-        pclass = scipy.zeros([d[0], 1])*scipy.NaN
-        if scipy.sum(nas) < d[0]:
+    nas = numpy.any(numpy.isnan(x), axis = 1)
+    if numpy.any(nas):
+        pclass = numpy.zeros([d[0], 1])*numpy.NaN
+        if numpy.sum(nas) < d[0]:
             pclass2 = glmnet_softmax(x[~nas, :])
             pclass[~nas] = pclass2
             result = pclass
     else:
         maxdist = x[:, 1]
-        pclass = scipy.ones([d[0], 1])
+        pclass = numpy.ones([d[0], 1])
         for i in range(1, d[1], 1):
             t = x[:, i] > maxdist
             pclass[t] = i

@@ -3,7 +3,7 @@
 Internal function called by cvglmnet. See also cvglmnet
 
 """
-import scipy
+import numpy 
 from glmnetPredict import glmnetPredict
 from wtmean import wtmean
 from cvcompute import cvcompute
@@ -34,27 +34,27 @@ def cvmrelnet(fit, \
     if len(offset) > 0:
         y = y - offset
 
-    predmat = scipy.ones([nobs, nc, lambdau.size])*scipy.NAN               
-    nfolds = scipy.amax(foldid) + 1
+    predmat = numpy.ones([nobs, nc, lambdau.size])*numpy.NAN               
+    nfolds = numpy.amax(foldid) + 1
     nlams = [] 
     for i in range(nfolds):
         which = foldid == i
         fitobj = fit[i].copy()
         fitobj['offset'] = False
         preds = glmnetPredict(fitobj, x[which, ])
-        nlami = scipy.size(fit[i]['lambdau'])
+        nlami = numpy.size(fit[i]['lambdau'])
         predmat[which, 0:nlami] = preds
         nlams.append(nlami)
     # convert nlams to scipy array
-    nlams = scipy.array(nlams, dtype = scipy.integer)
+    nlams = numpy.array(nlams, dtype = numpy.integer)
 
-    N = nobs - scipy.reshape(scipy.sum(scipy.isnan(predmat[:, 1, :]), axis = 0), (1, -1))
-    bigY = scipy.tile(y[:, :, None], [1, 1, lambdau.size])
+    N = nobs - numpy.reshape(numpy.sum(numpy.isnan(predmat[:, 1, :]), axis = 0), (1, -1))
+    bigY = numpy.tile(y[:, :, None], [1, 1, lambdau.size])
 
     if ptype == 'mse':
-        cvraw = scipy.sum((bigY - predmat)**2, axis = 1).squeeze()
+        cvraw = numpy.sum((bigY - predmat)**2, axis = 1).squeeze()
     elif ptype == 'mae':
-        cvraw = scipy.sum(scipy.absolute(bigY - predmat), axis = 1).squeeze()
+        cvraw = numpy.sum(numpy.absolute(bigY - predmat), axis = 1).squeeze()
         
     if y.size/nfolds < 3 and grouped == True:
         print('Option grouped=false enforced in cv.glmnet, since < 3 observations per fold')
@@ -68,7 +68,7 @@ def cvmrelnet(fit, \
         
     cvm = wtmean(cvraw, weights)
     sqccv = (cvraw - cvm)**2
-    cvsd = scipy.sqrt(wtmean(sqccv, weights)/(N-1))
+    cvsd = numpy.sqrt(wtmean(sqccv, weights)/(N-1))
 
     result = dict()
     result['cvm'] = cvm

@@ -126,8 +126,8 @@ OUTPUT ARGUMENTS:
  EXAMPLES:
  
       # Gaussian
-      x = scipy.random.rand(100, 10)
-      y = scipy.random.rand(100, 1)
+      x = numpy.random.rand(100, 10)
+      y = numpy.random.rand(100, 1)
       cvfit = cvglmnet(x = x, y = y)
       cvglmnetPlot(cvfit)
       print( cvglmnetCoef(cvfit) )
@@ -136,27 +136,27 @@ OUTPUT ARGUMENTS:
       cvglmnetPlot(cvfit1)
       
       # Binomial
-      x = scipy.random.rand(100, 10)
-      y = scipy.random.rand(100,1)
+      x = numpy.random.rand(100, 10)
+      y = numpy.random.rand(100,1)
       y = (y > 0.5)*1.0
       fit = cvglmnet(x = x, y = y, family = 'binomial', ptype = 'class')    
       cvglmnetPlot(fit)
       
       # poisson
-      x = scipy.random.rand(100,10)
-      y = scipy.random.poisson(size = [100, 1])*1.0
+      x = numpy.random.rand(100,10)
+      y = numpy.random.poisson(size = [100, 1])*1.0
       cvfit = cvglmnet(x = x, y = y, family = 'poisson')
       cvglmnetPlot(cvfit)
       
       # Multivariate Gaussian:
-      x = scipy.random.rand(100, 10)
-      y = scipy.random.rand(100,3)
+      x = numpy.random.rand(100, 10)
+      y = numpy.random.rand(100,3)
       cvfit = cvglmnet(x = x, y = y, family = 'mgaussian')      
       cvglmnetPlot(cvfit)
        
       # Multinomial
-      x = scipy.random.rand(100,10)
-      y = scipy.random.rand(100,1)
+      x = numpy.random.rand(100,10)
+      y = numpy.random.rand(100,1)
       y[y < 0.3] = 1.0
       y[y < 0.6] = 2.0
       y[y < 1.0] = 3.0
@@ -199,7 +199,7 @@ import joblib
 import multiprocessing
 from glmnetSet import glmnetSet
 from glmnetPredict import glmnetPredict
-import scipy
+import numpy 
 from glmnet import glmnet
 from cvelnet import cvelnet
 from cvlognet import cvlognet
@@ -212,7 +212,7 @@ def cvglmnet(*, x,
              family = 'gaussian',
              ptype = 'default',
              nfolds = 10,
-             foldid = scipy.empty([0]),
+             foldid = numpy.empty([0]),
              parallel = 1,
              keep = False,
              grouped = True,
@@ -227,18 +227,18 @@ def cvglmnet(*, x,
 
     # we should not really need this. user must supply the right shape
     # if y.shape[0] != nobs:
-    #    y = scipy.transpose(y)
+    #    y = numpy.transpose(y)
         
     # convert 1d python array of size nobs to 2d python array of size nobs x 1
     if len(y.shape) == 1:
-        y = scipy.reshape(y, [y.size, 1])
+        y = numpy.reshape(y, [y.size, 1])
 
     # we should not really need this. user must supply the right shape       
     # if (len(options['offset']) > 0) and (options['offset'].shape[0] != nobs):
-    #    options['offset'] = scipy.transpose(options['offset'])
+    #    options['offset'] = numpy.transpose(options['offset'])
     
     if len(options['weights']) == 0:
-        options['weights'] = scipy.ones([nobs, 1], dtype = scipy.float64)
+        options['weights'] = numpy.ones([nobs, 1], dtype = numpy.float64)
 
     # main call to glmnet        
     glmfit = glmnet(x = x, y = y, family = family, **options)    
@@ -246,34 +246,34 @@ def cvglmnet(*, x,
     is_offset = glmfit['offset']
     options['lambdau'] = glmfit['lambdau']
     
-    nz = glmnetPredict(glmfit, scipy.empty([0]), scipy.empty([0]), 'nonzero')
+    nz = glmnetPredict(glmfit, numpy.empty([0]), numpy.empty([0]), 'nonzero')
     if glmfit['class'] == 'multnet':        
-        nnz = scipy.zeros([len(options['lambdau']), len(nz)])
+        nnz = numpy.zeros([len(options['lambdau']), len(nz)])
         for i in range(len(nz)):
-            nnz[:, i] = scipy.transpose(scipy.sum(nz[i], axis = 0))
-        nz = scipy.ceil(scipy.median(nnz, axis = 1))    
+            nnz[:, i] = numpy.transpose(numpy.sum(nz[i], axis = 0))
+        nz = numpy.ceil(numpy.median(nnz, axis = 1))    
     elif glmfit['class'] == 'mrelnet':
-        nz = scipy.transpose(scipy.sum(nz[0], axis = 0))
+        nz = numpy.transpose(numpy.sum(nz[0], axis = 0))
     else:
-        nz = scipy.transpose(scipy.sum(nz, axis = 0))
+        nz = numpy.transpose(numpy.sum(nz, axis = 0))
     
     if len(foldid) == 0:
-        ma = scipy.tile(scipy.arange(nfolds), [1, int(scipy.floor(nobs/nfolds))])
-        mb = scipy.arange(scipy.mod(nobs, nfolds))
-        mb = scipy.reshape(mb, [1, mb.size])
-        population = scipy.append(ma, mb, axis = 1)
-        mc = scipy.random.permutation(len(population))
+        ma = numpy.tile(numpy.arange(nfolds), [1, int(numpy.floor(nobs/nfolds))])
+        mb = numpy.arange(numpy.mod(nobs, nfolds))
+        mb = numpy.reshape(mb, [1, mb.size])
+        population = numpy.append(ma, mb, axis = 1)
+        mc = numpy.random.permutation(len(population))
         mc = mc[0:nobs]
         foldid = population[mc]
-        foldid = scipy.reshape(foldid, [foldid.size,])
+        foldid = numpy.reshape(foldid, [foldid.size,])
     else:
-        nfolds = scipy.amax(foldid) + 1
+        nfolds = numpy.amax(foldid) + 1
         
     if nfolds < 3:
         raise ValueError('nfolds must be bigger than 3; nfolds = 10 recommended')        
         
     cpredmat = list()
-    foldid = scipy.reshape(foldid, [foldid.size, ])
+    foldid = numpy.reshape(foldid, [foldid.size, ])
     if parallel != 1:
         if parallel == -1:
             num_cores = multiprocessing.cpu_count()
@@ -318,10 +318,10 @@ def cvglmnet(*, x,
 
     CVerr = dict()
     CVerr['lambdau'] = options['lambdau']       
-    CVerr['cvm'] = scipy.transpose(cvm)
-    CVerr['cvsd'] = scipy.transpose(cvsd)
-    CVerr['cvup'] = scipy.transpose(cvm + cvsd)
-    CVerr['cvlo'] = scipy.transpose(cvm - cvsd)
+    CVerr['cvm'] = numpy.transpose(cvm)
+    CVerr['cvsd'] = numpy.transpose(cvsd)
+    CVerr['cvup'] = numpy.transpose(cvm + cvsd)
+    CVerr['cvlo'] = numpy.transpose(cvm - cvsd)
     CVerr['nzero'] = nz
     CVerr['name'] = cvname
     CVerr['glmnet_fit'] = glmfit
@@ -330,10 +330,10 @@ def cvglmnet(*, x,
         CVerr['foldid'] = foldid
     if ptype == 'auc':
         cvm = -cvm
-    CVerr['lambda_min'] = scipy.amax(options['lambdau'][cvm <= scipy.amin(cvm)]).reshape([1])  
+    CVerr['lambda_min'] = numpy.amax(options['lambdau'][cvm <= numpy.amin(cvm)]).reshape([1])  
     idmin = options['lambdau'] == CVerr['lambda_min']
     semin = cvm[idmin] + cvsd[idmin]
-    CVerr['lambda_1se'] = scipy.amax(options['lambdau'][cvm <= semin]).reshape([1])
+    CVerr['lambda_1se'] = numpy.amax(options['lambdau'][cvm <= semin]).reshape([1])
     CVerr['class'] = 'cvglmnet'
     
     return(CVerr)

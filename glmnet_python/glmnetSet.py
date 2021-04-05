@@ -29,8 +29,8 @@ USAGE:
     #  given values for these parameters.
     options = glmnetSet( alpha = 0.1, \
                          intr = False, \
-                         maxit = scipy.int32(1e6), \
-                         offset = scipy.empty([0]) )
+                         maxit = numpy.int32(1e6), \
+                         offset = numpy.empty([0]) )
     # same as previous case, except we pass in a 
     #  dict() object instead
     opts = dict(); opts['alpha'] = 0.5; 
@@ -40,17 +40,17 @@ USAGE:
 Parameter              Default value 
                        Description
 ..................................................................
-alpha                <scipy.float64>
+alpha                <numpy.float64>
                      The elasticnet mixing parameter, with 0 < alpha <= 1.
                      The penalty is defined as
                            (1-alpha)/2(||beta||_2)^2+alpha||beta||_1.
                      Default is alpha = 1, which is the lasso penalty;
                      Currently alpha = 0 the ridge penalty.
 
-nlambda              <scipy.int32>
+nlambda              <numpy.int32>
                      The number of lambda values - default is 
 
-lambdau              <scipy.ndarray: 1D array of M or 2D array of M x 1>
+lambdau              <numpy.ndarray: 1D array of M or 2D array of M x 1>
                      A user supplied lambda sequence. Typical usage is to
                      have the program compute its own lambda sequence
                      based on nlambda and lambda_min. Supplying a value of
@@ -70,7 +70,7 @@ standardize          <boolean>
                      details below for y standardization with
                      family='gaussian'.
 
-weights              <scipy.ndarray: 1D array of nobs or 2D array of nobs x 1>
+weights              <numpy.ndarray: 1D array of nobs or 2D array of nobs x 1>
                      Observation weights. Can be total counts if responses
                      are proportion matrices. Default is 1 for each
                      observation.
@@ -79,7 +79,7 @@ intr                 <boolean>
                      Should intercept(s) be fitted (default=true) or set
                      to zero (false).
 
-offset               <scipy.ndarray: 1D array of nobs or 2D array of 1 x nobs>
+offset               <numpy.ndarray: 1D array of nobs or 2D array of 1 x nobs>
                      A vector of length nobs that is included in the
                      linear predictor (a nobs x nc matrix for the
                      "multinomial" family). Useful for the "poisson"
@@ -88,7 +88,7 @@ offset               <scipy.ndarray: 1D array of nobs or 2D array of 1 x nobs>
                      supplied, then values must also be supplied to the
                      predict function.
 
-lambda_min           <scipy.ndarray: size 1 x 1 and dtype of scipy.float64> 
+lambda_min           <numpy.ndarray: size 1 x 1 and dtype of numpy.float64> 
                      Smallest value for lambda, as a fraction of
                      lambda_max, the (data derived) entry value (i.e., the
                      smallest value for which all coefficients are zero).
@@ -101,28 +101,28 @@ lambda_min           <scipy.ndarray: size 1 x 1 and dtype of scipy.float64>
                      and glmnet will exit gracefully when the percentage
                      deviance explained is almost 1.
 
-thresh               <scipy.float64>
+thresh               <numpy.float64>
                      Convergence threshold for coordinate descent. Each 
                      inner coordinate-descent loop continues until the 
                      maximum change in the objective after any coefficient 
                      update is less than thresh times the null deviance. 
                      Defaults value is 1E-4.
 
-dfmax                <scipy.ndarray: size 1 x 1>
+dfmax                <numpy.ndarray: size 1 x 1>
                      Limit the maximum number of variables in the model. 
                      Useful for very large nvars, if a partial path is
                      desired. Default is nvars + 1.
 
-pmax                 <scipy.ndarray: size 1 x 1>
+pmax                 <numpy.ndarray: size 1 x 1>
                      Limit the maximum number of variables ever to be
                      nonzero. Default is min(dfmax * 2 + 20, nvars).
 
-exclude              <scipy.ndarray: 0-based 1D array of indices>
+exclude              <numpy.ndarray: 0-based 1D array of indices>
                      Indices of variables to be excluded from the model. 
                      Default is none. Equivalent to an infinite penalty
                      factor (next item).
 
-penalty_factor       <scipy.ndarray: 1D array of size nvars; dtype scipy.float64>
+penalty_factor       <numpy.ndarray: 1D array of size nvars; dtype numpy.float64>
                      Separate penalty factors can be applied to each
                      coefficient. This is a number that multiplies lambda
                      to allow differential shrinkage. Can be 0 for some
@@ -133,11 +133,11 @@ penalty_factor       <scipy.ndarray: 1D array of size nvars; dtype scipy.float64
                      factors are internally rescaled to sum to nvars, and
                      the lambda sequence will reflect this change.
 
-maxit                <scipy.int32>
+maxit                <numpy.int32>
                      Maximum number of passes over the data for all lambda
                      values; default is 10^5.
 
-cl                   <scipy.ndarray: 2D array of shape 2 x nvars; dtype scipy.float64>
+cl                   <numpy.ndarray: 2D array of shape 2 x nvars; dtype numpy.float64>
                      Two-row matrix with the first row being the lower 
                      limits for each coefficient and the second the upper
                      limits. Can be presented as a single column (which
@@ -187,25 +187,25 @@ AUTHORS:
 """
 
 def glmnetSet(opts = None):
-    import scipy
+    import numpy 
     
     # default options
     options = {
-        "weights"             : scipy.empty([0]),
-        "offset"              : scipy.empty([0]),
-        "alpha"               : scipy.float64(1.0),
-        "nlambda"             : scipy.int32(100),
-        "lambda_min"          : scipy.empty([0]),
-        "lambdau"             : scipy.empty([0]),
+        "weights"             : numpy.empty([0]),
+        "offset"              : numpy.empty([0]),
+        "alpha"               : numpy.float64(1.0),
+        "nlambda"             : numpy.int32(100),
+        "lambda_min"          : numpy.empty([0]),
+        "lambdau"             : numpy.empty([0]),
         "standardize"         : True,
         "intr"                : True,
-        "thresh"              : scipy.float64(1e-7),
-        "dfmax"               : scipy.empty([0]),
-        "pmax"                : scipy.empty([0]),
-        "exclude"             : scipy.empty([0], dtype = scipy.integer),
-        "penalty_factor"      : scipy.empty([0]),
-        "cl"                  : scipy.array([[scipy.float64(-scipy.inf)], [scipy.float64(scipy.inf)]]), 
-        "maxit"               : scipy.int32(1e5),
+        "thresh"              : numpy.float64(1e-7),
+        "dfmax"               : numpy.empty([0]),
+        "pmax"                : numpy.empty([0]),
+        "exclude"             : numpy.empty([0], dtype = numpy.integer),
+        "penalty_factor"      : numpy.empty([0]),
+        "cl"                  : numpy.array([[numpy.float64(-numpy.inf)], [numpy.float64(numpy.inf)]]), 
+        "maxit"               : numpy.int32(1e5),
         "gtype"               : [],
         "ltype"               : 'Newton',
         "standardize_resp"    : False,
@@ -219,7 +219,7 @@ def glmnetSet(opts = None):
         return options
     
     # if options are passed in by user, update options with values from opts
-    optsInOptions = set(opts.keys()) - set(options.keys());
+    optsInOptions = set(opts.keys()) - set(options.keys())
     if len(optsInOptions) > 0:          # assert 'opts' keys are subsets of 'options' keys
         print(optsInOptions, ' : unknown option for glmnetSet')
         raise ValueError('attempting to set glmnet options that are not known to glmnetSet')

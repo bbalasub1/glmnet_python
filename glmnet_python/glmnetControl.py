@@ -70,26 +70,26 @@
 """
 
 def glmnetControl(pars = None):
-    import scipy
+    import numpy 
     
     # default options
-    ivals = dict();
-    ivals["fdev"]    = scipy.float64(1e-5)
-    ivals["devmax"]  = scipy.float64(0.999)
-    ivals["eps"]     = scipy.float64(1e-6)
-    ivals["big"]     = scipy.float64(9.9e35)
-    ivals["mnlam"]   = scipy.float64(5)
-    ivals["pmin"]    = scipy.float64(1e-5)
-    ivals["exmx"]    = scipy.float64(250)
-    ivals["prec"]    = scipy.float64(1e-10)
-    ivals["mxit"]    = scipy.float64(100)
+    ivals = dict()
+    ivals["fdev"]    = numpy.float64(1e-5)
+    ivals["devmax"]  = numpy.float64(0.999)
+    ivals["eps"]     = numpy.float64(1e-6)
+    ivals["big"]     = numpy.float64(9.9e35)
+    ivals["mnlam"]   = numpy.float64(5)
+    ivals["pmin"]    = numpy.float64(1e-5)
+    ivals["exmx"]    = numpy.float64(250)
+    ivals["prec"]    = numpy.float64(1e-10)
+    ivals["mxit"]    = numpy.float64(100)
     
     # quick return if no user opts
     if pars == None:
         return ivals
     
     # if options are passed in by user, update options with values from opts
-    parsInIvals = set(pars.keys()) - set(ivals.keys());
+    parsInIvals = set(pars.keys()) - set(ivals.keys())
     if len(parsInIvals) > 0:          # assert 'opts' keys are subsets of 'options' keys
         raise ValueError('attempting to set glmnet controls that are not known to glmnetControl')
     else:        

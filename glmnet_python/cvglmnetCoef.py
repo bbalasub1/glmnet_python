@@ -69,7 +69,7 @@
     
 """
 
-import scipy
+import numpy 
 from glmnetCoef import glmnetCoef
 
 def cvglmnetCoef(obj, s = None):
@@ -77,7 +77,7 @@ def cvglmnetCoef(obj, s = None):
     if s is None or len(s) == 0:
         s = obj['lambda_1se']
         
-    if isinstance(s, scipy.ndarray):
+    if isinstance(s, numpy.ndarray):
         lambdau = s
     elif isinstance(s, str):
         sbase = ['lambda_1se', 'lambda_min']

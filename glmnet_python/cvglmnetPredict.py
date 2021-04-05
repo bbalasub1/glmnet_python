@@ -67,23 +67,23 @@
     cvglmnet and glmnetPredict.
 
  EXAMPLES:
-      x = scipy.random.rand(100, 10)
-      y = scipy.random.rand(100, 1)
+      x = numpy.random.rand(100, 10)
+      y = numpy.random.rand(100, 1)
       cvfit = cvglmnet(x = x, y = y)
       cvglmnetPredict(cvfit, x[0:5, :], 'lambda_min')
-      cvglmnetPredict(cvfit, x[0:5, :], scipy.array([0.0866, 0.2323]))
+      cvglmnetPredict(cvfit, x[0:5, :], numpy.array([0.0866, 0.2323]))
 
 """
 from cvglmnetCoef import cvglmnetCoef
 from glmnetPredict import glmnetPredict
-import scipy
+import numpy 
 
 def cvglmnetPredict(obj, newx = None, s = 'lambda_1se', **options):
     if newx is None:
         CVpred = cvglmnetCoef(obj)
         return(CVpred)
         
-    if type(s) == scipy.ndarray and s.dtype == 'float64':
+    if type(s) == numpy.ndarray and s.dtype == 'float64':
         lambdau = s
     elif s in ['lambda_1se', 'lambda_min']:
             lambdau = obj[s]
