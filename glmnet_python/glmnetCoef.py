@@ -14,8 +14,8 @@
 
     Fewer input arguments (more often) are allowed in the call, but must
     come in the order listed above. To set default values on the way, use
-    scipy.empty([0]). 
-    For example, ncoef = glmnetCoef(fit,scipy.empty([0]),False).
+    numpy.empty([0]). 
+    For example, ncoef = glmnetCoef(fit,numpy.empty([0]),False).
 
  INPUT ARGUMENTS:
     obj      Fitted "glmnet" model object.
@@ -61,14 +61,14 @@
     glmnet, glmnetPrint, glmnetPredict, and cvglmnet.
 
  EXAMPLES:
-    x = scipy.random.rand(100,20);
-    y = scipy.random.rand(100,1);
+    x = numpy.random.rand(100,20);
+    y = numpy.random.rand(100,1);
     fit = glmnet(x = x.copy(),y = y.copy());
-    ncoef = glmnetCoef(fit,scipy.array([0.01, 0.001]));
+    ncoef = glmnetCoef(fit,numpy.array([0.01, 0.001]));
 
 """
 
-import scipy
+import numpy 
 from glmnetPredict import glmnetPredict
 
 def glmnetCoef(obj, s = None, exact = False):
@@ -79,7 +79,7 @@ def glmnetCoef(obj, s = None, exact = False):
     if exact and len(s) > 0:
         raise NotImplementedError('exact = True not implemented in glmnetCoef')
         
-    result = glmnetPredict(obj, scipy.empty([0]), s, 'coefficients')    
+    result = glmnetPredict(obj, numpy.empty([0]), s, 'coefficients')    
     
     return(result)
     

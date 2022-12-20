@@ -59,10 +59,10 @@
 
  EXAMPLES:
      import matplotlib.pyplot as plt
-     scipy.random.seed(1)
-     x=scipy.random.normal(size = (100,20))
-     y=scipy.random.normal(size = (100,1))
-     g4=scipy.random.choice(4,size = (100,1))*1.0
+     numpy.random.seed(1)
+     x=numpy.random.normal(size = (100,20))
+     y=numpy.random.normal(size = (100,1))
+     g4=numpy.random.choice(4,size = (100,1))*1.0
      fit1=glmnet(x = x.copy(),y = y.copy())
      glmnetPlot(fit1)
      plt.figure()
@@ -71,7 +71,7 @@
      plt.figure()
      glmnetPlot(fit3)
 """
-import scipy
+import numpy 
 
 
 def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
@@ -93,7 +93,7 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
             for i in range(len(beta)):
                 which = nonzeroCoef(beta[i])
                 nzbeta[i] = beta[i][which, :]
-                norm = norm + scipy.sum(scipy.absolute(nzbeta[i]), axis = 0)
+                norm = norm + numpy.sum(numpy.absolute(nzbeta[i]), axis = 0)
         else:
             norm = 0
         
@@ -114,19 +114,19 @@ def glmnetPlot(x, xvar = 'norm', label = False, ptype = 'coef', **options):
                     if i < ncl - 1:
                         plt.figure()
         else:
-            dfseq = scipy.round_(scipy.mean(x['dfmat'], axis = 0))
+            dfseq = numpy.round_(numpy.mean(x['dfmat'], axis = 0))
             coefnorm = beta[1]*0
             for i in range(len(beta)):
-                coefnorm = coefnorm + scipy.absolute(beta[i])**2
-            coefnorm = scipy.sqrt(coefnorm)
+                coefnorm = coefnorm + numpy.absolute(beta[i])**2
+            coefnorm = numpy.sqrt(coefnorm)
             if x['class'] == 'multnet':
                 mstr = 'Coefficient 2Norms'
                 handle = plotCoef(coefnorm, norm, x['lambdau'], dfseq, x['dev'],
-                         label, xvar, '',mstr, **options);        
+                         label, xvar, '',mstr, **options)        
             else:
                 mstr = 'Coefficient 2Norms'
                 handle = plotCoef(coefnorm, norm, x['lambdau'], x['dfmat'][0,:], x['dev'],
-                         label, xvar, '', mstr, **options);                
+                         label, xvar, '', mstr, **options)                
 
     return(handle)
 # end of glmnetplot
@@ -146,11 +146,11 @@ def getFromList(xvar, xvarbase, errMsg):
 # end of getFromList()
 # =========================================
 def nonzeroCoef(beta, bystep = False):
-    result = scipy.absolute(beta) > 0
+    result = numpy.absolute(beta) > 0
     if len(result.shape) == 1:
-        result = scipy.reshape(result, [result.shape[0], 1])
+        result = numpy.reshape(result, [result.shape[0], 1])
     if not bystep:
-        result = scipy.any(result, axis = 1)
+        result = numpy.any(result, axis = 1)
     
     return(result)
 # end of nonzeroCoef()
@@ -169,12 +169,12 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
     beta = beta[which, :]
     if xvar == 'norm':
         if len(norm) == 0:
-            index = scipy.sum(scipy.absolute(beta), axis = 0)
+            index = numpy.sum(numpy.absolute(beta), axis = 0)
         else:
             index = norm
         iname = 'L1 Norm'
     elif xvar == 'lambda':
-        index = scipy.log(lambdau)
+        index = numpy.log(lambdau)
         iname = 'Log Lambda'
     elif xvar == 'dev':
         index = dev
@@ -189,7 +189,7 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
     ax1 = plt.gca()
     
     # plot x vs y
-    beta = scipy.transpose(beta)
+    beta = numpy.transpose(beta)
     ax1.plot(index, beta, **options)
     
     ax2 = ax1.twiny()
@@ -199,7 +199,7 @@ def plotCoef(beta, norm, lambdau, df, dev, label, xvar, xlab, ylab, **options):
     ylim1 = ax1.get_ylim()
     
     atdf = ax1.get_xticks()
-    indat = scipy.ones(atdf.shape, dtype = scipy.integer)
+    indat = numpy.ones(atdf.shape, dtype = numpy.integer)
     if index[-1] >= index[1]:
         for j in range(len(index)-1, -1, -1):
             indat[atdf <= index[j]] = j

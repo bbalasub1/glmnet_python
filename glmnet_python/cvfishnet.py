@@ -3,7 +3,7 @@
 Internal cvglmnet function. See also cvglmnet.
 
 """
-import scipy
+import numpy 
 from glmnetPredict import glmnetPredict
 from wtmean import wtmean
 from cvcompute import cvcompute
@@ -34,8 +34,8 @@ def cvfishnet(fit, \
     else:
         is_offset = False 
 
-    predmat = scipy.ones([y.size, lambdau.size])*scipy.NAN               
-    nfolds = scipy.amax(foldid) + 1
+    predmat = numpy.ones([y.size, lambdau.size])*numpy.NAN               
+    nfolds = numpy.amax(foldid) + 1
     nlams = [] 
     for i in range(nfolds):
         which = foldid == i
@@ -43,23 +43,23 @@ def cvfishnet(fit, \
         if is_offset:
             off_sub = offset[which]
         else:
-            off_sub = scipy.empty([0])
+            off_sub = numpy.empty([0])
         preds = glmnetPredict(fitobj, x[which, ], offset = off_sub)
-        nlami = scipy.size(fit[i]['lambdau'])
+        nlami = numpy.size(fit[i]['lambdau'])
         predmat[which, 0:nlami] = preds
         nlams.append(nlami)
     # convert nlams to scipy array
-    nlams = scipy.array(nlams, dtype = scipy.integer)
+    nlams = numpy.array(nlams, dtype = numpy.integer)
 
-    N = y.shape[0] - scipy.sum(scipy.isnan(predmat), axis = 0)
-    yy = scipy.tile(y, [1, lambdau.size])
+    N = y.shape[0] - numpy.sum(numpy.isnan(predmat), axis = 0)
+    yy = numpy.tile(y, [1, lambdau.size])
 
     if ptype == 'mse':
         cvraw = (yy - predmat)**2
     elif ptype == 'deviance':
         cvraw = devi(yy, predmat)
     elif ptype == 'mae':
-        cvraw = scipy.absolute(yy - predmat)
+        cvraw = numpy.absolute(yy - predmat)
         
     if y.size/nfolds < 3 and grouped == True:
         print('Option grouped=false enforced in cvglmnet, since < 3 observations per fold')
@@ -73,7 +73,7 @@ def cvfishnet(fit, \
         
     cvm = wtmean(cvraw, weights)
     sqccv = (cvraw - cvm)**2
-    cvsd = scipy.sqrt(wtmean(sqccv, weights)/(N-1))
+    cvsd = numpy.sqrt(wtmean(sqccv, weights)/(N-1))
 
     result = dict()
     result['cvm'] = cvm
@@ -88,8 +88,8 @@ def cvfishnet(fit, \
 # end of cvfishnet
 #=========================    
 def devi(yy, eta):
-    deveta = yy*eta - scipy.exp(eta)
-    devy = yy*scipy.log(yy) - yy
+    deveta = yy*eta - numpy.exp(eta)
+    devy = yy*numpy.log(yy) - yy
     devy[yy == 0] = 0
     result = 2*(devy - deveta)
     return(result)

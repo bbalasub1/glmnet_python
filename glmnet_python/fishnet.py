@@ -3,7 +3,7 @@
 Internal function called by glmnet. See also glmnet, cvglmnet
 """
 # import packages/methods
-import scipy
+import numpy 
 import ctypes
 from loadGlmLib import loadGlmLib
 
@@ -14,7 +14,7 @@ def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # load shared fortran library
     glmlib = loadGlmLib() 
     
-    if scipy.any( y < 0):
+    if numpy.any( y < 0):
         raise ValueError('negative responses not permitted for Poisson family')
     
     if len(offset) == 0:
@@ -30,16 +30,16 @@ def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     ######################################
     # force inputs into fortran order and scipy float64
     copyFlag = False
-    x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag) 
-    irs = irs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)
-    pcs = pcs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)    
-    y = y.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    weights = weights.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    offset = offset.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    jd = jd.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)        
-    vp = vp.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    cl = cl.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    ulam   = ulam.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
+    x = x.astype(dtype = numpy.float64, order = 'F', copy = copyFlag) 
+    irs = irs.astype(dtype = numpy.int32, order = 'F', copy = copyFlag)
+    pcs = pcs.astype(dtype = numpy.int32, order = 'F', copy = copyFlag)    
+    y = y.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    weights = weights.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    offset = offset.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    jd = jd.astype(dtype = numpy.int32, order = 'F', copy = copyFlag)        
+    vp = vp.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    cl = cl.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    ulam   = ulam.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
 
     ######################################
     # --------- ALLOCATE OUTPUTS ---------
@@ -48,28 +48,28 @@ def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     lmu = -1
     lmu_r = ctypes.c_int(lmu)
     # a0
-    a0   = scipy.zeros([nlam], dtype = scipy.float64)
-    a0   = a0.astype(dtype = scipy.float64, order = 'F', copy = False)    
+    a0   = numpy.zeros([nlam], dtype = numpy.float64)
+    a0   = a0.astype(dtype = numpy.float64, order = 'F', copy = False)    
     a0_r = a0.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # ca
-    ca   = scipy.zeros([nx, nlam], dtype = scipy.float64)
-    ca   = ca.astype(dtype = scipy.float64, order = 'F', copy = False)    
+    ca   = numpy.zeros([nx, nlam], dtype = numpy.float64)
+    ca   = ca.astype(dtype = numpy.float64, order = 'F', copy = False)    
     ca_r = ca.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # ia
-    ia   = -1*scipy.ones([nx], dtype = scipy.int32)
-    ia   = ia.astype(dtype = scipy.int32, order = 'F', copy = False)    
+    ia   = -1*numpy.ones([nx], dtype = numpy.int32)
+    ia   = ia.astype(dtype = numpy.int32, order = 'F', copy = False)    
     ia_r = ia.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
     # nin
-    nin   = -1*scipy.ones([nlam], dtype = scipy.int32)
-    nin   = nin.astype(dtype = scipy.int32, order = 'F', copy = False)    
+    nin   = -1*numpy.ones([nlam], dtype = numpy.int32)
+    nin   = nin.astype(dtype = numpy.int32, order = 'F', copy = False)    
     nin_r = nin.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
     # dev
-    dev   = -1*scipy.ones([nlam], dtype = scipy.float64)
-    dev   = dev.astype(dtype = scipy.float64, order = 'F', copy = False)    
+    dev   = -1*numpy.ones([nlam], dtype = numpy.float64)
+    dev   = dev.astype(dtype = numpy.float64, order = 'F', copy = False)    
     dev_r = dev.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # alm
-    alm   = -1*scipy.ones([nlam], dtype = scipy.float64)
-    alm   = alm.astype(dtype = scipy.float64, order = 'F', copy = False)    
+    alm   = -1*numpy.ones([nlam], dtype = numpy.float64)
+    alm   = alm.astype(dtype = numpy.float64, order = 'F', copy = False)    
     alm_r = alm.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # nlp
     nlp = -1
@@ -176,22 +176,22 @@ def fishnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     ninmax = max(nin)
     # fix first value of alm (from inf to correct value)
     if ulam[0] == 0.0:
-        t1 = scipy.log(alm[1])
-        t2 = scipy.log(alm[2])
-        alm[0] = scipy.exp(2*t1 - t2)        
+        t1 = numpy.log(alm[1])
+        t2 = numpy.log(alm[2])
+        alm[0] = numpy.exp(2*t1 - t2)        
     # create return fit dictionary
-    dd = scipy.array([nvars, lmu], dtype = scipy.integer)    
+    dd = numpy.array([nvars, lmu], dtype = numpy.integer)    
     if ninmax > 0:
         ca = ca[0:ninmax, :]
-        df = scipy.sum(scipy.absolute(ca) > 0, axis = 0)
+        df = numpy.sum(numpy.absolute(ca) > 0, axis = 0)
         ja = ia[0:ninmax] - 1    # ia is 1-indexed in fortran
-        oja = scipy.argsort(ja)
+        oja = numpy.argsort(ja)
         ja1 = ja[oja]
-        beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
+        beta = numpy.zeros([nvars, lmu], dtype = numpy.float64)
         beta[ja1, :] = ca[oja, :]
     else:
-        beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
-        df = scipy.zeros([1, lmu], dtype = scipy.float64)
+        beta = numpy.zeros([nvars, lmu], dtype = numpy.float64)
+        df = numpy.zeros([1, lmu], dtype = numpy.float64)
             
     fit = dict()
     fit['a0'] = a0

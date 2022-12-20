@@ -4,7 +4,7 @@ Internal function called by glmnet. See also glmnet, cvglmnet
 
 """
 # import packages/methods
-import scipy
+import numpy 
 import ctypes
 from wtmean import wtmean
 from loadGlmLib import loadGlmLib
@@ -19,9 +19,9 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     # 
     nr = y.shape[1]
     wym = wtmean(y, weights)
-    wym = scipy.reshape(wym, (1, wym.size))
-    yt2 = (y - scipy.tile(wym, (y.shape[0], 1)))**2
-    nulldev = scipy.sum(wtmean(yt2,weights)*scipy.sum(weights))
+    wym = numpy.reshape(wym, (1, wym.size))
+    yt2 = (y - numpy.tile(wym, (y.shape[0], 1)))**2
+    nulldev = numpy.sum(wtmean(yt2,weights)*numpy.sum(weights))
 
     if len(offset) == 0:
         offset = y*0
@@ -39,15 +39,15 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     ######################################
     # force inputs into fortran order and scipy float64
     copyFlag = False
-    x = x.astype(dtype = scipy.float64, order = 'F', copy = copyFlag) 
-    irs = irs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)
-    pcs = pcs.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)    
-    y = y.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    weights = weights.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    jd = jd.astype(dtype = scipy.int32, order = 'F', copy = copyFlag)        
-    vp = vp.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    cl = cl.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
-    ulam   = ulam.astype(dtype = scipy.float64, order = 'F', copy = copyFlag)    
+    x = x.astype(dtype = numpy.float64, order = 'F', copy = copyFlag) 
+    irs = irs.astype(dtype = numpy.int32, order = 'F', copy = copyFlag)
+    pcs = pcs.astype(dtype = numpy.int32, order = 'F', copy = copyFlag)    
+    y = y.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    weights = weights.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    jd = jd.astype(dtype = numpy.int32, order = 'F', copy = copyFlag)        
+    vp = vp.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    cl = cl.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
+    ulam   = ulam.astype(dtype = numpy.float64, order = 'F', copy = copyFlag)    
 
     ######################################
     # --------- ALLOCATE OUTPUTS ---------
@@ -56,28 +56,28 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     lmu = -1
     lmu_r = ctypes.c_int(lmu)
     # a0
-    a0   = scipy.zeros([nr, nlam], dtype = scipy.float64)
-    a0   = a0.astype(dtype = scipy.float64, order = 'F', copy = False)    
+    a0   = numpy.zeros([nr, nlam], dtype = numpy.float64)
+    a0   = a0.astype(dtype = numpy.float64, order = 'F', copy = False)    
     a0_r = a0.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # ca
-    ca   = scipy.zeros([nx, nr, nlam], dtype = scipy.float64)
-    ca   = ca.astype(dtype = scipy.float64, order = 'F', copy = False)    
+    ca   = numpy.zeros([nx, nr, nlam], dtype = numpy.float64)
+    ca   = ca.astype(dtype = numpy.float64, order = 'F', copy = False)    
     ca_r = ca.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # ia
-    ia   = -1*scipy.ones([nx], dtype = scipy.int32)
-    ia   = ia.astype(dtype = scipy.int32, order = 'F', copy = False)    
+    ia   = -1*numpy.ones([nx], dtype = numpy.int32)
+    ia   = ia.astype(dtype = numpy.int32, order = 'F', copy = False)    
     ia_r = ia.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
     # nin
-    nin   = -1*scipy.ones([nlam], dtype = scipy.int32)
-    nin   = nin.astype(dtype = scipy.int32, order = 'F', copy = False)    
+    nin   = -1*numpy.ones([nlam], dtype = numpy.int32)
+    nin   = nin.astype(dtype = numpy.int32, order = 'F', copy = False)    
     nin_r = nin.ctypes.data_as(ctypes.POINTER(ctypes.c_int))
     # rsq
-    rsq   = -1*scipy.ones([nlam], dtype = scipy.float64)
-    rsq   = rsq.astype(dtype = scipy.float64, order = 'F', copy = False)    
+    rsq   = -1*numpy.ones([nlam], dtype = numpy.float64)
+    rsq   = rsq.astype(dtype = numpy.float64, order = 'F', copy = False)    
     rsq_r = rsq.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # alm
-    alm   = -1*scipy.ones([nlam], dtype = scipy.float64)
-    alm   = alm.astype(dtype = scipy.float64, order = 'F', copy = False)    
+    alm   = -1*numpy.ones([nlam], dtype = numpy.float64)
+    alm   = alm.astype(dtype = numpy.float64, order = 'F', copy = False)    
     alm_r = alm.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
     # nlp
     nlp = -1
@@ -182,54 +182,54 @@ def mrelnet(x, is_sparse, irs, pcs, y, weights, offset, parm,
     ninmax = max(nin)
     # fix first value of alm (from inf to correct value)
     if ulam[0] == 0.0:
-        t1 = scipy.log(alm[1])
-        t2 = scipy.log(alm[2])
-        alm[0] = scipy.exp(2*t1 - t2)        
+        t1 = numpy.log(alm[1])
+        t2 = numpy.log(alm[2])
+        alm[0] = numpy.exp(2*t1 - t2)        
     # create return fit dictionary
     if nr > 1:
         dfmat = a0.copy()
-        dd = scipy.array([nvars, lmu], dtype = scipy.integer)
+        dd = numpy.array([nvars, lmu], dtype = numpy.integer)
         beta_list = list()
         if ninmax > 0:
             # TODO: is the reshape here done right?
-            ca = scipy.reshape(ca, (nx, nr, lmu))
+            ca = numpy.reshape(ca, (nx, nr, lmu))
             ca = ca[0:ninmax, :, :]
             ja = ia[0:ninmax] - 1    # ia is 1-indexed in fortran
-            oja = scipy.argsort(ja)
+            oja = numpy.argsort(ja)
             ja1 = ja[oja]
-            df = scipy.any(scipy.absolute(ca) > 0, axis=1)
-            df = scipy.sum(df, axis = 0)
-            df = scipy.reshape(df, (1, df.size))
+            df = numpy.any(numpy.absolute(ca) > 0, axis=1)
+            df = numpy.sum(df, axis = 0)
+            df = numpy.reshape(df, (1, df.size))
             for k in range(0, nr):
-                ca1 = scipy.reshape(ca[:,k,:], (ninmax, lmu))
+                ca1 = numpy.reshape(ca[:,k,:], (ninmax, lmu))
                 cak = ca1[oja,:]
-                dfmat[k, :] = scipy.sum(scipy.absolute(cak) > 0, axis = 0)
-                beta = scipy.zeros([nvars, lmu], dtype = scipy.float64)
+                dfmat[k, :] = numpy.sum(numpy.absolute(cak) > 0, axis = 0)
+                beta = numpy.zeros([nvars, lmu], dtype = numpy.float64)
                 beta[ja1, :] = cak
                 beta_list.append(beta)
         else:
             for k in range(0, nr):
-                dfmat[k, :] = scipy.zeros([1, lmu], dtype = scipy.float64)
-                beta_list.append(scipy.zeros([nvars, lmu], dtype = scipy.float64))
+                dfmat[k, :] = numpy.zeros([1, lmu], dtype = numpy.float64)
+                beta_list.append(numpy.zeros([nvars, lmu], dtype = numpy.float64))
             #
-            df = scipy.zeros([1, lmu], dtype = scipy.float64)
+            df = numpy.zeros([1, lmu], dtype = numpy.float64)
         #        
         fit = dict()
         fit['beta'] = beta_list
         fit['dfmat']= dfmat
     else:
-        dd = scipy.array([nvars, lmu], dtype = scipy.integer)
+        dd = numpy.array([nvars, lmu], dtype = numpy.integer)
         if ninmax > 0:
-            ca = ca[0:ninmax,:];
-            df = scipy.sum(scipy.absolute(ca) > 0, axis = 0);
-            ja = ia[0:ninmax] - 1; # ia is 1-indexes in fortran
-            oja = scipy.argsort(ja)
+            ca = ca[0:ninmax,:]
+            df = numpy.sum(numpy.absolute(ca) > 0, axis = 0)
+            ja = ia[0:ninmax] - 1 # ia is 1-indexes in fortran
+            oja = numpy.argsort(ja)
             ja1 = ja[oja]
-            beta = scipy.zeros([nvars, lmu], dtype = scipy.float64);
-            beta[ja1, :] = ca[oja, :];
+            beta = numpy.zeros([nvars, lmu], dtype = numpy.float64)
+            beta[ja1, :] = ca[oja, :]
         else:
-            beta = scipy.zeros([nvars,lmu], dtype = scipy.float64);
-            df = scipy.zeros([1,lmu], dtype = scipy.float64);
+            beta = numpy.zeros([nvars,lmu], dtype = numpy.float64)
+            df = numpy.zeros([1,lmu], dtype = numpy.float64)
             fit['beta'] = beta
             
     fit['a0'] = a0
