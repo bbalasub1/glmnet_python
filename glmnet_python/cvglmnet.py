@@ -200,6 +200,7 @@ import multiprocessing
 from glmnetSet import glmnetSet
 from glmnetPredict import glmnetPredict
 import scipy
+import numpy
 from glmnet import glmnet
 from cvelnet import cvelnet
 from cvlognet import cvlognet
@@ -262,7 +263,7 @@ def cvglmnet(*, x,
         mb = scipy.arange(scipy.mod(nobs, nfolds))
         mb = scipy.reshape(mb, [1, mb.size])
         population = scipy.append(ma, mb, axis = 1)
-        mc = scipy.random.permutation(len(population))
+        mc = numpy.random.permutation(len(population))
         mc = mc[0:nobs]
         foldid = population[mc]
         foldid = scipy.reshape(foldid, [foldid.size,])
