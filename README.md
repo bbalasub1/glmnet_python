@@ -1,4 +1,6 @@
 # Glmnet for python 
+(work under windows fix by cutebomb)
+
 
 [![PyPI version](https://badge.fury.io/py/glmnet-py.svg)](https://badge.fury.io/py/glmnet-py)
 [![GPL Licence](https://badges.frapsoft.com/os/gpl/gpl.svg?v=103)](https://opensource.org/licenses/GPL-2.0/)

@@ -2,8 +2,9 @@ import os, sys
 from setuptools import setup, find_packages
 # from numpy.distutils.core import setup, Extension
 
-cmd = 'gfortran ./glmnet_python/GLMnet.f -fPIC -fdefault-real-8 -shared -o ./glmnet_python/GLMnet.so'
-os.system(cmd)
+if os.name == 'posix':
+      cmd = 'gfortran ./glmnet_python/GLMnet.f -fPIC -fdefault-real-8 -shared -o ./glmnet_python/GLMnet.so'
+      os.system(cmd)
 
 setup(name='glmnet_python',
       version = '0.2.0',
